@@ -42,3 +42,14 @@ pillow==10.4.0; python_version >= '3.8'
 sqlparse==0.5.1; python_version >= '3.8'
 typing-extensions==4.12.2; python_version >= '3.8'
 ```
+
+### Importazione dati di prova
+
+Per i dati di prova del db sono state utilizzate fixtures generate con l'aiuto di ChatGPT e successivamente corrette a mano
+
+In particolare, si esegue (nel virtual environment)
+```bash
+python3 manage.py loaddata fixture_luoghi.json
+python3 manage.py loaddata fixture_eventi.json
+...
+```

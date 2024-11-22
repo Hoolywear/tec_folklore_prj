@@ -1,0 +1,112 @@
+[
+  {
+    "model": "eventi.Luogo",
+    "pk": 1,
+    "fields": {
+      "nome": "Teatro Verdi",
+      "descrizione": "Uno storico teatro situato nel centro della città di Gorizia.",
+      "indirizzo": "Piazza Vittoria, 1, Gorizia",
+      "sito_web": "https://www.teatroverdigorizia.it",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 2,
+    "fields": {
+      "nome": "Castello di Gorizia",
+      "descrizione": "Antica fortezza medievale con una vista mozzafiato sulla città.",
+      "indirizzo": "Via del Castello, 36, Gorizia",
+      "sito_web": "https://www.castellodigorizia.it",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 3,
+    "fields": {
+      "nome": "Palazzo Coronini",
+      "descrizione": "Storico palazzo del XVII secolo, sede di mostre ed eventi culturali.",
+      "indirizzo": "Viale XX Settembre, 14, Gorizia",
+      "sito_web": "https://www.coronini.it",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 4,
+    "fields": {
+      "nome": "Piazza Transalpina",
+      "descrizione": "Una piazza unica divisa tra Italia e Slovenia.",
+      "indirizzo": "Piazza della Transalpina, Gorizia",
+      "sito_web": "",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 5,
+    "fields": {
+      "nome": "Villa Attems",
+      "descrizione": "Villa storica immersa nel verde, utilizzata per eventi e concerti.",
+      "indirizzo": "Via Attems, 24, Gorizia",
+      "sito_web": "https://www.villaattems.it",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 6,
+    "fields": {
+      "nome": "Parco Piuma",
+      "descrizione": "Grande parco cittadino lungo il fiume Isonzo.",
+      "indirizzo": "Via del Parco, Gorizia",
+      "sito_web": "",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 7,
+    "fields": {
+      "nome": "Museo della Grande Guerra",
+      "descrizione": "Museo dedicato alla storia della Prima Guerra Mondiale.",
+      "indirizzo": "Borgo Castello, 13, Gorizia",
+      "sito_web": "https://www.museograndeguerra.it",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 8,
+    "fields": {
+      "nome": "Giardini Pubblici di Gorizia",
+      "descrizione": "Giardini storici, spesso utilizzati per mercatini e festival.",
+      "indirizzo": "Viale XX Settembre, Gorizia",
+      "sito_web": "",
+      "thumbnail": ""
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 9,
+    "fields": {
+      "nome": "Centro Congressi Fiere di Gorizia",
+      "descrizione": "Spazio moderno per convegni, mostre ed esposizioni.",
+      "indirizzo": "Via della Barca, 15, Gorizia",
+      "sito_web": "https://www.fieredigorizia.it",
+      "thumbnail": "luogo_thumb.jpg"
+    }
+  },
+  {
+    "model": "eventi.Luogo",
+    "pk": 10,
+    "fields": {
+      "nome": "Auditorium di Gorizia",
+      "descrizione": "Sala concerti moderna con acustica eccellente.",
+      "indirizzo": "Via Roma, 6, Gorizia",
+      "sito_web": "https://www.auditoriumgorizia.it",
+      "thumbnail": ""
+    }
+  }
+]
