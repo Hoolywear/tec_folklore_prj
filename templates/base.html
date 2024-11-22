@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="it">
+{% block head %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}This title should be replaced{% endblock %}</title>
+</head>
+{% endblock %}
+<body>
+{% block header %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block content %}
+    <h1>This content should be replaced</h1>
+{% endblock %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+</body>
+</html>
