@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ object }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ object }}</h1>
+    <p>{{ object.descrizione }}</p>
+    <ul>
+    {% for ev in object.eventi.all %}
+        {% if not ev.evento_avvenuto %}
+    	    <li><a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+{% endblock %}

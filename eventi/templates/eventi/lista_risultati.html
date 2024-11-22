@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ titolo }}
+{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for ev in object_list %}
+    	<li><a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a></li>
+    {% endfor %}
+
+    </ul>
+{% endblock %}

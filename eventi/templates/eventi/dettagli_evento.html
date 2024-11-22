@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ object }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ object }}</h1>
+    <span>Tags:
+        {% for tag in object.tags.names %}
+            <a href="{% url 'eventi:eventi_tag' tag=tag %}">{{ tag }}</a>
+        {% endfor %}
+    </span>
+    <p>{{ object.descrizione }}</p>
+    <a href="{% url 'eventi:dettagli_luogo' pk=object.luogo.pk %}">{{ object.luogo }}</a>
+{% endblock %}

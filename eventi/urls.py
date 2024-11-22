@@ -16,8 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import *
 
 app_name = 'eventi'
 
 urlpatterns = [
+    path('', ListaEventiView.as_view(), name='eventi'),
+    path('tag/<str:tag>', ListaEventiTagView.as_view(), name='eventi_tag'),
+    path('dettagli/<int:pk>/', DettagliEventoView.as_view(), name='dettagli_evento'),
+    path('luoghi/', ListaLuoghiView.as_view(), name='luoghi'),
+    path('luoghi/dettagli/<int:pk>/', DettagliLuogoView.as_view(), name='dettagli_luogo'),
+    path('searchresults/<str:q>/', ListaEventiRisultatiView.as_view(), name='risultati_ricerca'),
 ]
