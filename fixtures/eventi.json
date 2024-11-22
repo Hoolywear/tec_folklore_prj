@@ -1,0 +1,202 @@
+[
+  {
+      "titolo": "Concerto di Musica Folk",
+      "descrizione": "Un'esibizione speciale delle migliori band folk della regione. Il programma include canzoni popolari tradizionali, arrangiamenti moderni e performance strumentali di altissimo livello. Un'occasione unica per immergersi nella cultura musicale locale.",
+      "posti": 100,
+      "data_ora": "2024-10-15T20:30:00Z",
+      "luogo": "Teatro Verdi",
+      "tag": ["Musica", "Folk", "Concerto", "Cultura", "Live"]
+  },
+  {
+      "titolo": "Conferenza sul Folklore",
+      "descrizione": "Scopri le radici delle tradizioni locali attraverso una conferenza con esperti di folklore e antropologia. Saranno presentati esempi di racconti popolari, usanze e riti tipici del territorio goriziano, con uno spazio dedicato alle domande del pubblico.",
+      "posti": 50,
+      "data_ora": "2024-11-20T18:00:00Z",
+      "luogo": "Castello di Gorizia",
+      "tag": ["Conferenza", "Folklore", "Tradizione", "Storia"]
+  },
+  {
+      "titolo": "Laboratorio di Danza Tradizionale",
+      "descrizione": "Un workshop interattivo dove partecipanti di ogni età potranno imparare le danze tradizionali del Friuli Venezia Giulia. Guidati da esperti coreografi, imparerai i passi base e potrai esibirti in una piccola performance a fine giornata.",
+      "posti": 30,
+      "data_ora": "2024-10-22T17:00:00Z",
+      "luogo": "Palazzo Coronini",
+      "tag": ["Laboratorio", "Danza", "Tradizione", "Performance", "Workshop"]
+  },
+  {
+      "titolo": "Mercatino Artigianale",
+      "descrizione": "Un mercatino che riunisce artigiani locali per esporre e vendere prodotti unici realizzati a mano. Potrai trovare oggetti di ceramica, gioielli fatti a mano, tessuti tradizionali e molto altro. Un'occasione perfetta per acquistare regali originali.",
+      "posti": 200,
+      "data_ora": "2024-12-05T09:00:00Z",
+      "luogo": "Giardini Pubblici di Gorizia",
+      "tag": ["Artigianato", "Mercatino", "Tradizione", "Regali"]
+  },
+  {
+      "titolo": "Convegno Storico sulla Grande Guerra",
+      "descrizione": "Un approfondimento storico sul ruolo di Gorizia durante la Prima Guerra Mondiale. Relatori esperti presenteranno documenti e fotografie inedite, accompagnati da testimonianze emozionanti raccolte da archivi locali.",
+      "posti": 100,
+      "data_ora": "2024-11-11T09:30:00Z",
+      "luogo": "Museo della Grande Guerra",
+      "tag": ["Storia", "Grande Guerra", "Convegno", "Fotografia"]
+  },
+  {
+      "titolo": "Festival del Folklore",
+      "descrizione": "Un'intera giornata dedicata alla celebrazione delle tradizioni popolari. Musica, balli e stand gastronomici ti accompagneranno in un viaggio indimenticabile alla scoperta delle radici culturali del territorio.",
+      "posti": 300,
+      "data_ora": "2024-10-25T10:00:00Z",
+      "luogo": "Parco Piuma",
+      "tag": ["Festival", "Folklore", "Musica", "Cibo", "Cultura"]
+  },
+  {
+      "titolo": "Presentazione di Libri sulla Storia Locale",
+      "descrizione": "Un evento dedicato agli appassionati di storia e letteratura. Gli autori di libri sulla storia locale presenteranno le loro opere, condividendo aneddoti e dettagli interessanti sul processo di ricerca.",
+      "posti": 50,
+      "data_ora": "2024-10-30T16:00:00Z",
+      "luogo": "Centro Congressi Fiere di Gorizia",
+      "tag": ["Libri", "Storia", "Letteratura", "Cultura"]
+  },
+  {
+      "titolo": "Mostra Fotografica sulla Cultura Friulana",
+      "descrizione": "Una mostra fotografica che esplora la ricchezza culturale del Friuli Venezia Giulia. Le immagini catturano momenti unici di vita quotidiana, eventi storici e paesaggi mozzafiato. Una celebrazione visiva delle tradizioni e del folklore.",
+      "posti": 100,
+      "data_ora": "2024-11-05T09:00:00Z",
+      "luogo": "Villa Attems",
+      "tag": ["Fotografia", "Mostra", "Cultura", "Tradizione"]
+  },
+  {
+      "titolo": "Sfilata in Costume Storico",
+      "descrizione": "Un viaggio nel tempo con una sfilata in costume storico. Gli abiti tradizionali, ricostruiti con grande attenzione ai dettagli, saranno indossati da figuranti che sfileranno per le vie principali della città.",
+      "posti": 150,
+      "data_ora": "2024-10-20T15:00:00Z",
+      "luogo": "Piazza Transalpina",
+      "tag": ["Sfilata", "Costume", "Storia", "Tradizione"]
+  },
+  {
+      "titolo": "Corso di Cucina Tradizionale",
+      "descrizione": "Impara a cucinare piatti tipici della cucina friulana. Durante il corso, chef locali ti guideranno nella preparazione di ricette tradizionali, condividendo segreti e tecniche tramandate da generazioni.",
+      "posti": 25,
+      "data_ora": "2024-12-01T18:00:00Z",
+      "luogo": "Teatro Verdi",
+      "tag": ["Cucina", "Corso", "Tradizione", "Cibo"]
+  },
+  {
+      "titolo": "Esibizione di Canti Tradizionali",
+      "descrizione": "Un evento speciale dedicato ai canti tradizionali del Friuli Venezia Giulia. Gruppi vocali locali si esibiranno in brani tramandati oralmente, arricchiti da spiegazioni sulla loro origine e significato culturale.",
+      "posti": 80,
+      "data_ora": "2024-12-15T19:30:00Z",
+      "luogo": "Piazza Transalpina",
+      "tag": ["Canto", "Tradizione", "Musica", "Cultura"]
+  },
+  {
+      "titolo": "Rievocazione Storica in Centro",
+      "descrizione": "Vivi la storia di Gorizia attraverso una rievocazione storica coinvolgente. Figuranti in costume daranno vita a scene di vita quotidiana di epoche passate, accompagnati da musica e spettacoli dal vivo.",
+      "posti": 250,
+      "data_ora": "2024-11-18T14:00:00Z",
+      "luogo": "Villa Attems",
+      "tag": ["Rievocazione", "Storia", "Costumi", "Musica"]
+  },
+  {
+      "titolo": "Passeggiata Naturalistica e Culturale",
+      "descrizione": "Una passeggiata guidata alla scoperta del paesaggio locale, con un focus sulla flora, fauna e leggende che caratterizzano il territorio goriziano. Ideale per famiglie e appassionati di natura.",
+      "posti": 30,
+      "data_ora": "2024-10-29T09:00:00Z",
+      "luogo": "Museo della Grande Guerra",
+      "tag": ["Natura", "Cultura", "Passeggiata", "Leggende"]
+  },
+  {
+      "titolo": "Serata di Poesia Popolare",
+      "descrizione": "Una serata dedicata alla poesia popolare del Friuli Venezia Giulia. Poeti locali reciteranno versi in dialetto e condivideranno storie legate alla tradizione orale della regione.",
+      "posti": 40,
+      "data_ora": "2024-12-20T20:00:00Z",
+      "luogo": "Auditorium di Gorizia",
+      "tag": ["Poesia", "Tradizione", "Dialetto", "Cultura"]
+  },
+  {
+      "titolo": "Giornata del Ricamo Tradizionale",
+      "descrizione": "Una giornata dedicata all'antica arte del ricamo. Partecipa a dimostrazioni dal vivo e scopri i motivi tradizionali che caratterizzano questa affascinante forma di artigianato.",
+      "posti": 25,
+      "data_ora": "2024-11-28T10:00:00Z",
+      "luogo": "Palazzo Coronini",
+      "tag": ["Ricamo", "Artigianato", "Tradizione", "Workshop"]
+  },
+  {
+      "titolo": "Laboratorio di Costruzione Maschere",
+      "descrizione": "Impara a creare maschere tradizionali utilizzando tecniche artigianali. Il laboratorio include materiali, istruzioni e spiegazioni sul significato culturale di queste opere.",
+      "posti": 15,
+      "data_ora": "2024-12-08T16:00:00Z",
+      "luogo": "Parco Piuma",
+      "tag": ["Laboratorio", "Maschere", "Artigianato", "Cultura"]
+  },
+  {
+      "titolo": "Concerto di Arpe Celtiche",
+      "descrizione": "Un'esibizione straordinaria di musicisti locali e internazionali che suonano l'arpa celtica. Un viaggio musicale che fonde tradizione e innovazione in un'atmosfera unica.",
+      "posti": 100,
+      "data_ora": "2024-11-30T18:00:00Z",
+      "luogo": "Auditorium di Gorizia",
+      "tag": ["Musica", "Concerto", "Cultura", "Celtico"]
+  },
+  {
+      "titolo": "Serata Gastronomica Friulana",
+      "descrizione": "Degustazione di piatti tipici accompagnata da storie sulla loro origine. I partecipanti potranno assaporare pietanze tradizionali preparate con ingredienti locali di alta qualità.",
+      "posti": 60,
+      "data_ora": "2024-10-27T19:00:00Z",
+      "luogo": "Castello di Gorizia",
+      "tag": ["Cibo", "Gastronomia", "Tradizione", "Cultura"]
+  },
+  {
+      "titolo": "Corso di Tessitura Antica",
+      "descrizione": "Un corso pratico per apprendere le tecniche di tessitura tradizionale. I partecipanti impareranno a utilizzare un telaio e a creare semplici manufatti tessili.",
+      "posti": 10,
+      "data_ora": "2024-12-12T15:00:00Z",
+      "luogo": "Teatro Verdi",
+      "tag": ["Tessitura", "Laboratorio", "Tradizione", "Artigianato"]
+  },
+  {
+      "titolo": "Spettacolo Teatrale Dialettale",
+      "descrizione": "Una compagnia teatrale locale porterà in scena una commedia dialettale ispirata a storie e personaggi del folklore regionale. Un'occasione imperdibile per ridere e riflettere sulle tradizioni.",
+      "posti": 120,
+      "data_ora": "2024-11-22T20:30:00Z",
+      "luogo": "Piazza Transalpina",
+      "tag": ["Teatro", "Dialetto", "Folklore", "Tradizione"]
+  },
+  {
+      "titolo": "Workshop di Fotografia Paesaggistica",
+      "descrizione": "Un'opportunità unica per imparare a fotografare i paesaggi del Friuli Venezia Giulia con l'aiuto di un fotografo professionista. Il workshop include un'uscita pratica e consigli tecnici.",
+      "posti": 15,
+      "data_ora": "2024-12-03T14:00:00Z",
+      "luogo": "Villa Attems",
+      "tag": ["Fotografia", "Paesaggi", "Workshop", "Cultura"]
+  },
+  {
+      "titolo": "Fiera delle Tradizioni",
+      "descrizione": "Un evento che celebra le tradizioni locali con bancarelle, esibizioni musicali e dimostrazioni artigianali. Ideale per tutta la famiglia, con attività dedicate anche ai bambini.",
+      "posti": 300,
+      "data_ora": "2024-12-18T09:00:00Z",
+      "luogo": "Museo della Grande Guerra",
+      "tag": ["Fiera", "Tradizioni", "Famiglia", "Cultura"]
+  },
+  {
+      "titolo": "Serata di Racconti attorno al Fuoco",
+      "descrizione": "Un'esperienza magica in cui esperti narratori ti trasporteranno nelle leggende e nei miti del Friuli Venezia Giulia. La serata si concluderà con una degustazione di vini locali.",
+      "posti": 40,
+      "data_ora": "2024-12-22T18:00:00Z",
+      "luogo": "Giardini Pubblici di Gorizia",
+      "tag": ["Leggende", "Fuoco", "Tradizione", "Vino"]
+  },
+  {
+      "titolo": "Laboratorio di Scultura in Legno",
+      "descrizione": "Un laboratorio pratico per imparare le basi della scultura in legno. Guidati da un maestro artigiano, i partecipanti potranno realizzare un piccolo oggetto ispirato alle tradizioni locali.",
+      "posti": 20,
+      "data_ora": "2024-12-10T10:00:00Z",
+      "luogo": "Palazzo Coronini",
+      "tag": ["Laboratorio", "Scultura", "Artigianato", "Tradizione"]
+  },
+  {
+      "titolo": "Esibizione di Balli Popolari",
+      "descrizione": "Un'esibizione di balli tradizionali eseguiti da gruppi folcloristici locali. L'evento include una sessione finale interattiva per coinvolgere il pubblico nei balli.",
+      "posti": 150,
+      "data_ora": "2024-11-25T17:00:00Z",
+      "luogo": "Parco Piuma",
+      "tag": ["Danza", "Folklore", "Musica", "Tradizione"]
+  }
+]
