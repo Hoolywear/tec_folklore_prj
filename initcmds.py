@@ -1,4 +1,5 @@
 import datetime
+from django.utils.timezone import make_aware
 import json
 from eventi.models import *
 
@@ -42,7 +43,12 @@ def init_db():
         new_evento.titolo = evento['titolo']
         new_evento.descrizione = evento['descrizione']
         new_evento.posti = evento['posti']
-        new_evento.data_ora = datetime.datetime.strptime(evento['data_ora'], '%Y-%m-%dT%H:%M:%SZ')
+        # converto dal formato di data_ora in fixtures/eventi.json:
+        data_ora = datetime.datetime.strptime(evento['data_ora'], '%Y-%m-%dT%H:%M:%SZ')
+        # da https://stackoverflow.com/questions/18622007/runtimewarning-datetimefield-received-a-naive-datetime
+        # per risolvere "RuntimeWarning: DateTimeField received a naive datetime" (dovuto alla formattazione del
+        # campo data_ora in fixture/eventi.json)
+        new_evento.data_ora = make_aware(data_ora)
         new_evento.luogo = Luogo.objects.get(nome__exact=evento['luogo'])
         new_evento.save()
         new_evento = Evento.objects.get(titolo__exact=evento['titolo'])
@@ -50,7 +56,4 @@ def init_db():
             new_evento.tags.add(tag)
         new_evento.save()
 
-    print("DUMP DB")
-    print(Luogo.objects.all())
-    print(Evento.objects.all())
     print(f'Caricati {Luogo.objects.all().count()} luoghi e {Evento.objects.all().count()} eventi')
