@@ -3,6 +3,8 @@ import json
 from eventi.models import *
 
 
+# Funzioni per il popolamento del database con dati fittizi
+
 def erase_db():
     print("Cancello il DB")
     Luogo.objects.all().delete()
@@ -13,11 +15,11 @@ def init_db():
     if len(Evento.objects.all()) != 0:
         return
 
-    # prova a importare fixtures da file
+    # importazione fixtures da file
     try:
         fixture_luoghi = open('fixtures/luoghi.json', 'r')
         fixture_eventi = open('fixtures/eventi.json', 'r')
-
+        # carica tramite modulo python (genera strutture dati appropriate)
         luoghi = json.load(fixture_luoghi)
         eventi = json.load(fixture_eventi)
 
@@ -42,10 +44,8 @@ def init_db():
         new_evento.posti = evento['posti']
         new_evento.data_ora = datetime.datetime.strptime(evento['data_ora'], '%Y-%m-%dT%H:%M:%SZ')
         new_evento.luogo = Luogo.objects.get(nome__exact=evento['luogo'])
-        print(new_evento.data_ora)
         new_evento.save()
         new_evento = Evento.objects.get(titolo__exact=evento['titolo'])
-        print(new_evento.data_ora)
         for tag in evento['tag']:
             new_evento.tags.add(tag)
         new_evento.save()
