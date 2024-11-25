@@ -26,5 +26,6 @@ urlpatterns = [
     path('dettagli/<int:pk>/', DettagliEventoView.as_view(), name='dettagli_evento'),
     path('luoghi/', ListaLuoghiView.as_view(), name='luoghi'),
     path('luoghi/dettagli/<int:pk>/', DettagliLuogoView.as_view(), name='dettagli_luogo'),
-    path('searchresults/<str:q>/', ListaEventiRisultatiView.as_view(), name='risultati_ricerca'),
+    path('searchresults/<str:q>/<str:date>', ListaEventiRisultatiView.as_view(), name='risultati_ricerca'),
+
 ]
