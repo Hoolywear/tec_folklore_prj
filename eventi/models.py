@@ -25,7 +25,7 @@ class Evento(models.Model):
     titolo = models.CharField(max_length=100)
     descrizione = models.TextField()
     posti = models.IntegerField(default=10)
-    data_ora = models.DateTimeField(auto_now_add=True)
+    data_ora = models.DateTimeField()
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.SET_NULL, null=True, blank=True, related_name='eventi')
     thumbnail = models.ImageField(upload_to=save_rename_evento_img, default=None)
