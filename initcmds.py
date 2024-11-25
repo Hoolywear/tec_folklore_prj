@@ -1,3 +1,4 @@
+import datetime
 import json
 from eventi.models import *
 
@@ -39,9 +40,12 @@ def init_db():
         new_evento.titolo = evento['titolo']
         new_evento.descrizione = evento['descrizione']
         new_evento.posti = evento['posti']
+        new_evento.data_ora = datetime.datetime.strptime(evento['data_ora'], '%Y-%m-%dT%H:%M:%SZ')
         new_evento.luogo = Luogo.objects.get(nome__exact=evento['luogo'])
+        print(new_evento.data_ora)
         new_evento.save()
         new_evento = Evento.objects.get(titolo__exact=evento['titolo'])
+        print(new_evento.data_ora)
         for tag in evento['tag']:
             new_evento.tags.add(tag)
         new_evento.save()
