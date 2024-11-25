@@ -1,61 +1,61 @@
 [
   {
       "nome": "Teatro Verdi",
-      "descrizione": "Uno storico teatro situato nel centro della città di Gorizia.",
+      "descrizione": "Il Teatro Verdi è uno dei simboli culturali di Gorizia, un luogo intriso di storia e tradizione. Situato nel cuore della città, il teatro risale al XIX secolo e rappresenta un esempio significativo di architettura neoclassica. Con una capienza di oltre 500 posti, il Teatro Verdi è famoso per la sua acustica eccezionale e per l’eleganza delle sue decorazioni interne, che includono affreschi e dettagli in stucchi dorati. Nel corso degli anni, ha ospitato una vasta gamma di eventi, dai concerti di musica classica agli spettacoli teatrali, fino a serate dedicate al balletto e alle opere liriche. Il foyer, con le sue colonne e il lampadario in cristallo, è un luogo ideale per incontri culturali e presentazioni. Recentemente restaurato, il teatro continua a essere un punto di riferimento per la vita culturale della città, attirando artisti di fama internazionale e pubblico da tutta la regione.",
       "indirizzo": "Piazza Vittoria, 1, Gorizia",
       "sito_web": "https://www.teatroverdigorizia.it"
   },
   {
       "nome": "Castello di Gorizia",
-      "descrizione": "Antica fortezza medievale con una vista mozzafiato sulla città.",
+      "descrizione": "Il Castello di Gorizia è una maestosa fortezza medievale che domina la città dall’alto di una collina, offrendo una vista spettacolare sul paesaggio circostante. Costruito nel XII secolo, il castello ha attraversato secoli di storia, svolgendo un ruolo strategico durante guerre e conflitti. Oggi, il castello è uno dei luoghi più visitati di Gorizia, grazie alla sua architettura imponente e alla ricca collezione museale che ospita. I visitatori possono esplorare le sue antiche mura, le torri difensive e i cortili interni, dove spesso si svolgono rievocazioni storiche, concerti e mercatini medievali. Al suo interno, una sezione del museo è dedicata alla storia del Friuli Venezia Giulia, con esposizioni di armi, armature e documenti d’epoca. Un luogo perfetto per famiglie, studenti e appassionati di storia, il castello offre un’esperienza unica, combinando cultura e avventura.",
       "indirizzo": "Via del Castello, 36, Gorizia",
       "sito_web": "https://www.castellodigorizia.it"
   },
   {
       "nome": "Palazzo Coronini",
-      "descrizione": "Storico palazzo del XVII secolo, sede di mostre ed eventi culturali.",
+      "descrizione": "Palazzo Coronini è una splendida dimora storica risalente al XVII secolo, situata lungo il Viale XX Settembre. Un tempo residenza della nobile famiglia Coronini, il palazzo è oggi un museo che racconta la storia e le tradizioni della regione. Gli interni, riccamente decorati, conservano arredi d’epoca, opere d’arte e una vasta biblioteca storica. Ogni stanza è un viaggio nel passato, con soffitti affrescati e dettagli architettonici che testimoniano il gusto raffinato dell’aristocrazia locale. Il palazzo è circondato da un ampio parco, ideale per passeggiate e pic-nic, e ospita regolarmente mostre temporanee, concerti e conferenze. È anche sede di eventi didattici e visite guidate che attraggono sia i turisti che i residenti.",
       "indirizzo": "Viale XX Settembre, 14, Gorizia",
       "sito_web": "https://www.coronini.it"
   },
   {
       "nome": "Piazza Transalpina",
-      "descrizione": "Una piazza unica divisa tra Italia e Slovenia.",
+      "descrizione": "La Piazza Transalpina è un luogo unico nel suo genere, un simbolo della connessione tra Italia e Slovenia. Divisa dal confine internazionale, la piazza rappresenta il punto in cui due culture si incontrano e si mescolano. Storicamente, questa piazza ha segnato il passaggio tra due mondi durante il periodo della Guerra Fredda, ma oggi è un luogo che celebra l'unità e la collaborazione. Al centro si trova una linea simbolica che separa i due Paesi, offrendo ai visitatori l’opportunità unica di trovarsi letteralmente a cavallo di due nazioni. La piazza è spesso teatro di eventi transfrontalieri, come festival musicali, mercatini artigianali e manifestazioni culturali. Attorno si possono ammirare edifici storici e moderne installazioni artistiche, che riflettono il carattere multiculturale della zona. È un luogo perfetto per chi vuole esplorare le radici della storia europea contemporanea.\n\n",
       "indirizzo": "Piazza della Transalpina, Gorizia",
       "sito_web": ""
   },
   {
       "nome": "Villa Attems",
-      "descrizione": "Villa storica immersa nel verde, utilizzata per eventi e concerti.",
+      "descrizione": "Immersa in un rigoglioso giardino all’italiana, Villa Attems è una raffinata dimora storica che racconta la storia di una delle famiglie più influenti della regione. Costruita nel XVIII secolo, la villa combina elementi di stile barocco e neoclassico, con interni eleganti e sale decorate con affreschi e mobili d’epoca. La villa è oggi utilizzata per una varietà di eventi culturali, come concerti di musica classica, mostre d’arte e conferenze. Il giardino che circonda la villa è un’oasi di tranquillità, con fontane, sentieri fioriti e scorci pittoreschi ideali per passeggiate. Durante i mesi estivi, ospita festival e serate enogastronomiche che celebrano i sapori e le tradizioni del Friuli Venezia Giulia. Un luogo che combina arte, storia e natura, ideale per chi cerca un’esperienza culturale immersiva.",
       "indirizzo": "Via Attems, 24, Gorizia",
       "sito_web": "https://www.villaattems.it"
   },
   {
       "nome": "Parco Piuma",
-      "descrizione": "Grande parco cittadino lungo il fiume Isonzo.",
+      "descrizione": "Il Parco Piuma è una vasta area verde situata lungo le rive del fiume Isonzo, a pochi passi dal centro di Gorizia. Questo spazio naturale offre un luogo di relax e divertimento per famiglie, sportivi e amanti della natura. Con sentieri ben curati, aree picnic e un parco giochi per bambini, è il luogo ideale per trascorrere una giornata all’aria aperta. Durante l’anno, il parco ospita numerosi eventi, come festival musicali, mercatini artigianali e attività sportive. Le rive del fiume offrono anche la possibilità di praticare sport acquatici come il kayak e la pesca. Il Parco Piuma è particolarmente apprezzato per i suoi scorci suggestivi, soprattutto al tramonto, quando il sole si riflette sulle acque cristalline del fiume.",
       "indirizzo": "Via del Parco, Gorizia",
       "sito_web": ""
   },
   {
       "nome": "Museo della Grande Guerra",
-      "descrizione": "Museo dedicato alla storia della Prima Guerra Mondiale.",
+      "descrizione": "Situato all’interno di una storica struttura nel Borgo Castello, il Museo della Grande Guerra è un luogo di grande valore storico ed educativo. Le sue esposizioni raccontano con precisione e sensibilità gli eventi che hanno segnato il primo conflitto mondiale, concentrandosi sul ruolo cruciale della regione friulana. Il museo ospita una vasta collezione di reperti, tra cui armi, uniformi, mappe e fotografie d’epoca. I visitatori possono esplorare ricostruzioni dettagliate delle trincee e ascoltare testimonianze dirette attraverso documentari e registrazioni. Una sezione speciale è dedicata agli effetti della guerra sulla popolazione civile, offrendo uno sguardo commovente sulla resilienza umana. Questo museo è un punto di riferimento per studenti, ricercatori e turisti interessati alla storia europea.",
       "indirizzo": "Borgo Castello, 13, Gorizia",
       "sito_web": "https://www.museograndeguerra.it"
   },
   {
       "nome": "Giardini Pubblici di Gorizia",
-      "descrizione": "Giardini storici, spesso utilizzati per mercatini e festival.",
+      "descrizione": "I Giardini Pubblici di Gorizia sono un polmone verde nel cuore della città, un luogo che combina storia, natura e cultura. Progettati nel XIX secolo, i giardini offrono ampi prati, viali alberati e zone ombreggiate ideali per il relax. Durante l’anno, i giardini diventano il palcoscenico di eventi all’aperto, come mercatini di artigianato, festival musicali e manifestazioni culturali. Al centro si trova una fontana storica, circondata da aiuole fiorite che cambiano con le stagioni. I giardini sono anche un luogo di incontro per le famiglie, grazie alla presenza di un’area giochi ben attrezzata. Perfetti per una pausa rigenerante o una passeggiata romantica, i Giardini Pubblici sono una delle mete più amate dai residenti e dai turisti.",
       "indirizzo": "Viale XX Settembre, Gorizia",
       "sito_web": ""
   },
   {
       "nome": "Centro Congressi Fiere di Gorizia",
-      "descrizione": "Spazio moderno per convegni, mostre ed esposizioni.",
+      "descrizione": "Il Centro Congressi Fiere di Gorizia è un moderno complesso dedicato a eventi, esposizioni e conferenze. Con spazi versatili e attrezzature all’avanguardia, il centro è in grado di ospitare manifestazioni di ogni tipo, dai convegni internazionali alle fiere di settore. L’edificio principale è caratterizzato da un’architettura contemporanea, con ampie sale luminose e una capienza variabile che si adatta alle esigenze degli organizzatori. Durante l’anno, il Centro Congressi ospita eventi di grande richiamo, come mostre d’arte, fiere del libro, festival enogastronomici e incontri tematici. La sua posizione strategica e i comodi parcheggi lo rendono facilmente accessibile per visitatori provenienti da tutta la regione.",
       "indirizzo": "Via della Barca, 15, Gorizia",
       "sito_web": "https://www.fieredigorizia.it"
   },
   {
       "nome": "Auditorium di Gorizia",
-      "descrizione": "Sala concerti moderna con acustica eccellente.",
+      "descrizione": "L’Auditorium di Gorizia è una delle strutture culturali più moderne della città, noto per la sua eccellente acustica e la versatilità degli spazi. Progettato per ospitare concerti, spettacoli teatrali e conferenze, l’auditorium è dotato di tecnologie avanzate che garantiscono un’esperienza immersiva per il pubblico. La sala principale, con una capienza di oltre 400 posti, è caratterizzata da un design contemporaneo e confortevole. Durante l’anno, l’auditorium ospita una ricca programmazione che spazia dalla musica classica al jazz, dal teatro d’autore agli eventi aziendali. È anche sede di workshop e masterclass per musicisti e attori emergenti. Grazie alla sua posizione centrale, l’auditorium è facilmente raggiungibile e rappresenta un punto di riferimento per la vita culturale di Gorizia. ",
       "indirizzo": "Via Roma, 6, Gorizia",
       "sito_web": "https://www.auditoriumgorizia.it"
   }
