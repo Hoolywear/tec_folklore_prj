@@ -1,3 +1,5 @@
+import datetime
+
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from eventi.models import *
@@ -13,6 +15,9 @@ class ListaEventiView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx['titolo'] = "Eventi registrati"
         return ctx
+
+    def get_queryset(self):
+        return Evento.objects.filter(data_ora__gt=datetime.datetime.today())
 
 
 class DettagliEventoView(DetailView):
@@ -37,8 +42,8 @@ class DettagliLuogoView(DetailView):
 
 class ListaEventiTagView(ListaEventiView):
     def get_queryset(self):
-        print(self.kwargs['tag'])
-        return Evento.objects.filter(tags__name__in=[self.kwargs['tag']])
+        qs = super().get_queryset()
+        return qs.filter(tags__name__in=[self.kwargs['tag']])
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -49,5 +54,7 @@ class ListaEventiTagView(ListaEventiView):
 
 class ListaEventiRisultatiView(ListaEventiView):
     def get_queryset(self):
+        qs = super().get_queryset()
         q = self.request.resolver_match.kwargs["q"]
-        return Evento.objects.filter(Q(titolo__icontains=q) | Q(descrizione__icontains=q))
+        min_date = datetime.datetime.strptime(self.request.resolver_match.kwargs["date"], '%Y-%m-%d')
+        return qs.filter(Q(titolo__icontains=q) | Q(descrizione__icontains=q), Q(data_ora__gte=min_date))
