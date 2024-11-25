@@ -39,6 +39,14 @@ class DettagliLuogoView(DetailView):
     model = Luogo
     template_name = 'eventi/dettagli_luogo.html'
 
+    # scarta gli eventi passati e ordinali per data crescente, per poterli mostrare a fine pagina
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        print(self.kwargs['pk'])
+        print(self.object)
+        ctx['eventi'] = self.object.eventi.filter(data_ora__gt=datetime.datetime.today()).order_by('data_ora')
+        return ctx
+
 
 class ListaEventiTagView(ListaEventiView):
     def get_queryset(self):

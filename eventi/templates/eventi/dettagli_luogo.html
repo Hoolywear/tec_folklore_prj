@@ -8,10 +8,8 @@
     <h1>{{ object }}</h1>
     <p>{{ object.descrizione }}</p>
     <ul>
-    {% for ev in object.eventi.all %}
-        {% if not ev.evento_avvenuto %}
-    	    <li><a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a></li>
-        {% endif %}
+    {% for ev in eventi.all %}
+        <li><a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a> - {{ ev.data_ora }}</li>
     {% endfor %}
     </ul>
 {% endblock %}
