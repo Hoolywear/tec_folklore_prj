@@ -25,6 +25,7 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('about/', about, name='about'),
     path('eventi/', include('eventi.urls')),
+    path('users/', include('users.urls')),
 ]
 
 erase_db()
