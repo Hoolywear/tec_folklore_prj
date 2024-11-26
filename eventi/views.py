@@ -13,11 +13,11 @@ class ListaEventiView(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['titolo'] = "Eventi registrati"
+        ctx['titolo'] = "Tutti gli eventi registrati"
         return ctx
 
     def get_queryset(self):
-        return Evento.objects.filter(data_ora__gt=datetime.datetime.today())
+        return Evento.objects.filter(data_ora__gte=datetime.datetime.today()).order_by('data_ora')
 
 
 class DettagliEventoView(DetailView):
@@ -44,7 +44,7 @@ class DettagliLuogoView(DetailView):
         ctx = super().get_context_data(**kwargs)
         print(self.kwargs['pk'])
         print(self.object)
-        ctx['eventi'] = self.object.eventi.filter(data_ora__gt=datetime.datetime.today()).order_by('data_ora')
+        ctx['eventi'] = self.object.eventi.filter(data_ora__gte=datetime.datetime.today()).order_by('data_ora')
         return ctx
 
 
@@ -72,7 +72,12 @@ class ListaEventiRisultatiView(ListaEventiView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['categoria'] = self.request.resolver_match.kwargs['categoria']
+        cat = self.request.resolver_match.kwargs['categoria']
+        if cat == 'all':
+            ctx['categoria'] = 'Tutti gli eventi'
+        else:
+            ctx['categoria'] = dict(Evento.CATEGORY_CHOICES)[cat]
+        ctx['titolo'] = f"{ctx['categoria']} dal {self.request.resolver_match.kwargs['from_d']}"
         return ctx
 
 
@@ -80,3 +85,8 @@ class ListaEventiRisultatiQueryView(ListaEventiRisultatiView):
     def get_queryset(self):
         q = self.request.resolver_match.kwargs["q"]
         return super().get_queryset().filter(Q(titolo__icontains=q) | Q(descrizione__icontains=q))
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['titolo'] += f" che corrispondono a '{self.request.resolver_match.kwargs['q']}'"
+        return ctx

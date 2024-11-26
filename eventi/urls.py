@@ -23,9 +23,9 @@ app_name = 'eventi'
 urlpatterns = [
     path('', ListaEventiView.as_view(), name='eventi'),
     path('tag/<str:tag>', ListaEventiTagView.as_view(), name='eventi_tag'),
+    path("search/<str:from_d>/<str:categoria>/", ListaEventiRisultatiView.as_view(), name='risultati_ricerca'),
+    path("search/<str:from_d>/<str:categoria>/<str:q>/", ListaEventiRisultatiQueryView.as_view(), name='risultati_ricerca_q'),
     path('dettagli/<int:pk>/', DettagliEventoView.as_view(), name='dettagli_evento'),
     path('luoghi/', ListaLuoghiView.as_view(), name='luoghi'),
     path('luoghi/dettagli/<int:pk>/', DettagliLuogoView.as_view(), name='dettagli_luogo'),
-    path("search/<str:from_d>/<str:categoria>/", ListaEventiRisultatiView.as_view(), name='risultati_ricerca'),
-    path("search/<str:from_d>/<str:categoria>/<str:q>/", ListaEventiRisultatiQueryView.as_view(), name='risultati_ricerca_q'),
 ]
