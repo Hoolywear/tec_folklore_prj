@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'taggit',
     'eventi',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+LOGIN_REDIRECT_URL = "/users/profile/"
+LOGIN_URL = "/users/login/?auth=notok"  # nota: il redirect post-login funziona per le view protette da @login_required!
