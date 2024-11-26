@@ -15,8 +15,11 @@ def search(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             q = form.cleaned_data.get('search_query')
-            min_date = form.cleaned_data.get('search_min_date')
-            return redirect("eventi:risultati_ricerca", q, min_date)
+            from_d = datetime.datetime.strftime(form.cleaned_data.get('search_from_data'), "%Y-%m-%d")
+            categoria = form.cleaned_data.get('search_categoria')
+            if q:
+                return redirect("eventi:risultati_ricerca_q", from_d, categoria, q)
+            return redirect("eventi:risultati_ricerca", from_d, categoria)
     else:
         form = SearchForm()
     return render(request, template_name='search.html', context={'form': form})
