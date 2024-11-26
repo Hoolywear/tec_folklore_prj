@@ -22,10 +22,21 @@ class Luogo(models.Model):
 
 
 class Evento(models.Model):
+    CATEGORY_CHOICES = (
+        ('laboratorio', 'Laboratori e corsi'),
+        ('concerto', 'Concerti'),
+        ('spettacolo', "Spettacoli ed eventi teatrali"),
+        ('mostra', 'Mostre e installazioni'),
+        ('conferenza', 'Conferenze e convegni'),
+        ('fiera', 'Fiere, sagre, mercatini, festival'),
+        ('live', 'Altri eventi dal vivo')
+    )
+
     titolo = models.CharField(max_length=100)
     descrizione = models.TextField()
     posti = models.IntegerField(default=10)
     data_ora = models.DateTimeField()
+    categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.SET_NULL, null=True, blank=True, related_name='eventi')
     thumbnail = models.ImageField(upload_to=save_rename_evento_img, default=None)

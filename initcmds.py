@@ -50,6 +50,7 @@ def init_db():
         # campo data_ora in fixture/eventi.json)
         new_evento.data_ora = make_aware(data_ora)
         new_evento.luogo = Luogo.objects.get(nome__exact=evento['luogo'])
+        new_evento.categoria = evento['categoria']
         new_evento.save()
         new_evento = Evento.objects.get(titolo__exact=evento['titolo'])
         for tag in evento['tag']:
