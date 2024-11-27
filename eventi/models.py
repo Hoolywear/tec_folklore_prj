@@ -44,9 +44,8 @@ class Evento(models.Model):
 
     def posti_disponibili(self):
         posti_prenotati = 0
-        # NECESSITA CREAZIONE DI MODEL PRENOTAZIONE IN APP GESTIONE
-        # for p in self.prenotazioni.all():
-        #     posti_prenotati += p.posti
+        for p in self.prenotazioni.all():
+            posti_prenotati += p.posti
 
         return self.posti - posti_prenotati
 
@@ -61,3 +60,15 @@ class Evento(models.Model):
 
     class Meta:
         verbose_name_plural = 'Eventi'
+
+
+class Prenotazione(models.Model):
+    evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='prenotazioni')
+    utente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='prenotazioni')
+    posti = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = 'Prenotazioni'
+
+    def __str__(self):
+        return str(f'Prenotazione per {self.evento.titolo} (posti: {self.posti})')
