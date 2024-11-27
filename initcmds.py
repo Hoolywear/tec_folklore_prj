@@ -6,7 +6,12 @@ from eventi.models import *
 
 # Funzioni per il popolamento del database con dati fittizi
 
+def get_info():
+    return f'Caricati {Luogo.objects.all().count()} luoghi e {Evento.objects.all().count()} eventi'
+
+
 def erase_db():
+    print("DATI PRE-RIMOZIONE: ", get_info())
     print("Cancello il DB")
     Luogo.objects.all().delete()
     Evento.objects.all().delete()
@@ -14,6 +19,7 @@ def erase_db():
 
 def init_db():
     if len(Evento.objects.all()) != 0:
+        print("NESSUN RIPOPOLAMENTO -", get_info())
         return
 
     # importazione fixtures da file
@@ -57,4 +63,4 @@ def init_db():
             new_evento.tags.add(tag)
         new_evento.save()
 
-    print(f'Caricati {Luogo.objects.all().count()} luoghi e {Evento.objects.all().count()} eventi')
+    print("POPOLAMENTO ESEGUITO CON SUCCESSO!", get_info())
