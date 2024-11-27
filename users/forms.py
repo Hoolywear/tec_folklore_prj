@@ -2,6 +2,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 
 class RegisterForm(UserCreationForm):
@@ -26,3 +27,23 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+
+class UserUpdateForm(ModelForm):
+    helper = FormHelper()
+    helper.form_id = 'user_update_form'
+    helper.add_input(Submit('submit', 'Aggiorna'))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
+class UserDeleteForm(ModelForm):
+    helper = FormHelper()
+    helper.form_id = 'user_delete_form'
+    helper.add_input(Submit('submit', 'Elimina utente'))
+
+    class Meta:
+        model = User
+        fields = []

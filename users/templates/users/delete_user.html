@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Profile settings {% endblock %}
+
+{% block content %}
+    <h1>Profilo di {{ user.username }}</h1>
+    <p>Sei sicuro di voler eliminare il profilo? Tutte le prenotazioni andranno perse</p>
+
+    {% crispy form %}
+
+    <a href="{% url 'users:profile' %}">ritorna al profilo</a>
+{% endblock %}
