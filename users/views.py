@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, UpdateView, DeleteView
@@ -45,3 +46,10 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
+    template_name = 'users/change_password.html'
+    form_class = UserChangePasswordForm
+    success_message = "Password cambiata con successo"
+    success_url = reverse_lazy('users:profile')

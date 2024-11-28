@@ -1,6 +1,6 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
@@ -47,3 +47,9 @@ class UserDeleteForm(ModelForm):
     class Meta:
         model = User
         fields = []
+
+
+class UserChangePasswordForm(PasswordChangeForm):
+    helper = FormHelper()
+    helper.form_id = 'user_password_change_form'
+    helper.add_input(Submit('submit', 'Cambia la password'))
