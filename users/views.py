@@ -4,8 +4,9 @@ from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, UpdateView, DeleteView
+from django.views.generic import CreateView, FormView, UpdateView, DeleteView, ListView
 
+from eventi.models import Prenotazione
 from .forms import *
 
 
@@ -64,3 +65,20 @@ class UserChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordCh
     form_class = UserChangePasswordForm
     success_message = "Password cambiata con successo"
     success_url = reverse_lazy('users:profile')
+
+
+class ListaPrenotazioniView(LoginRequiredMixin, ListView):
+    model = Prenotazione
+    template_name = 'users/lista_prenotazioni.html'
+
+    def get_queryset(self):
+        qs = Prenotazione.objects.all()
+        return qs.filter(utente=self.request.user)
+
+
+class DeletePrenotazioneView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Prenotazione
+    success_url = reverse_lazy('users:prenotazioni')
+    template_name = 'users/delete_prenotazione.html'
+    form_class = DeletePrenotazioneForm
+    success_message = "Prenotazione eliminata con successo"

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Elimina prenotazione per {{ object }} {% endblock %}
+
+{% block content %}
+    <p>Sei sicuro di voler eliminare la prenotazione per {{ object }}?</p>
+
+    {% crispy form %}
+
+    <a href="{% url 'users:prenotazioni' %}">ritorna alle prenotazioni</a>
+{% endblock %}

@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
+from eventi.models import Prenotazione
+
 
 class RegisterForm(UserCreationForm):
 
@@ -53,3 +55,13 @@ class UserChangePasswordForm(PasswordChangeForm):
     helper = FormHelper()
     helper.form_id = 'user_password_change_form'
     helper.add_input(Submit('submit', 'Cambia la password'))
+
+
+class DeletePrenotazioneForm(ModelForm):
+    helper = FormHelper()
+    helper.form_id = 'delete_prenotazione_form'
+    helper.add_input(Submit('submit', 'Elimina prenotazione'))
+
+    class Meta:
+        model = Prenotazione
+        fields = []
