@@ -10,7 +10,7 @@
 
     <ul>
     {% for prenotazione in object_list %}
-    	<li>{{ prenotazione.evento }} -
+    	<li>{{ prenotazione.evento }} - {{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }} -
             <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}">Dettagli evento</a> -
             <a href="{% url 'users:delete_prenotazione' pk=prenotazione.pk %}">Elimina prenotazione</a></li>
     {% endfor %}
