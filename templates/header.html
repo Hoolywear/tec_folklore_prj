@@ -5,6 +5,7 @@
     <a href="{% url 'eventi:luoghi' %}">luoghi</a>
     <a href="{% url 'search' %}">ricerca eventi</a>
     {% if user.is_authenticated %}
+    <a href="{% url 'users:profile' %}">il mio profilo</a>
     <a href="{% url 'users:logout' %}">logout</a>
     {% else %} 
     <a href="{% url 'users:register' %}">registrati</a>
