@@ -13,4 +13,5 @@
     </span>
     <p>{{ object.descrizione }}</p>
     <a href="{% url 'eventi:dettagli_luogo' pk=object.luogo.pk %}">{{ object.luogo }}</a>
+    <a href="{% url 'eventi:prenota_evento' pk=object.pk %}">Prenota</a>
 {% endblock %}

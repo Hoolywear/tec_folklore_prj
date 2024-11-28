@@ -28,4 +28,5 @@ urlpatterns = [
     path('dettagli/<int:pk>/', DettagliEventoView.as_view(), name='dettagli_evento'),
     path('luoghi/', ListaLuoghiView.as_view(), name='luoghi'),
     path('luoghi/dettagli/<int:pk>/', DettagliLuogoView.as_view(), name='dettagli_luogo'),
+    path('<int:pk>/prenota/', prenota_evento, name='prenota_evento'),
 ]

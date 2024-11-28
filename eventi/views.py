@@ -1,7 +1,10 @@
 import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, DetailView
+from eventi.forms import PrenotaEventoForm
 from eventi.models import *
 
 # Create your views here.
@@ -90,3 +93,24 @@ class ListaEventiRisultatiQueryView(ListaEventiRisultatiView):
         ctx = super().get_context_data(**kwargs)
         ctx['titolo'] += f" che corrispondono a '{self.request.resolver_match.kwargs['q']}'"
         return ctx
+
+
+@login_required
+def prenota_evento(request, pk):
+    evento = get_object_or_404(Evento, pk=pk)
+
+    if evento.evento_pieno():
+        # error message to be inserted
+        return redirect('eventi:dettagli_evento', pk=pk)
+
+    if request.method == 'POST':
+        form = PrenotaEventoForm(request.POST)
+        print('helo')
+        if form.custom_is_valid(evento):
+            form.instance.utente = request.user
+            form.instance.evento = evento
+            form.save()
+            return redirect("eventi:dettagli_evento", pk=pk)
+    else:
+        form = PrenotaEventoForm()
+    return render(request, template_name='eventi/prenota_evento.html', context={'form': form, 'ev': evento})
