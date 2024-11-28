@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -105,11 +106,11 @@ def prenota_evento(request, pk):
 
     if request.method == 'POST':
         form = PrenotaEventoForm(request.POST)
-        print('helo')
         if form.custom_is_valid(evento):
             form.instance.utente = request.user
             form.instance.evento = evento
             form.save()
+            messages.success(request, "Evento prenotato! Gestiscilo dal tuo profilo")
             return redirect("eventi:dettagli_evento", pk=pk)
     else:
         form = PrenotaEventoForm()
