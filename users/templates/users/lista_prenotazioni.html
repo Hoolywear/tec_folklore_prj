@@ -6,6 +6,8 @@
 {% block content %}
     <h1>Prenotazioni di {{ user.username }}</h1>
 
+    {% include 'users/profile_links.html' %}
+
     <ul>
     {% for prenotazione in object_list %}
     	<li>{{ prenotazione.evento }} -
@@ -14,5 +16,4 @@
     {% endfor %}
     </ul>
 
-    {% include 'users/profile_links.html' %}
 {% endblock %}
