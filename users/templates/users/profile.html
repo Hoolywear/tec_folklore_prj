@@ -5,5 +5,5 @@
 {% block content %}
     <h1>Profilo di {{ user.username }}</h1>
 
-    <a href="{% url 'users:update_user' %}">Preferenze</a>
+    {% include 'users/profile_links.html' %}
 {% endblock %}
