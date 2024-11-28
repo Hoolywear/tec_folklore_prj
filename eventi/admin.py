@@ -5,3 +5,4 @@ from eventi.models import *
 
 admin.site.register(Luogo)
 admin.site.register(Evento)
+admin.site.register(Prenotazione)
