@@ -6,6 +6,8 @@
 {% block content %}
     <h1>Profilo di {{ user.username }}</h1>
 
+    {% include "users/profile_links.html" %}
+
     {% crispy form %}
 
     <a href="{% url 'users:profile' %}">ritorna al profilo</a>
