@@ -1,10 +1,12 @@
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, UpdateView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 from eventi.models import Prenotazione
 from .forms import *
@@ -31,6 +33,12 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
     success_message = "Login avvenuto con successo!"
     template_name = "users/login.html"
     redirect_authenticated_user = True
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Logout eseguito con successo!")
+    return redirect('index')
 
 
 @login_required
