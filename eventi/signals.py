@@ -44,20 +44,22 @@ def send_delete_attesa_email(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Prenotazione)
-def send_event_booking_email(sender, instance, **kwargs):
-    send_mail(
-        "Hai prenotato un evento!",
-        f"Hai prenotato {instance.posti} {pluralize(instance.posti, 'posto,posti')} per {instance.evento}.",
-        "eventi@hubfolklore.it",
-        [instance.utente.email]
-    )
+def send_event_booking_email(sender, instance, created, **kwargs):
+    if created:
+        send_mail(
+            "Hai prenotato un evento!",
+            f"Hai prenotato {instance.posti} {pluralize(instance.posti, 'posto,posti')} per {instance.evento}.",
+            "eventi@hubfolklore.it",
+            [instance.utente.email]
+        )
 
 
 @receiver(post_save, sender=AttesaEvento)
-def send_waitlist_subscription_email(sender, instance, **kwargs):
-    send_mail(
-        "Ti sei iscritto alla lista d'attesa!",
-        f"Ti sei iscritto alla lista d'attesa per {instance.evento}.",
-        "waitlist@hubfolklore.it",
-        [instance.utente.email]
-    )
+def send_waitlist_subscription_email(sender, instance, created, **kwargs):
+    if created:
+        send_mail(
+            "Ti sei iscritto alla lista d'attesa!",
+            f"Ti sei iscritto alla lista d'attesa per {instance.evento}.",
+            "waitlist@hubfolklore.it",
+            [instance.utente.email]
+        )
