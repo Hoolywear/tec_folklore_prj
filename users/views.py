@@ -88,9 +88,16 @@ class ListaPrenotazioniView(ListaUserItemsView):
 class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
     model = Prenotazione
     success_url = reverse_lazy('users:prenotazioni')
-    template_name = 'users/delete_prenotazione.html'
+    template_name = 'users/delete_user_item.html'
     form_class = DeletePrenotazioneForm
     success_message = "Prenotazione eliminata con successo"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['titolo'] = f"Elimina prenotazione per {self.object}"
+        ctx['descrizione'] = f"Sei sicuro di voler eliminare la prenotazione per {self.object}?"
+        ctx['back_url'] = reverse_lazy('users:lista_prenotazioni')
+        return ctx
 
     def test_func(self):
         # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione
@@ -105,9 +112,16 @@ class ListaAtteseView(ListaUserItemsView):
 class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
     model = AttesaEvento
     success_url = reverse_lazy('users:waitlist')
-    template_name = 'users/delete_prenotazione.html'
+    template_name = 'users/delete_user_item.html'
     form_class = DeletePrenotazioneForm
     success_message = "Attesa eliminata con successo"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['titolo'] = f"Elimina attesa per {self.object}"
+        ctx['descrizione'] = f"Sei sicuro di volerti disiscrivere dalla lista di attesa per {self.object}?"
+        ctx['back_url'] = reverse_lazy('users:lista_attese')
+        return ctx
 
     def test_func(self):
         # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione

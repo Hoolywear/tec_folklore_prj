@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from eventi.models import Prenotazione
+from eventi.models import Prenotazione, AttesaEvento
 
 
 class RegisterForm(UserCreationForm):
@@ -64,4 +64,14 @@ class DeletePrenotazioneForm(ModelForm):
 
     class Meta:
         model = Prenotazione
+        fields = []
+
+
+class DeleteAttesaForm(ModelForm):
+    helper = FormHelper()
+    helper.form_id = 'delete_attesa_form'
+    helper.add_input(Submit('submit', 'Esci dalla waitlist'))
+
+    class Meta:
+        model = AttesaEvento
         fields = []

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ titolo }} {% endblock %}
+
+{% block content %}
+    <p>{{ descrizione }}Sei sicuro di voler eliminare la prenotazione per {{ object }}?</p>
+
+    {% crispy form %}
+
+    <a href="{{ back_url }}">Torna indietro</a>
+{% endblock %}
