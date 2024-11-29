@@ -69,6 +69,9 @@ class Prenotazione(models.Model):
 
     class Meta:
         verbose_name_plural = 'Prenotazioni'
+        constraints = [
+            models.UniqueConstraint(fields=['evento', 'utente'], name='unique_prenotazione')
+        ]
 
     def __str__(self):
         return str(f'Prenotazione per {self.evento.titolo} (posti: {self.posti})')
