@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
-from eventi.models import Prenotazione, Evento, AttesaEvento
+from eventi.models import Prenotazione, Evento
 
 
 @receiver(pre_delete, sender=Prenotazione)
