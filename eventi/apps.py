@@ -4,3 +4,6 @@ from django.apps import AppConfig
 class EventiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'eventi'
+
+    def ready(self):
+        from . import signals
