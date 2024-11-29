@@ -95,7 +95,7 @@ class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMes
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['titolo'] = f"Elimina prenotazione per {self.object}"
-        ctx['descrizione'] = f"Sei sicuro di voler eliminare la prenotazione per {self.object}?"
+        ctx['descrizione'] = f"Sei sicuro di voler eliminare la prenotazione per {self.object.evento}?"
         ctx['back_url'] = reverse_lazy('users:lista_prenotazioni')
         return ctx
 
@@ -113,13 +113,13 @@ class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
     model = AttesaEvento
     success_url = reverse_lazy('users:waitlist')
     template_name = 'users/delete_user_item.html'
-    form_class = DeletePrenotazioneForm
-    success_message = "Attesa eliminata con successo"
+    form_class = DeleteAttesaForm
+    success_message = "Sei stato rimosso dalla lista di attesa"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['titolo'] = f"Elimina attesa per {self.object}"
-        ctx['descrizione'] = f"Sei sicuro di volerti disiscrivere dalla lista di attesa per {self.object}?"
+        ctx['descrizione'] = f"Sei sicuro di volerti disiscrivere dalla lista di attesa per {self.object.evento}?"
         ctx['back_url'] = reverse('users:waitlist')
         return ctx
 
