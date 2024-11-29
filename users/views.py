@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
@@ -84,9 +84,13 @@ class ListaPrenotazioniView(LoginRequiredMixin, ListView):
         return qs.filter(utente=self.request.user)
 
 
-class DeletePrenotazioneView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
     model = Prenotazione
     success_url = reverse_lazy('users:prenotazioni')
     template_name = 'users/delete_prenotazione.html'
     form_class = DeletePrenotazioneForm
     success_message = "Prenotazione eliminata con successo"
+
+    def test_func(self):
+        # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione
+        return self.request.user == self.get_object().utente
