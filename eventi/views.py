@@ -103,25 +103,44 @@ def prenota_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
 
     if evento.evento_pieno():
-        # error message to be inserted
+        messages.error(request, "L'evento è esaurito!")
         return redirect('eventi:dettagli_evento', pk=pk)
 
-    if request.method == 'POST':
-        form = PrenotaEventoForm(request.POST)
-        if form.custom_is_valid(evento):
-            form.instance.utente = request.user
-            form.instance.evento = evento
-            form.save()
-            messages.success(request, "Evento prenotato! Gestiscilo dal tuo profilo")
-            return redirect("eventi:dettagli_evento", pk=pk)
-    else:
-        form = PrenotaEventoForm()
-    return render(request, template_name='eventi/prenota_evento.html', context={'form': form, 'ev': evento})
+    try:
+        Prenotazione.objects.get(evento=evento, utente=request.user)
+        messages.error(request, "Hai già una prenotazione per l'evento!")
+        return redirect('eventi:dettagli_evento', pk=pk)
+    except Prenotazione.DoesNotExist:
+        if request.method == 'POST':
+            form = PrenotaEventoForm(request.POST)
+            if form.custom_is_valid(evento):
+                form.instance.utente = request.user
+                form.instance.evento = evento
+                try:
+                    form.save()
+                except IntegrityError:
+                    messages.error(request, "Hai già una prenotazione per questo evento!")
+                    return redirect('eventi:dettagli_evento', pk=pk)
+                try:
+                    at = AttesaEvento.objects.get(evento=evento, utente=request.user)
+                    at.delete()
+                    messages.success(request, "La tua attesa per l'evento è stata rimossa.")
+                except AttesaEvento.DoesNotExist:
+                    print("L'utente non è in lista d'attesa. Non sono state rimosse Attese.")
+                messages.success(request, "Evento prenotato! Gestiscilo dal tuo profilo")
+                return redirect("eventi:dettagli_evento", pk=pk)
+        else:
+            form = PrenotaEventoForm()
+        return render(request, template_name='eventi/prenota_evento.html', context={'form': form, 'ev': evento})
 
 
 @login_required
 def attesa_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
+
+    if not evento.evento_pieno():
+        messages.error(request, "L'evento ha ancora posti disponibili")
+        return redirect('eventi:dettagli_evento', pk=pk)
     try:
         Prenotazione.objects.get(evento=evento, utente=request.user)
         messages.error(request, "Hai già una prenotazione per l'evento!")
