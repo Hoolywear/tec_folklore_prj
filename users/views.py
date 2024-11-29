@@ -96,7 +96,7 @@ class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMes
         ctx = super().get_context_data(**kwargs)
         ctx['titolo'] = f"Elimina prenotazione per {self.object}"
         ctx['descrizione'] = f"Sei sicuro di voler eliminare la prenotazione per {self.object.evento}?"
-        ctx['back_url'] = reverse_lazy('users:lista_prenotazioni')
+        ctx['back_url'] = reverse('users:prenotazioni')
         return ctx
 
     def test_func(self):
