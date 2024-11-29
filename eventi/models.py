@@ -85,3 +85,6 @@ class AttesaEvento(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['evento', 'utente'], name='unique_attese'),
         ]
+
+    def __str__(self):
+        return str(f'Attesa per {self.evento.titolo}')
