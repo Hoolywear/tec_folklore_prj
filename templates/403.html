@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}
+    Accesso negato
+{% endblock title %}
+
+{% block content %}
+    
+    {% block header %}
+    {% endblock %}
+    
+    <h1>{{ title|default:"Accesso negato." }}</h1>
+    {% if exception %}
+        <p>{{ exception }}</p>
+    {% endif %}
+    <a type="button" href="/">Ritorna alla home</a>
+{% endblock %}
