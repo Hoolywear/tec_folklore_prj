@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 from eventi.models import Prenotazione, AttesaEvento
@@ -120,7 +120,7 @@ class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
         ctx = super().get_context_data(**kwargs)
         ctx['titolo'] = f"Elimina attesa per {self.object}"
         ctx['descrizione'] = f"Sei sicuro di volerti disiscrivere dalla lista di attesa per {self.object}?"
-        ctx['back_url'] = reverse_lazy('users:lista_attese')
+        ctx['back_url'] = reverse('users:waitlist')
         return ctx
 
     def test_func(self):
