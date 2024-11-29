@@ -72,3 +72,14 @@ class Prenotazione(models.Model):
 
     def __str__(self):
         return str(f'Prenotazione per {self.evento.titolo} (posti: {self.posti})')
+
+
+class AttesaEvento(models.Model):
+    evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='attese')
+    utente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attese')
+
+    class Meta:
+        verbose_name_plural = 'Attese Evento'
+        constraints = [
+            models.UniqueConstraint(fields=['evento', 'utente'], name='unique_attese'),
+        ]
