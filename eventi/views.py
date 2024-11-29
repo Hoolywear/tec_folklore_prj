@@ -2,6 +2,8 @@ import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.db import IntegrityError
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, DetailView
@@ -115,3 +117,26 @@ def prenota_evento(request, pk):
     else:
         form = PrenotaEventoForm()
     return render(request, template_name='eventi/prenota_evento.html', context={'form': form, 'ev': evento})
+
+
+@login_required
+def attesa_evento(request, pk):
+    evento = get_object_or_404(Evento, pk=pk)
+    try:
+        Prenotazione.objects.get(evento=evento, utente=request.user)
+        messages.error(request, "Hai già una prenotazione per l'evento!")
+    except Prenotazione.DoesNotExist:
+        try:
+            attesa = AttesaEvento(evento=evento, utente=request.user)
+            attesa.save()
+            messages.success(request, "Sei in lista di attesa!")
+            send_mail(
+                "Subject here",
+                "Here is the message.",
+                "waitlist@hubfolklore.com",
+                [request.user.email],
+                fail_silently=False,
+            )
+        except IntegrityError as e:
+            messages.error(request, "Sei già in lista di attesa!")
+    return redirect("eventi:dettagli_evento", pk=pk)

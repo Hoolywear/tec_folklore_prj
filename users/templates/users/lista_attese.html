@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Profile settings {% endblock %}
+
+{% block content %}
+    <h1>Eventi per i quali si è in lista di attesa</h1>
+
+    {% include 'users/profile_links.html' %}
+
+    <ul>
+    {% for attesa in object_list %}
+    	<li>{{ attesa.evento }} -
+            <a href="{% url 'eventi:dettagli_evento' pk=attesa.evento.pk %}">Dettagli evento</a> -
+            <a href="{% url 'users:delete_attesa' pk=attesa.pk %}">Elimina attesa</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

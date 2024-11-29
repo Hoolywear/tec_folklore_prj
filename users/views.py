@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
-from eventi.models import Prenotazione
+from eventi.models import Prenotazione, AttesaEvento
 from .forms import *
 
 
@@ -75,13 +75,14 @@ class UserChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordCh
     success_url = reverse_lazy('users:profile')
 
 
-class ListaPrenotazioniView(LoginRequiredMixin, ListView):
+class ListaUserItemsView(LoginRequiredMixin, ListView):
+    def get_queryset(self):
+        return self.model.objects.filter(utente=self.request.user)
+
+
+class ListaPrenotazioniView(ListaUserItemsView):
     model = Prenotazione
     template_name = 'users/lista_prenotazioni.html'
-
-    def get_queryset(self):
-        qs = Prenotazione.objects.all()
-        return qs.filter(utente=self.request.user)
 
 
 class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
@@ -90,6 +91,23 @@ class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMes
     template_name = 'users/delete_prenotazione.html'
     form_class = DeletePrenotazioneForm
     success_message = "Prenotazione eliminata con successo"
+
+    def test_func(self):
+        # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione
+        return self.request.user == self.get_object().utente
+
+
+class ListaAtteseView(ListaUserItemsView):
+    model = AttesaEvento
+    template_name = 'users/lista_attese.html'
+
+
+class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
+    model = AttesaEvento
+    success_url = reverse_lazy('users:waitlist')
+    template_name = 'users/delete_prenotazione.html'
+    form_class = DeletePrenotazioneForm
+    success_message = "Attesa eliminata con successo"
 
     def test_func(self):
         # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione

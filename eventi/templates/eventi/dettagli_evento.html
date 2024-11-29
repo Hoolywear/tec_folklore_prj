@@ -13,5 +13,9 @@
     </span>
     <p>{{ object.descrizione }}</p>
     <a href="{% url 'eventi:dettagli_luogo' pk=object.luogo.pk %}">{{ object.luogo }}</a>
+    {% if not object.evento_pieno %}
     <a href="{% url 'eventi:prenota_evento' pk=object.pk %}">Prenota</a>
+    {% else %}
+    <a href="{% url 'eventi:waitlist_evento' pk=object.pk %}">Mettiti in lista di attesa</a>
+    {% endif %}
 {% endblock %}

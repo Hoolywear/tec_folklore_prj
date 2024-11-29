@@ -133,3 +133,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = "/users/profile/"
 LOGIN_URL = "/users/login/?auth=notok"  # nota: il redirect post-login funziona per le view protette da @login_required!
+
+# backend dummy che stampa le email inviate a console
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

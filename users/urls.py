@@ -18,4 +18,6 @@ urlpatterns = [
     path('profile/change-password/', UserChangePasswordView.as_view(), name='change_password'),
     path('profile/prenotazioni/', ListaPrenotazioniView.as_view(), name='prenotazioni'),
     path('profile/prenotazioni/<int:pk>/delete/', DeletePrenotazioneView.as_view(), name='delete_prenotazione'),
+    path('profile/waitlist/', ListaAtteseView.as_view(), name='waitlist'),
+    path('profile/waitlist/<int:pk>/delete/', DeleteAttesaView.as_view(), name='delete_attesa'),
 ]
