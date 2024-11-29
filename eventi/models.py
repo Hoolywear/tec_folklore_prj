@@ -40,7 +40,6 @@ class Evento(models.Model):
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.SET_NULL, null=True, blank=True, related_name='eventi')
     thumbnail = models.ImageField(upload_to=save_rename_evento_img, default=None)
-    waitlist = models.ManyToManyField(User, related_name='waitlist', blank=True)
 
     def posti_disponibili(self):
         posti_prenotati = 0
