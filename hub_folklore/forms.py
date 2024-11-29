@@ -34,7 +34,6 @@ class SearchForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
-        print(cleaned_data.get('search_from_data'))
         if not cleaned_data.get('search_from_data'):
             cleaned_data['search_from_data'] = datetime.date.today()
         elif cleaned_data.get('search_from_data') < datetime.date.today():
