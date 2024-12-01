@@ -8,7 +8,7 @@ from eventi.models import Prenotazione, Evento, AttesaEvento
 
 @receiver(pre_delete, sender=Prenotazione)
 def send_waitlist_emails(sender, instance, **kwargs):
-    try:
+    if Evento.objects.get(pk=instance.evento.pk).exists():
         evento = Evento.objects.get(pk=instance.evento.pk)
         if evento.evento_pieno():
             waitlist = [attesa.utente.email for attesa in evento.attese.all()]
@@ -19,8 +19,6 @@ def send_waitlist_emails(sender, instance, **kwargs):
                 "waitlist@hubfolklore.it",
                 waitlist
             )
-    except Evento.DoesNotExist:
-        print("error")
 
 
 @receiver(pre_delete, sender=Prenotazione)
