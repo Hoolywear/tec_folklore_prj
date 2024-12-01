@@ -126,3 +126,9 @@ class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
     def test_func(self):
         # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione
         return self.request.user == self.get_object().utente
+
+
+@login_required
+def lista_interessi(request):
+    interessi = request.user.interessi.all()
+    return render(request, 'users/lista_interessi.html', {'interessi': interessi})

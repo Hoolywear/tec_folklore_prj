@@ -20,4 +20,5 @@ urlpatterns = [
     path('profile/prenotazioni/<int:pk>/delete/', DeletePrenotazioneView.as_view(), name='delete_prenotazione'),
     path('profile/waitlist/', ListaAtteseView.as_view(), name='waitlist'),
     path('profile/waitlist/<int:pk>/delete/', DeleteAttesaView.as_view(), name='delete_attesa'),
+    path('profile/interessi/', lista_interessi, name='interessi'),
 ]

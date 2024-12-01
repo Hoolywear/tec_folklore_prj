@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Profile settings {% endblock %}
+
+{% block content %}
+    <h1>Eventi che ti interessano</h1>
+
+    {% include 'users/profile_links.html' %}
+
+    <ul>
+    {% for interesse in interessi %}
+    	<li><a href="{% url 'eventi:dettagli_evento' pk=interesse.pk %}">{{ interesse }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

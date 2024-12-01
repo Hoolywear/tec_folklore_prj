@@ -12,6 +12,16 @@
         {% endfor %}
     </span>
     <p>{{ object.descrizione }}</p>
+    <form action="{% url 'eventi:interesse_evento' object.pk %}" method="POST">
+    {% csrf_token %}
+
+    {% if interessato %}
+    <button type="submit" name="evento_pk" value="{{object.pk}}">Non mi interessa</button>
+    {% else %}
+    <button type="submit" name="evento_pk" value="{{object.pk}}">Mi interessa</button>
+    {% endif %}
+  </form>
+    <strong class="text-secondary">{{ interessati }} Utent{{ interessati|pluralize:'e,i' }} interessat{{ interessati|pluralize:'o,i' }}</strong>
     <a href="{% url 'eventi:dettagli_luogo' pk=object.luogo.pk %}">{{ object.luogo }}</a>
     {% if not object.evento_pieno %}
     <a href="{% url 'eventi:prenota_evento' pk=object.pk %}">Prenota</a>

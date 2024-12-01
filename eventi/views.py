@@ -5,7 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from eventi.forms import PrenotaEventoForm
 from eventi.models import *
@@ -29,6 +31,17 @@ class ListaEventiView(ListView):
 class DettagliEventoView(DetailView):
     model = Evento
     template_name = 'eventi/dettagli_evento.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        interessi = self.object.interessi
+        interessato = False
+        if interessi.filter(id=self.request.user.id).exists():
+            interessato = True
+        ctx['interessati'] = self.object.interessi_count()
+        ctx['interessato'] = interessato
+        return ctx
 
 
 class ListaLuoghiView(ListView):
@@ -159,3 +172,17 @@ def attesa_evento(request, pk):
         except IntegrityError as e:
             messages.error(request, "Sei già in lista di attesa!")
     return redirect("eventi:dettagli_evento", pk=pk)
+
+
+@login_required()
+def interesse_evento(request, pk):
+    evento = get_object_or_404(Evento, pk=request.POST.get('evento_pk'))
+
+    if evento.interessi.filter(id=request.user.id).exists():
+        evento.interessi.remove(request.user)
+        messages.success(request, "Interesse rimosso")
+    else:
+        evento.interessi.add(request.user)
+        messages.success(request, "Interesse aggiunto!")
+
+    return redirect('eventi:dettagli_evento', pk)
