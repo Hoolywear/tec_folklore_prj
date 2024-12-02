@@ -1,7 +1,7 @@
 import profile
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from .views import *
 from initcmds import *
 from django.contrib.auth import views as auth_views
@@ -21,4 +21,5 @@ urlpatterns = [
     path('profile/waitlist/', ListaAtteseView.as_view(), name='waitlist'),
     path('profile/waitlist/<int:pk>/delete/', DeleteAttesaView.as_view(), name='delete_attesa'),
     path('profile/interessi/', lista_interessi, name='interessi'),
+    path('promotori/', include('promozioni.urls')),
 ]
