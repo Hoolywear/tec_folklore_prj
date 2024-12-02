@@ -1,4 +1,30 @@
 {% extends 'base.html' %}
+{% load promo_tags %}
+
+{% block content %}
+	{% block sidebar %}
+        <ul>
+        {% if user.is_staff %}
+        <li><a href="#">Lista approvazioni</a></li>
+        <li><a href="#">Statistiche</a></li>
+        <li><a href="http://localhost:8000/admin/">Operazioni avanzate</a></li>
+        {% else %}
+            {% if request.user|is_promotore %}
+        <li><a href="#">Lista promozioni</a></li>
+        <li><a href="#">Statistiche</a></li>
+            {% else %}
+        <li><a href="{% url 'users:prenotazioni' %}">Prenotazioni effettuate</a></li>
+        <li><a href="{% url 'users:waitlist' %}">Eventi in lista di attesa</a></li>
+        <li><a href="{% url 'users:interessi' %}">Interessi</a></li>
+            {% endif %}
+        <li><a href="{% url 'users:update_user' %}">Preferenze del profilo</a></li>
+        {% endif %}
+        </ul>
+	{% endblock %}
+    {% block profile_content %}
+
+    {% endblock %}
+{% endblock %}
 
 {% block banner %}
 {% endblock %}

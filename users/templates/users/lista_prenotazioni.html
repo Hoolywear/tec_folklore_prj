@@ -3,10 +3,8 @@
 
 {% block title %} Profile settings {% endblock %}
 
-{% block content %}
+{% block profile_content %}
     <h1>Prenotazioni di {{ user.username }}</h1>
-
-    {% include 'users/profile_links.html' %}
 
     <ul>
     {% for prenotazione in object_list %}

@@ -3,10 +3,8 @@
 
 {% block title %} Profile settings {% endblock %}
 
-{% block content %}
+{% block profile_content %}
     <h1>Profilo di {{ user.username }}</h1>
-
-    {% include "users/profile_links.html" %}
 
     {% crispy form %}
 

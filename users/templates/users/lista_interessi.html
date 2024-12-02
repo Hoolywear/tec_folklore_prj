@@ -3,10 +3,8 @@
 
 {% block title %} Profile settings {% endblock %}
 
-{% block content %}
+{% block profile_content %}
     <h1>Eventi che ti interessano</h1>
-
-    {% include 'users/profile_links.html' %}
 
     <ul>
     {% for interesse in interessi %}
