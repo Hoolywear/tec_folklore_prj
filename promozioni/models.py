@@ -6,7 +6,7 @@ from taggit.models import Tag
 # Create your models here.
 
 class Promotore(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='promotore')
     homepage = models.URLField(blank=True)
 
     def __str__(self):
@@ -17,13 +17,13 @@ class Promotore(models.Model):
 
 
 class Promozione(models.Model):
-    utente = models.ForeignKey(Promotore, on_delete=models.CASCADE)
+    promotore = models.ForeignKey(Promotore, on_delete=models.CASCADE)
     banner = models.ImageField(upload_to='promozione/%Y/%m/%d')
-    website = models.URLField()
+    website = models.URLField(unique=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
-        return f'Inserzione di {self.utente} con tag {self.tags.all()}'
+        return f'Inserzione di {self.promotore} con tag {self.tags.all()}'
 
     class Meta:
         verbose_name_plural = 'Promozioni'
