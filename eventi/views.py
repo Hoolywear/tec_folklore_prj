@@ -5,12 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.db.models import Q
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.views.generic import ListView, DetailView
+
 from eventi.forms import PrenotaEventoForm
 from eventi.models import *
+
 
 # Create your views here.
 

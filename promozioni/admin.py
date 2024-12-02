@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from promozioni.models import Promotore, Promozione
 
+
 # Register your models here.
 
 

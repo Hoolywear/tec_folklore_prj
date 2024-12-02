@@ -8,7 +8,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
-from eventi.models import Prenotazione, AttesaEvento
 from .forms import *
 
 

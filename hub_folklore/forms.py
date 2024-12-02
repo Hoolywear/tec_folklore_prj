@@ -1,9 +1,8 @@
 import datetime
 
-from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from django.core.exceptions import ValidationError
+from django import forms
 
 from eventi.models import Evento
 

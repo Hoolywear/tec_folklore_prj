@@ -1,10 +1,6 @@
-import profile
-
-from django.contrib import admin
 from django.urls import path, include
+
 from .views import *
-from initcmds import *
-from django.contrib.auth import views as auth_views
 
 app_name = 'users'
 

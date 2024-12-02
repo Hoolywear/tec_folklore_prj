@@ -1,6 +1,8 @@
 import datetime
-from django.utils.timezone import make_aware
 import json
+
+from django.utils.timezone import make_aware
+
 from eventi.models import *
 
 
