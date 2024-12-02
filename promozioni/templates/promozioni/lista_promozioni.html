@@ -1,0 +1,15 @@
+{% extends 'users/base_profile.html' %}
+
+{% block profile_content %}
+    {% if object_list.count == 0 %}
+    	<p>Nessuna promozione ancora inserita</p>
+    {% else %}
+        <ul>
+	{% for promo in object_list %}
+		<li>{{ promo.website }}
+            <a href="{% url 'users:promozioni:modifica_promozione' pk=promo.pk %}">modifica</a>
+            <a href="{% url 'users:promozioni:elimina_promozione'  pk=promo.pk %}">elimina</a></li>
+	{% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
