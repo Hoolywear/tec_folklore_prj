@@ -12,7 +12,7 @@ class RegisterForm(UserCreationForm):
     helper = FormHelper()
     helper.form_id = 'register_form'
     helper.form_method = 'POST'
-    helper.add_input(Submit('submit', 'Register'))
+    helper.add_input(Submit('submit', 'Registrati'))
 
     class Meta:
         model = User
