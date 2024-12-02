@@ -10,7 +10,8 @@
         <li><a href="http://localhost:8000/admin/">Operazioni avanzate</a></li>
         {% else %}
             {% if request.user|is_promotore %}
-        <li><a href="#">Lista promozioni</a></li>
+        <li><a href="{% url 'users:promozioni:aggiungi_promozione' %}">Aggiungi una promozione</a></li>
+        <li><a href="{% url 'users:promozioni:lista_promozioni' %}">Lista promozioni</a></li>
         <li><a href="#">Statistiche</a></li>
             {% else %}
         <li><a href="{% url 'users:prenotazioni' %}">Prenotazioni effettuate</a></li>
