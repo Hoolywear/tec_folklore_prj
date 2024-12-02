@@ -132,3 +132,9 @@ class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
 def lista_interessi(request):
     interessi = request.user.interessi.all()
     return render(request, 'users/lista_interessi.html', {'interessi': interessi})
+
+
+class PromotoreRegisterView(RegisterView):
+    form_class = PromotoreRegisterForm
+    success_message = "Richiesta di iscrizione inviata! Attendi l'approvazione dello staff"
+    success_url = reverse_lazy('index')
