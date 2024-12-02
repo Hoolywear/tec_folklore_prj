@@ -137,3 +137,5 @@ LOGIN_URL = "/users/login/?auth=notok"  # nota: il redirect post-login funziona 
 # backend dummy che stampa le email inviate a console
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    # email degli admin
+    ADMINS = [("Iacopo", "iacopo@admin")]
