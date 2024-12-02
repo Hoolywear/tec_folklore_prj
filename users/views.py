@@ -34,6 +34,7 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
     redirect_authenticated_user = True
 
 
+@login_required
 def logout_view(request):
     logout(request)
     messages.success(request, "Logout eseguito con successo!")
