@@ -17,6 +17,6 @@ urlpatterns = [
     path('profile/waitlist/', ListaAtteseView.as_view(), name='waitlist'),
     path('profile/waitlist/<int:pk>/delete/', DeleteAttesaView.as_view(), name='delete_attesa'),
     path('profile/interessi/', lista_interessi, name='interessi'),
-    path('promotori/', include('promozioni.urls')),
+    path('promo/', include('promozioni.urls')),
     path('register-promotore/', PromotoreRegisterView.as_view(), name='register_promotore'),
 ]
