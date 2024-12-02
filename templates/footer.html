@@ -1,2 +1,5 @@
 <p>&copy; 2024 Iacopo Ruzzier
-<a href="{% url 'users:register_promotore' %}">Registrati come promotore</a></p>
+    {% if not user.is_authenticated %}
+<a href="{% url 'users:register_promotore' %}">Registrati come promotore</a>
+    {% endif %} 
+</p>
