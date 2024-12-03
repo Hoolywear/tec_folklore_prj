@@ -4,6 +4,9 @@ import json
 from django.utils.timezone import make_aware
 
 from eventi.models import *
+from hub_folklore.settings import MEDIA_ROOT
+
+from PIL import Image
 
 
 # Funzioni per il popolamento del database con dati fittizi
@@ -19,7 +22,6 @@ def erase_db():
     Evento.objects.all().delete()
     Prenotazione.objects.all().delete()
     AttesaEvento.objects.all().delete()
-
 
 
 def init_db():
@@ -41,11 +43,14 @@ def init_db():
         print("Errore nell'importazione delle fixture! Interrompo il popolamento...", e)
         return
 
+    print("Inizio il popolamento...")
+
     for luogo in luoghi:
         new_luogo = Luogo()
         new_luogo.nome = luogo['nome']
         new_luogo.descrizione = luogo['descrizione']
         new_luogo.indirizzo = luogo['indirizzo']
+        new_luogo.thumbnail = luogo['thumbnail']
         new_luogo.sito_web = luogo['sito_web']
         new_luogo.save()
 
@@ -62,6 +67,7 @@ def init_db():
         new_evento.data_ora = make_aware(data_ora)
         new_evento.luogo = Luogo.objects.get(nome__exact=evento['luogo'])
         new_evento.categoria = evento['categoria']
+        new_evento.thumbnail = evento['thumbnail']
         new_evento.save()
         new_evento = Evento.objects.get(titolo__exact=evento['titolo'])
         for tag in evento['tag']:
