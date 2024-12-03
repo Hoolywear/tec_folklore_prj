@@ -14,7 +14,7 @@ class Luogo(models.Model):
     descrizione = models.TextField()
     indirizzo = models.CharField(max_length=150)
     sito_web = models.URLField()
-    thumbnail = models.ImageField(upload_to='thumbnails/luoghi/', default=None)
+    thumbnail = models.ImageField(upload_to='thumbnails/luoghi/', default='def_thumbs/thumb_1.jpg')
 
     def __str__(self):
         return self.nome
@@ -46,7 +46,7 @@ class Evento(models.Model):
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.CASCADE, related_name='eventi')
-    thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default=None)
+    thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default='def_thumbs/thumb_1.jpg')
     interessi = models.ManyToManyField(User, related_name='interessi', blank=True)
 
     def posti_disponibili(self):
