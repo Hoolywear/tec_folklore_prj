@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -32,6 +32,23 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
     success_message = "Login avvenuto con successo!"
     template_name = "users/manage/login.html"
     redirect_authenticated_user = True
+
+
+class UserPasswordResetView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'users/manage/password_reset.html'
+    form_class = UserPasswordResetForm
+    email_template_name = 'users/manage/password_reset_email.html'
+    subject_template_name = 'users/manage/password_reset_subject.txt'
+    success_message = "Ti abbiamo inviato una email con il link per resettare la password, " \
+                      "se esiste un account con l'indirizzo fornito. La riceverai a breve." \
+                      " Se non ricevi nessuna email, " \
+                      "per favore ricontrolla l'indirizzo inserito e la cartella spam della tua casella di posta."
+    success_url = reverse_lazy('index')
+
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'users/manage/password_reset_confirm.html'
+    form_class = UserPasswordResetConfirmForm
 
 
 @login_required

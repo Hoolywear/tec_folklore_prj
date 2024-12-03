@@ -1,6 +1,7 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, \
+    SetPasswordForm
 from django.contrib.auth.models import User, Group
 from django.core.mail import mail_admins, send_mail
 from django.forms import ModelForm, CharField, EmailField, URLField
@@ -31,6 +32,18 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+
+class UserPasswordResetForm(PasswordResetForm):
+    helper = FormHelper()
+    helper.form_id = 'password_reset_form'
+    helper.add_input(Submit('submit', 'Invia link'))
+
+
+class UserPasswordResetConfirmForm(SetPasswordForm):
+    helper = FormHelper()
+    helper.form_id = 'password_reset_confirm_form'
+    helper.add_input(Submit('submit', 'Conferma'))
 
 
 class UserUpdateForm(ModelForm):

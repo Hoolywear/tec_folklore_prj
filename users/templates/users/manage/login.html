@@ -9,4 +9,5 @@
     	<p>Accedi per usufruire del servizio.</p>
     {% endif %}
     {% crispy form %}
+    <a href="{% url 'users:password_reset' %}"><i>Password dimenticata?</i></a>
 {% endblock %}
