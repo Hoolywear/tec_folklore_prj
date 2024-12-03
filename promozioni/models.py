@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from taggit.models import Tag
+from .imgutils import save_rename_promo_banner
 
 
 # Create your models here.
@@ -18,7 +19,7 @@ class Promotore(models.Model):
 
 class Promozione(models.Model):
     promotore = models.ForeignKey(Promotore, on_delete=models.CASCADE)
-    banner = models.ImageField(upload_to='promozione/%Y/%m/%d')
+    banner = models.ImageField(upload_to=save_rename_promo_banner)
     website = models.URLField(unique=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
