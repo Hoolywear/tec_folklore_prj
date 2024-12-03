@@ -17,6 +17,9 @@ def erase_db():
     print("Cancello il DB")
     Luogo.objects.all().delete()
     Evento.objects.all().delete()
+    Prenotazione.objects.all().delete()
+    AttesaEvento.objects.all().delete()
+
 
 
 def init_db():
