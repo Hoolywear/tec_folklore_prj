@@ -29,9 +29,9 @@ class Luogo(models.Model):
         return self.nome
 
     def save(self, *args, **kwargs):
+        super(Luogo, self).save(*args, **kwargs)
         if self.thumbnail:
             image_resize(self.thumbnail.path, 500, 600)
-        super(Luogo, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Luoghi'
@@ -78,9 +78,9 @@ class Evento(models.Model):
         return self.titolo
 
     def save(self, *args, **kwargs):
+        super(Evento, self).save(*args, **kwargs)
         if self.thumbnail:
             image_resize(self.thumbnail.path, 500, 600)
-        super(Evento, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Eventi'
