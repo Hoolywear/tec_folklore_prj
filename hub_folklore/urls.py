@@ -20,7 +20,7 @@ from django.urls import path, include, re_path
 
 from initcmds import *
 from .views import *
-import settings
+from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,8 +30,8 @@ urlpatterns = [
     path('eventi/', include('eventi.urls')),
     path('users/', include('users.urls')),
 ]
-if settings.DEBUG:  # new
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if DEBUG:  # new
+    urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 
 # erase_db()
