@@ -19,7 +19,7 @@ class Promotore(models.Model):
 
 class Promozione(models.Model):
     promotore = models.ForeignKey(Promotore, on_delete=models.CASCADE)
-    banner = models.ImageField(upload_to=save_rename_promo_banner)
+    banner = models.ImageField(upload_to='promozioni/banners/')
     website = models.URLField(unique=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
