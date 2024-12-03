@@ -7,30 +7,26 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
+from braces.views import GroupRequiredMixin
 
+from authutils import PromotoreRequiredMixin, user_passes_test_forbidden, is_promotore
 from promozioni.forms import UpdatePromoForm, DeletePromoForm
 from promozioni.models import Promozione
 
 
 # Create your views here.
-def is_promotore(user):
-    return user.groups.filter(name='Promotori').exists()
 
 
-class ListaPromoView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class ListaPromoView(LoginRequiredMixin, PromotoreRequiredMixin, ListView):
     model = Promozione
     template_name = 'promozioni/lista_promozioni.html'
 
     def get_queryset(self):
         return Promozione.objects.filter(promotore=self.request.user.promotore)
 
-    def test_func(self):
-        # controlla che l'utente sia Promotore
-        return is_promotore(self.request.user)
-
 
 @login_required
-@user_passes_test(is_promotore)
+@user_passes_test_forbidden(is_promotore)
 def add_promo(request):
     form = UpdatePromoForm()
     if request.method == 'POST':
@@ -44,16 +40,13 @@ def add_promo(request):
                   context={'form': form, 'promo_op_titolo': 'Aggiungi promozione'})
 
 
-class PromozioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, SingleObjectMixin, View):
+class PromozioneView(LoginRequiredMixin, PromotoreRequiredMixin, SingleObjectMixin, UserPassesTestMixin, SuccessMessageMixin, View):
     model = Promozione
     template_name = 'promozioni/operazioni_promo.html'
 
     def test_func(self):
-        # controlla che l'utente sia Promotore
-        t1 = is_promotore(self.request.user)
         # controlla che la Promozione sia stata creata dall'utente
-        t2 = self.request.user.promotore == self.get_object().promotore
-        return t1 and t2
+        return self.request.user.promotore == self.get_object().promotore
 
 
 class UpdatePromoView(PromozioneView, UpdateView):

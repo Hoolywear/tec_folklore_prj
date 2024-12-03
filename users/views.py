@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -8,10 +8,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
+from authutils import VisitatoreRequiredMixin, is_visitatore, user_passes_test_forbidden
 from .forms import *
 
 
 # Create your views here.
+
 
 class RegisterView(SuccessMessageMixin, CreateView):
     form_class = RegisterForm
@@ -51,6 +53,12 @@ class UserPasswordResetConfirmView(PasswordResetConfirmView):
     form_class = UserPasswordResetConfirmForm
 
 
+class PromotoreRegisterView(RegisterView):
+    form_class = PromotoreRegisterForm
+    success_message = "Richiesta di iscrizione inviata! Attendi l'approvazione dello staff"
+    success_url = reverse_lazy('index')
+
+
 @login_required
 def logout_view(request):
     logout(request)
@@ -70,7 +78,7 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'users/manage/update_user.html'
     success_url = reverse_lazy('users:profile')
 
-    def get_object(self):  # riconosco l'utente loggato
+    def get_object(self, *args):  # riconosco l'utente loggato
         return self.request.user
 
 
@@ -81,7 +89,7 @@ class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     template_name = 'users/manage/delete_user.html'
     success_url = reverse_lazy('users:register')
 
-    def get_object(self):
+    def get_object(self, *args):
         return self.request.user
 
 
@@ -91,8 +99,11 @@ class UserChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordCh
     success_message = "Password cambiata con successo"
     success_url = reverse_lazy('users:profile')
 
+# VISTE VISITATORI
 
-class ListaUserItemsView(LoginRequiredMixin, ListView):
+
+class ListaUserItemsView(LoginRequiredMixin, VisitatoreRequiredMixin, ListView):
+
     def get_queryset(self):
         return self.model.objects.filter(utente=self.request.user)
 
@@ -102,7 +113,7 @@ class ListaPrenotazioniView(ListaUserItemsView):
     template_name = 'users/lista_prenotazioni.html'
 
 
-class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
+class DeletePrenotazioneView(LoginRequiredMixin, VisitatoreRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Prenotazione
     success_url = reverse_lazy('users:prenotazioni')
     template_name = 'users/delete_user_item.html'
@@ -116,17 +127,13 @@ class DeletePrenotazioneView(LoginRequiredMixin, UserPassesTestMixin, SuccessMes
         ctx['back_url'] = reverse('users:prenotazioni')
         return ctx
 
-    def test_func(self):
-        # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione
-        return self.request.user == self.get_object().utente
-
 
 class ListaAtteseView(ListaUserItemsView):
     model = AttesaEvento
     template_name = 'users/lista_attese.html'
 
 
-class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
+class DeleteAttesaView(LoginRequiredMixin, VisitatoreRequiredMixin, SuccessMessageMixin, DeleteView):
     model = AttesaEvento
     success_url = reverse_lazy('users:waitlist')
     template_name = 'users/delete_user_item.html'
@@ -140,18 +147,9 @@ class DeleteAttesaView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
         ctx['back_url'] = reverse('users:waitlist')
         return ctx
 
-    def test_func(self):
-        # controlla che l'utente corrisponda a quello che ha effettuato la prenotazione
-        return self.request.user == self.get_object().utente
-
 
 @login_required
+@user_passes_test_forbidden(is_visitatore)
 def lista_interessi(request):
     interessi = request.user.interessi.all()
     return render(request, 'users/lista_interessi.html', {'interessi': interessi})
-
-
-class PromotoreRegisterView(RegisterView):
-    form_class = PromotoreRegisterForm
-    success_message = "Richiesta di iscrizione inviata! Attendi l'approvazione dello staff"
-    success_url = reverse_lazy('index')

@@ -1,18 +1,19 @@
 import datetime
+from functools import wraps
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.defaults import permission_denied
 from django.views.generic import ListView, DetailView
 
+from authutils import user_passes_test_forbidden, is_visitatore
 from eventi.forms import PrenotaEventoForm
 from eventi.models import *
-
-
-# Create your views here.
 
 
 class ListaEventiView(ListView):
@@ -112,6 +113,7 @@ class ListaEventiRisultatiQueryView(ListaEventiRisultatiView):
 
 
 @login_required
+@user_passes_test_forbidden(is_visitatore)
 def prenota_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
 
@@ -148,6 +150,7 @@ def prenota_evento(request, pk):
 
 
 @login_required
+@user_passes_test_forbidden(is_visitatore)
 def attesa_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
 
@@ -175,6 +178,7 @@ def attesa_evento(request, pk):
 
 
 @login_required()
+@user_passes_test_forbidden(is_visitatore)
 def interesse_evento(request, pk):
     evento = get_object_or_404(Evento, pk=request.POST.get('evento_pk'))
 
