@@ -2,11 +2,21 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from taggit.managers import TaggableManager
+from PIL import Image
 
-from .imgutils import *
 
+# funzione per il ridimensionamento delle immagini alla modifica di Luoghi ed Eventi
+def image_resize(path, width, height):
+    try:
+        with Image.open(path) as img:
+            img.thumbnail((width, height))
+            img.save(path)
+    # TODO correggi errore generico
+    except OSError as e:
+        print(f"Errore durante l'apertura dell'immagine! {e}")
 
 # Create your models here.
+
 
 class Luogo(models.Model):
     nome = models.CharField(max_length=100)
@@ -17,6 +27,11 @@ class Luogo(models.Model):
 
     def __str__(self):
         return self.nome
+
+    def save(self, *args, **kwargs):
+        if self.thumbnail:
+            image_resize(self.thumbnail.path, 500, 600)
+        super(Luogo, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Luoghi'
@@ -39,9 +54,9 @@ class Evento(models.Model):
     data_ora = models.DateTimeField()
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
-    luogo = models.ForeignKey(Luogo, on_delete=models.SET_NULL, null=True, blank=True, related_name='eventi')
+    luogo = models.ForeignKey(Luogo, on_delete=models.CASCADE, related_name='eventi')
     thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default=None)
-    interessi = models.ManyToManyField(User, related_name='interessi')
+    interessi = models.ManyToManyField(User, related_name='interessi', blank=True)
 
     def posti_disponibili(self):
         posti_prenotati = 0
@@ -61,6 +76,11 @@ class Evento(models.Model):
 
     def __str__(self):
         return self.titolo
+
+    def save(self, *args, **kwargs):
+        if self.thumbnail:
+            image_resize(self.thumbnail.path, 500, 600)
+        super(Evento, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Eventi'
