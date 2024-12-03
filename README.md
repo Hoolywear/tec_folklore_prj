@@ -4,6 +4,11 @@
 
 Il progetto, ispirato dal contesto cittadino in cui vivo, consiste nello sviluppare una piattaforma web per la promozione di laboratori, corsi ed eventi (concerti, conferenze, eccetera) legati ai temi del folklore nella città di Gorizia e nel suo circondario.
 
+---
+***AVVISO: Le bozze del testo nella pagina About e delle descrizioni di eventi e luoghi sono stati generati da ChatGPT a partire dalla mia descrizione del progetto, e successivamente corretti e rivisti a mano.***
+
+---
+
 ## Operazioni necessarie all'installazione, librerie, eccetera
 
 Richiede installati python 3.x, pip e pipenv
@@ -43,7 +48,7 @@ sqlparse==0.5.1; python_version >= '3.8'
 typing-extensions==4.12.2; python_version >= '3.8'
 ```
 
-### Importazione dati di prova
+### Importazione dati di prova (DA CORREGGERE)
 
 Per i dati di prova del db sono state utilizzate fixtures generate con l'aiuto di ChatGPT e successivamente corrette a mano
 
