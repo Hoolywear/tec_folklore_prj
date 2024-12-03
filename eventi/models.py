@@ -2,18 +2,9 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from taggit.managers import TaggableManager
-from PIL import Image
-
+from imgutils import image_resize
 
 # funzione per il ridimensionamento delle immagini alla modifica di Luoghi ed Eventi
-def image_resize(path, width, height):
-    try:
-        with Image.open(path) as img:
-            img.thumbnail((width, height))
-            img.save(path)
-    # TODO correggi errore generico
-    except OSError as e:
-        print(f"Errore durante l'apertura dell'immagine! {e}")
 
 # Create your models here.
 
