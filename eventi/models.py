@@ -13,7 +13,7 @@ class Luogo(models.Model):
     descrizione = models.TextField()
     indirizzo = models.CharField(max_length=150)
     sito_web = models.URLField()
-    thumbnail = models.ImageField(upload_to=save_rename_luogo_img, default=None)
+    thumbnail = models.ImageField(upload_to='thumbnails/luoghi/', default=None)
 
     def __str__(self):
         return self.nome
@@ -40,7 +40,7 @@ class Evento(models.Model):
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.SET_NULL, null=True, blank=True, related_name='eventi')
-    thumbnail = models.ImageField(upload_to=save_rename_evento_img, default=None)
+    thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default=None)
     interessi = models.ManyToManyField(User, related_name='interessi')
 
     def posti_disponibili(self):
