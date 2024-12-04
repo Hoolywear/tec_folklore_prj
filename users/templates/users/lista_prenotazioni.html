@@ -7,11 +7,20 @@
     <h1>Prenotazioni di {{ user.username }}</h1>
 
     <ul>
-    {% for prenotazione in object_list %}
+    {% for prenotazione in prenotazioni_attive %}
     	<li>{{ prenotazione.evento }} - {{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }} -
             <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}">Dettagli evento</a> -
             <a href="{% url 'users:delete_prenotazione' pk=prenotazione.pk %}">Elimina prenotazione</a></li>
     {% endfor %}
     </ul>
+    {% if prenotazioni_passate.count > 0 %}
+        <h2>Prenotazioni passate</h2>
+        <ul>
+        {% for prenotazione in prenotazioni_passate %}
+            <li>{{ prenotazione.evento }} (evento passato) - {{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }} -
+                <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}">Dettagli evento</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 
 {% endblock %}
