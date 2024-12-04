@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -28,6 +30,11 @@ class Luogo(models.Model):
         verbose_name_plural = 'Luoghi'
 
 
+class EventoAttivoManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(data_ora__gte=datetime.today())
+
+
 class Evento(models.Model):
     CATEGORY_CHOICES = (
         ('laboratorio', 'Laboratori e corsi'),
@@ -49,6 +56,9 @@ class Evento(models.Model):
     thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default='def_thumbs/thumb_1.jpg')
     interessi = models.ManyToManyField(User, related_name='interessi', blank=True)
 
+    objects = models.Manager()  # manager di default
+    active_objects = EventoAttivoManager()  # manager specifico per eventi attivi
+
     def posti_disponibili(self):
         posti_prenotati = 0
         for p in self.prenotazioni.all():
@@ -59,8 +69,9 @@ class Evento(models.Model):
     def evento_pieno(self):
         return self.posti_disponibili() == 0
 
-    def evento_avvenuto(self):
-        return self.data_ora < timezone.now()
+    def evento_attivo(self):
+        print(self.data_ora, timezone.now(), self.data_ora >= timezone.now())
+        return self.data_ora >= timezone.now()
 
     def interessi_count(self):
         return self.interessi.count()
@@ -70,6 +81,7 @@ class Evento(models.Model):
 
     def save(self, *args, **kwargs):
         super(Evento, self).save(*args, **kwargs)
+        # resize functionality
         if self.thumbnail:
             image_resize(self.thumbnail.path, 500, 600)
 
