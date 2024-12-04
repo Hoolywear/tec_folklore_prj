@@ -4,11 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, redirect
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 from authutils import VisitatoreRequiredMixin, is_visitatore, user_passes_test_403
+from eventi.models import Evento
 from .forms import *
 
 
@@ -125,20 +127,42 @@ class ListaPrenotazioniView(ListaUserItemsView):
     model = Prenotazione
     template_name = 'users/lista_prenotazioni.html'
 
-
-class DeletePrenotazioneView(LoginRequiredMixin, VisitatoreRequiredMixin, SuccessMessageMixin, DeleteView):
-    model = Prenotazione
-    success_url = reverse_lazy('users:prenotazioni')
-    template_name = 'users/delete_user_item.html'
-    form_class = DeletePrenotazioneForm
-    success_message = "Prenotazione eliminata con successo"
-
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['titolo'] = f"Elimina prenotazione per {self.object}"
-        ctx['descrizione'] = f"Sei sicuro di voler eliminare la prenotazione per {self.object.evento}?"
-        ctx['back_url'] = reverse('users:prenotazioni')
+        ctx['prenotazioni_attive'] = self.object_list.filter(evento__in=Evento.active_objects.all())
+        print(ctx['prenotazioni_attive'])
+        ctx['prenotazioni_passate'] = self.object_list.exclude(evento__in=Evento.active_objects.all())
+        print(ctx['prenotazioni_passate'])
         return ctx
+
+
+@login_required
+@user_passes_test_403(is_visitatore)
+def delete_prenotazione(request, pk):
+    p = get_object_or_404(Prenotazione, pk=pk)
+
+    if request.user != p.utente:
+        raise PermissionDenied
+
+    if not p.evento.evento_attivo():
+        messages.error(request, "Non puoi eliminare una prenotazione una volta passata la data dell'evento")
+        return redirect('users:prenotazioni')
+
+    if request.method == 'POST':
+        form = DeletePrenotazioneForm(request.POST)
+        if form.is_valid():
+            p.delete()
+            messages.success(request, "Prenotazione eliminata con successo!")
+            return redirect('users:prenotazioni')
+    form = DeletePrenotazioneForm()
+    ctx = {
+        'form': form,
+        'object': p,
+        'titolo': f"Elimina prenotazione per {p.evento}",
+        'descrizione': f"Sei sicuro di voler eliminare la prenotazione per {p.evento}?",
+        'back_url': reverse('users:prenotazioni')
+    }
+    return render(request, 'users/delete_user_item.html', ctx)
 
 
 class ListaAtteseView(ListaUserItemsView):

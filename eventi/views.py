@@ -22,8 +22,8 @@ class ListaEventiView(ListView):
         return ctx
 
     def get_queryset(self):
-        return Evento.objects.filter(data_ora__gte=datetime.datetime.today()).order_by('data_ora')
         # non mostro gli eventi passati
+        return Evento.active_objects.order_by('data_ora')
 
 
 class DettagliEventoView(DetailView):
@@ -62,7 +62,7 @@ class DettagliLuogoView(DetailView):
         ctx = super().get_context_data(**kwargs)
         print(self.kwargs['pk'])
         print(self.object)
-        ctx['eventi'] = self.object.eventi.filter(data_ora__gte=datetime.datetime.today()).order_by('data_ora')
+        ctx['eventi'] = self.object.eventi.filter(data_ora__gte=datetime.today()).order_by('data_ora')
         return ctx
 
 
@@ -115,6 +115,10 @@ class ListaEventiRisultatiQueryView(ListaEventiRisultatiView):
 def prenota_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
 
+    if not evento.evento_attivo():
+        messages.error(request, "L'evento è passato!")
+        return redirect('eventi:eventi')
+
     if evento.evento_pieno():
         messages.error(request, "L'evento è esaurito!")
         return redirect('eventi:dettagli_evento', pk=pk)
@@ -152,6 +156,10 @@ def prenota_evento(request, pk):
 def attesa_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
 
+    if not evento.evento_attivo():
+        messages.error(request, "L'evento è passato!")
+        return redirect('eventi:eventi')
+
     if not evento.evento_pieno():
         messages.error(request, "L'evento ha ancora posti disponibili")
         return redirect('eventi:dettagli_evento', pk=pk)
@@ -177,7 +185,10 @@ def interesse_evento(request, pk):
         evento.interessi.remove(request.user)
         messages.success(request, "Interesse rimosso")
     else:
-        evento.interessi.add(request.user)
-        messages.success(request, "Interesse aggiunto!")
+        if evento.evento_attivo():
+            evento.interessi.add(request.user)
+            messages.success(request, "Interesse aggiunto!")
+        else:
+            messages.error(request, "Impossibile mostrare interesse! Evento passato")
 
     return redirect('eventi:dettagli_evento', pk)
