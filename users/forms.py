@@ -21,6 +21,12 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
+    def save(self, commit=True):
+        user = super().save(commit)
+        g = Group.objects.get(name='Visitatori')
+        user.groups.add(g)
+        return user
+
 
 class LoginForm(AuthenticationForm):
 
