@@ -80,6 +80,9 @@ GENERIC PROFILE VIEWS
 
 @login_required
 def profile(request):
+    # se admin, manda direttamente alla dashboard admin
+    if request.user.is_staff:
+        return redirect('admin:index')
     return render(request, 'users/profile.html')
 
 
