@@ -22,7 +22,7 @@ class PromotoreRequiredMixin(GroupRequiredMixin):
     group_required = 'Promotori'
 
 
-def user_passes_test_forbidden(test_func):
+def user_passes_test_403(test_func):
     """
     Decoratore per fbv che controlla la test_func passata. Se False, chiama PermissionDenied (403)
     """

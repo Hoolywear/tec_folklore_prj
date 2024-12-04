@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
-from authutils import VisitatoreRequiredMixin, is_visitatore, user_passes_test_forbidden
+from authutils import VisitatoreRequiredMixin, is_visitatore, user_passes_test_403
 from .forms import *
 
 
@@ -149,7 +149,7 @@ class DeleteAttesaView(LoginRequiredMixin, VisitatoreRequiredMixin, SuccessMessa
 
 
 @login_required
-@user_passes_test_forbidden(is_visitatore)
+@user_passes_test_403(is_visitatore)
 def lista_interessi(request):
     interessi = request.user.interessi.all()
     return render(request, 'users/lista_interessi.html', {'interessi': interessi})

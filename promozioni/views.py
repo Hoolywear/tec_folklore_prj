@@ -9,7 +9,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
 from braces.views import GroupRequiredMixin
 
-from authutils import PromotoreRequiredMixin, user_passes_test_forbidden, is_promotore
+from authutils import PromotoreRequiredMixin, user_passes_test_403, is_promotore
 from promozioni.forms import UpdatePromoForm, DeletePromoForm
 from promozioni.models import Promozione
 
@@ -26,7 +26,7 @@ class ListaPromoView(LoginRequiredMixin, PromotoreRequiredMixin, ListView):
 
 
 @login_required
-@user_passes_test_forbidden(is_promotore)
+@user_passes_test_403(is_promotore)
 def add_promo(request):
     form = UpdatePromoForm()
     if request.method == 'POST':
