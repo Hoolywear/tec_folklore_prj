@@ -6,4 +6,4 @@ class EventiConfig(AppConfig):
     name = 'eventi'
 
     def ready(self):
-        pass
+        import eventi.signals
