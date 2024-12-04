@@ -172,6 +172,14 @@ class ListaAtteseView(ListaUserItemsView):
     model = AttesaEvento
     template_name = 'users/lista_attese.html'
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        for attesa in qs:
+            if not attesa.evento.evento_attivo():
+                attesa.delete()
+        return qs
+
 
 class DeleteAttesaView(LoginRequiredMixin, VisitatoreRequiredMixin, SuccessMessageMixin, DeleteView):
     model = AttesaEvento
