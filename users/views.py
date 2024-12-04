@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
@@ -13,6 +13,11 @@ from .forms import *
 
 
 # Create your views here.
+
+
+'''
+GENERIC AUTH VIEWS
+'''
 
 
 class RegisterView(SuccessMessageMixin, CreateView):
@@ -66,6 +71,11 @@ def logout_view(request):
     return redirect('index')
 
 
+'''
+GENERIC PROFILE VIEWS
+'''
+
+
 @login_required
 def profile(request):
     return render(request, 'users/profile.html')
@@ -99,7 +109,10 @@ class UserChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordCh
     success_message = "Password cambiata con successo"
     success_url = reverse_lazy('users:profile')
 
-# VISTE VISITATORI
+
+'''
+VISITATORI VIEWS
+'''
 
 
 class ListaUserItemsView(LoginRequiredMixin, VisitatoreRequiredMixin, ListView):

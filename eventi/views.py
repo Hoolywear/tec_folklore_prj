@@ -1,14 +1,10 @@
 import datetime
-from functools import wraps
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.core.exceptions import PermissionDenied
-from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.defaults import permission_denied
 from django.views.generic import ListView, DetailView
 
 from authutils import user_passes_test_403, is_visitatore
@@ -27,6 +23,7 @@ class ListaEventiView(ListView):
 
     def get_queryset(self):
         return Evento.objects.filter(data_ora__gte=datetime.datetime.today()).order_by('data_ora')
+        # non mostro gli eventi passati
 
 
 class DettagliEventoView(DetailView):
@@ -42,6 +39,7 @@ class DettagliEventoView(DetailView):
             interessato = True
         ctx['interessati'] = self.object.interessi_count()
         ctx['interessato'] = interessato
+
         return ctx
 
 
@@ -165,13 +163,6 @@ def attesa_evento(request, pk):
             attesa = AttesaEvento(evento=evento, utente=request.user)
             attesa.save()
             messages.success(request, "Sei in lista di attesa!")
-            send_mail(
-                "Subject here",
-                "Here is the message.",
-                "waitlist@hubfolklore.com",
-                [request.user.email],
-                fail_silently=False,
-            )
         except IntegrityError as e:
             messages.error(request, "Sei già in lista di attesa!")
     return redirect("eventi:dettagli_evento", pk=pk)
