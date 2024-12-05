@@ -3,12 +3,13 @@ from django.core.mail import send_mail
 from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 
+from authutils import is_visitatore
 from eventi.models import Prenotazione, Evento, AttesaEvento
 
 
 @receiver(post_save, sender=User)
 def send_user_created_email(sender, instance, created, **kwargs):
-    if created:
+    if created and is_visitatore(instance):
         send_mail(
             "Utente creato su Hub Folklore 3.0",
             f"Benvenuto in Hub Folklore 3.0! Con questa mail ti confermiamo l'avvenuta creazione dell'account.",
