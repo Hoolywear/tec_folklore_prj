@@ -1,11 +1,25 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
+
+{% block head %}
+	{{ block.super }}
+    {% include 'bg-container.html' %}
+{% endblock %}
 
 {% block title %}
 	Hub Folklore 3.0
 {% endblock %}
 
+{% block body_tag %}
+<body class="d-flex flex-column vh-100 bg-container-light" style="">
+{% endblock %}
+
 {% block content %}
-	<h1>Hub Folklore 3.0</h1>
+    <div class="container d-flex flex-column align-items-center">
+        <div class="card w-50 px-3 pt-4 pb-2 bg-body-tertiary shadow">
+	<h1 class="display-6 mb-4">Cerca tra gli eventi</h1>
     {% crispy form %}
+        </div>
+    </div>
 {% endblock %}

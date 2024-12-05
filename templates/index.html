@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+	{{ block.super }}
+    {% include 'bg-container.html' %}
+{% endblock %}
 
 {% block title %}
 	Hub Folklore 3.0
 {% endblock %}
 
 {% block content %}
-	<h1>Hub Folklore 3.0</h1>
-    <h2><a href="{% url 'search' %}">Cerca eventi</a></h2>
+    <div class="row flex-grow-1 m-0">
+        <div class="col-5 d-flex flex-column justify-content-center align-items-end text-end px-4 shadow">
+	        <h1 class="display-4">Promuoviamo i migliori eventi del nostro territorio</h1>
+            <a class="btn btn-primary btn-lg" href="{% url 'search' %}">Cerca eventi</a>
+        </div>
+        <div class="col bg-container">
+        </div>
+    </div>
 {% endblock %}
 
 {% block banner %}

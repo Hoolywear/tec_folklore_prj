@@ -1,0 +1,11 @@
+{% load static %}
+<style>
+        .bg-container {
+            background-image:url("{% static 'imgs/cover_image.jpg' %}");
+            background-size: cover;
+        }
+        .bg-container-light {
+            background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("{% static 'imgs/cover_image.jpg' %}");
+            background-size: cover;
+        }
+</style>

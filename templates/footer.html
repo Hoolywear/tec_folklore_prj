@@ -1,5 +1,6 @@
-<p>&copy; 2024 Iacopo Ruzzier
-    {% if not user.is_authenticated %}
-<a href="{% url 'users:register_promotore' %}">Registrati come promotore</a>
-    {% endif %} 
-</p>
+<footer class="footer mt-auto py-3 bg-body-tertiary">
+    <div class="container">
+        <span class="text-body-secondary">&copy; 2024 Iacopo Ruzzier.</span>
+        <span><a href="{% url 'users:register_promotore' %}" class="link-secondary float-end">Registrati come promotore</a></span>
+    </div>
+</footer>
