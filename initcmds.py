@@ -60,7 +60,7 @@ def init_db():
         new_evento.descrizione = evento['descrizione']
         new_evento.posti = evento['posti']
         # converto dal formato di data_ora in fixtures/eventi.json:
-        data_ora = datetime.datetime.strptime(evento['data_ora'], '%Y-%m-%dT%H:%M:%SZ')
+        data_ora = datetime.strptime(evento['data_ora'], '%Y-%m-%dT%H:%M:%SZ')
         # da https://stackoverflow.com/questions/18622007/runtimewarning-datetimefield-received-a-naive-datetime
         # per risolvere "RuntimeWarning: DateTimeField received a naive datetime" (dovuto alla formattazione del
         # campo data_ora in fixture/eventi.json)
