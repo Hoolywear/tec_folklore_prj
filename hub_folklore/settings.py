@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+# per Bootstrap alert tags
+from django.contrib.messages import constants as messages
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -111,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'it-it'
+LANGUAGE_CODE = 'it-IT'
 
 TIME_ZONE = 'UTC'
 
@@ -144,3 +147,8 @@ if DEBUG:
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Per Bootstrap alert tags
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
