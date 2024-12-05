@@ -12,6 +12,8 @@ from promozioni.models import Promotore
 
 class RegisterForm(UserCreationForm):
 
+    email = EmailField(required=True)
+
     helper = FormHelper()
     helper.form_id = 'register_form'
     helper.form_method = 'POST'
@@ -98,11 +100,20 @@ class DeleteAttesaForm(ModelForm):
         fields = []
 
 
-class PromotoreRegisterForm(RegisterForm):
-    first_name = CharField(required=True)
-    last_name = CharField(required=True)
-    email = EmailField(required=True)
+class PromotoreRegisterForm(UserCreationForm):
+    first_name = CharField(required=True, label='Nome')
+    last_name = CharField(required=True, label='Cognome')
+    email = EmailField(required=True, label='Email')
     website_field = URLField(required=True, label='Sito Web')
+
+    helper = FormHelper()
+    helper.form_id = 'promotore_register_form'
+    helper.form_method = 'POST'
+    helper.add_input(Submit('submit', 'Richiedi registrazione'))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name']
 
     def save(self, commit=True):
         website = self.cleaned_data['website_field']
