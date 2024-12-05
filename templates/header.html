@@ -1,14 +1,19 @@
-<div>
-    <a href="{% url 'index' %}">home</a>
-    <a href="{% url 'about' %}">about</a>
-    <a href="{% url 'eventi:eventi' %}">eventi</a>
-    <a href="{% url 'eventi:luoghi' %}">luoghi</a>
-    <a href="{% url 'search' %}">ricerca eventi</a>
+<header class="header mb-auto d-flex flex-wrap justify-content-center py-3 px-5 border-bottom">
+    <a href="{% url 'index' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <span class="fs-4">Hub Folklore FVG</span>
+  </a>
+
+  <nav class="nav nav-pills">
+    <a href="{% url 'search' %}" class="nav-link active">Cerca un evento</a>
+    <a href="{% url 'about' %}" class="nav-link">About</a>
+    <a href="{% url 'eventi:eventi' %}" class="nav-link">Eventi</a>
+    <a href="{% url 'eventi:luoghi' %}" class="nav-link">Luoghi</a>
     {% if user.is_authenticated %}
-    <a href="{% url 'users:profile' %}">il mio profilo</a>
-    <a href="{% url 'users:logout' %}">logout</a>
+    <a href="{% url 'users:profile' %}" class="nav-link">il mio profilo</a>
+    <a href="{% url 'users:logout' %}" class="nav-link">Logout</a>
     {% else %} 
-    <a href="{% url 'users:register' %}">registrati</a>
-    <a href="{% url 'users:login' %}">login</a>
+    <a href="{% url 'users:register' %}" class="nav-link">Registrati</a>
+    <a href="{% url 'users:login' %}" class="nav-link">Login</a>
     {% endif %}
-</div>
+  </nav>
+    </header>
