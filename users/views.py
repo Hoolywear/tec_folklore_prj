@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
-from authutils import VisitatoreRequiredMixin, is_visitatore, user_passes_test_403
+from authutils import VisitatoreRequiredMixin, is_visitatore, user_passes_test_403, is_promotore
 from eventi.models import Evento
 from .forms import *
 
@@ -83,7 +83,12 @@ def profile(request):
     # se admin, manda direttamente alla dashboard admin
     if request.user.is_staff:
         return redirect('admin:index')
-    return render(request, 'users/profile.html')
+    elif is_visitatore(request.user):
+        return redirect('users:prenotazioni')
+    elif is_promotore(request.user):
+        return redirect('users:promozioni:lista_promozioni')
+    else:
+        raise PermissionDenied
 
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
