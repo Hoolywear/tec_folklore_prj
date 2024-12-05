@@ -1,26 +1,50 @@
 {% extends 'users/base_profile.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %} Profile settings {% endblock %}
+{% block title %} Prenotazioni di {{ user.username }} {% endblock %}
 
 {% block profile_content %}
-    <h1>Prenotazioni di {{ user.username }}</h1>
-
-    <ul>
+    <h1>Prenotazioni</h1>
+    {% if object_list %}
+    <div class="my-3">
+    {% if prenotazioni_attive.count > 0 %}
+    <h2 class="text-primary">Prenotazioni attive</h2>
+    <div class="row">
     {% for prenotazione in prenotazioni_attive %}
-    	<li>{{ prenotazione.evento }} - {{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }} -
-            <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}">Dettagli evento</a> -
-            <a href="{% url 'users:delete_prenotazione' pk=prenotazione.pk %}">Elimina prenotazione</a></li>
+        <div class="col-12 mb-3">
+            <div class="card shadow bg-primary-subtle">
+              <div class="card-body">
+                <h5 class="card-title">{{ prenotazione.evento }}</h5>
+                  <h6 class="card-subtitle text-secondary">{{ prenotazione.evento.data_ora }}, {{ prenotazione.evento.luogo }}</h6>
+                <p class="card-text">{{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }}</p>
+                <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}" class="btn btn-primary">Dettagli evento</a>
+                <a href="{% url 'users:delete_prenotazione' pk=prenotazione.pk %}" class="btn btn-danger">Elimina prenotazione</a>
+              </div>
+            </div>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
+    {% endif %}
     {% if prenotazioni_passate.count > 0 %}
-        <h2>Prenotazioni passate</h2>
-        <ul>
+        <h2 class="text-secondary mt-3">Prenotazioni passate</h2>
+        <div class="row">
         {% for prenotazione in prenotazioni_passate %}
-            <li>{{ prenotazione.evento }} (evento passato) - {{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }} -
-                <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}">Dettagli evento</a></li>
+            <div class="col-12 mb-3 mb-sm-0">
+            <div class="card shadow bg-secondary-subtle">
+              <div class="card-body">
+                <h5 class="card-title">{{ prenotazione.evento }}</h5>
+                  <h6 class="card-subtitle text-secondary">{{ prenotazione.evento.data_ora }}, {{ prenotazione.evento.luogo }}</h6>
+                <p class="card-text">{{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }}</p>
+                <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}" class="btn btn-secondary">Dettagli evento</a>
+              </div>
+            </div>
+            </div>
         {% endfor %}
-        </ul>
+        </div>
+    {% endif %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">Non sono state effettuate prenotazioni</div>
     {% endif %}
 
 {% endblock %}
