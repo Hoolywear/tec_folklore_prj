@@ -5,11 +5,33 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ object }}</h1>
-    <p>{{ object.descrizione }}</p>
-    <ul>
-    {% for ev in eventi.all %}
-        <li><a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a> - {{ ev.data_ora }}</li>
-    {% endfor %}
-    </ul>
+    <div class="container-fluid py-3 flex-grow-1">
+        <div class="row m-0 row-cols-1 row-cols-md-2">
+            <div class="col col-md-8 pt-0 mb-4">
+                <h1>{{ object }}</h1>
+                <p>{{ object.descrizione }}</p>
+                <hr>
+                <h2>Prossimi eventi</h2>
+                <div class="row row-cols-1 g-3">
+                {% for ev in eventi.all %}
+                    <div class="col">
+                        <div class="card p-3 shadow-sm">
+                            <a class="h5 card-title" href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a>
+                            <p class="card-text">{{ ev.descrizione|truncatechars:50 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="col col-md-4">
+                <div class="card bg-primary-subtle shadow-sm">
+                    <img src="{{ object.thumbnail.url }}" alt="" class="card-img-top">
+                    <div class="card-content p-3">
+                        <p>{{ object.indirizzo }}</p>
+                        <a href="{{ object.sito_web }}" target="_blank">{{ object.sito_web }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

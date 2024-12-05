@@ -5,9 +5,24 @@
 {% endblock %}
 
 {% block content %}
-    <ul>
+    <div class="container py-3 flex-grow-1">
+    <h1>I luoghi di Hub Folklore 3.0</h1>
+    <div class="row m-0 g-3">
     {% for luogo in object_list %}
-    	<li><a href="{% url 'eventi:dettagli_luogo' pk=luogo.pk %}">{{ luogo }}</a></li>
+        <div class="col-4">
+        <div class="card shadow-sm">
+            <a href="{% url 'eventi:dettagli_luogo' pk=luogo.pk %}"><img src="{{ luogo.thumbnail.url }}" class="card-img-top" alt=""></a>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'eventi:dettagli_luogo' pk=luogo.pk %}" class="link-dark">
+                        {{ luogo }}
+                    </a>
+                </h5>
+
+            </div>
+        </div>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
+    </div>
 {% endblock %}

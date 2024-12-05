@@ -5,11 +5,26 @@
 {% endblock %}
 
 {% block content %}
+    <div class="container py-3 flex-grow-1">
     <h1>{{ titolo }}</h1>
-    <ul>
+    <div class="row m-0 g-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
     {% for ev in object_list %}
-    	<li><a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a> - {{ ev.data_ora|date }} - {{ ev.categoria|capfirst }}</li>
+        <div class="col">
+        <div class="card shadow-sm">
+            <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}"><img src="{{ ev.thumbnail.url }}" class="card-img-top" alt=""></a>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}" class="link">
+                        {{ ev }}
+                    </a>
+                </h5>
+                <h6 class="card-subtitle">{{ ev.data_ora|date }} - {{ ev.categoria|capfirst }}</h6>
+                <p class="card-text">{{ ev.descrizione|truncatechars:50 }}</p>
+            </div>
+        </div>
+        </div>
     {% endfor %}
 
-    </ul>
+    </div>
+    </div>
 {% endblock %}

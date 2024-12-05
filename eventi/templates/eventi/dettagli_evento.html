@@ -5,35 +5,66 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ object }}</h1>
-    {% if not evento.evento_attivo %}
-    	<h2>Evento passato</h2>
-    {% endif %}
-    <span>Tags:
-        {% for tag in object.tags.names %}
-            <a href="{% url 'eventi:eventi_tag' tag=tag %}">{{ tag }}</a>
-        {% endfor %}
-    </span>
-    <p>{{ object.descrizione }}</p>
-
-    <a href="{% url 'eventi:dettagli_luogo' pk=object.luogo.pk %}">{{ object.luogo }}</a>
-    {% if object.evento_attivo %}
-        {#    Form per esprimere interesse    #}
-        <form action="{% url 'eventi:interesse_evento' object.pk %}" method="POST">
-        {% csrf_token %}
-        {% if interessato %}
-            <button type="submit" name="evento_pk" value="{{object.pk}}">Non mi interessa</button>
-        {% else %}
-            <button type="submit" name="evento_pk" value="{{object.pk}}">Mi interessa</button>
-        {% endif %}
-        </form>
-        {#    Contatore di utenti interessati    #}
-        <strong class="text-secondary">{{ interessati }} Utent{{ interessati|pluralize:'e,i' }} interessat{{ interessati|pluralize:'o,i' }}</strong>
-        {#    Link per prenotare o mettersi in lista di attesa    #}
-        {% if not object.evento_pieno %}
-            <a href="{% url 'eventi:prenota_evento' pk=object.pk %}">Prenota</a>
-        {% else %}
-            <a href="{% url 'eventi:waitlist_evento' pk=object.pk %}">Mettiti in lista di attesa</a>
-        {% endif %}
-    {% endif %}
+    <div class="container-fluid py-3 flex-grow-1">
+                <h1 class="px-3">{{ object }}</h1>
+        <div class="row m-0 row-cols-1 row-cols-md-2">
+            <div class="col col-md-7 col-lg-8 pt-0 mb-4">
+                    <img src="{{ object.thumbnail.url }}" alt="" class="card-img-top">
+                <hr>
+                <p>{{ object.descrizione }}</p>
+            </div>
+            <div class="col col-md-5 col-lg-4 pt-0 ">
+                <div class="card bg-body-tertiary shadow-sm">
+                    <h5 class="card-header px-3">Informazioni sull'evento</h5>
+                    {% if object.evento_attivo %}
+                    <div class="card-body px-3">
+                    {% else %}
+                    <div class="card-body px-3" style="background: repeating-linear-gradient(45deg,#fff,#fff 10px,#f1f1f1 10px,#f1f1f1 20px);">
+                    {% endif %}
+                        <div class="card-content">
+                            <p class="text-secondary">
+                                Tags:
+                                <br>
+                                {% for tag in object.tags.names %}
+                                    <a class="badge text-bg-secondary" href="{% url 'eventi:eventi_tag' tag=tag %}">{{ tag }}</a>
+                                {% endfor %}
+                            </p>
+                            <span class="text-secondary">Dove: </span><a href="{% url 'eventi:dettagli_luogo' pk=object.luogo.pk %}">{{ object.luogo }}</a>
+                            <p><span class="text-secondary">Quando: </span>{{ object.data_ora }}</p>
+                            {% if object.evento_attivo %}
+                                {#    Contatore di utenti interessati    #}
+                                <p class="text-secondary"></p>
+                                {#    Form per esprimere interesse    #}
+                                <form action="{% url 'eventi:interesse_evento' object.pk %}" method="POST">
+                                {% csrf_token %}
+                                    <div class="d-flex justify-content-between align-items-center">
+                                    <button class="btn btn-primary" type="submit" name="evento_pk" value="{{object.pk}}">
+                                    {% if interessato %}
+                                        Non mi interessa
+                                    {% else %}
+                                        Mi interessa
+                                    {% endif %}
+                                    </button>
+                                    <label for="evento_pk" class="text-secondary">{{ interessati }} {{ interessati|pluralize:'utente interessato,utenti interessati' }}</label>
+                                </div>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                        <div class="card-footer">
+                                {#    Link per prenotare o mettersi in lista di attesa    #}
+                                {% if object.evento_attivo %}
+                                {% if not object.evento_pieno %}
+                                    <a class="btn btn-success w-100" href="{% url 'eventi:prenota_evento' pk=object.pk %}">Prenota</a>
+                                {% else %}
+                                    <a href="{% url 'eventi:waitlist_evento' pk=object.pk %}">Mettiti in lista di attesa</a>
+                                {% endif %}
+                                {% else %}
+                                    <button class="btn btn-secondary w-100" type="button" disabled>Evento passato</button>
+                                {% endif %}
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
