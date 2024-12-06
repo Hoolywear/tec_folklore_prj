@@ -1,12 +1,13 @@
-{% extends 'users/base_profile.html' %}
+{% extends 'base_form.html' %}
 {% load crispy_forms_tags %}
 
 {% block title %} Login {% endblock %}
 
-{% block content %}
+
+{% block inner_content %}
     <h1>Esegui il login</h1>
     {% if request.GET.auth == 'notok' %}
-    	<p>Accedi per usufruire del servizio.</p>
+    	<p class="alert alert-warning">Accedi per usufruire del servizio.</p>
     {% endif %}
     {% crispy form %}
     <a href="{% url 'users:password_reset' %}"><i>Password dimenticata?</i></a>

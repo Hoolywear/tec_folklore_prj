@@ -10,10 +10,11 @@
 {% block content %}
     <div class="row vh-100 vw-100">
         {% block sidebar %}
-        <div class="sidebar col-3 px-3 pt-2 bg-secondary-subtle shadow">
+        <div id="sidebar" class="sidebar col col-md-3 px-3 pt-2 bg-body-tertiary border-end shadow offcanvas-md offcanvas-start">
             <div class="d-flex flex-wrap flex-md-nowrap flex-column align-items-left pt-2 border-secondary-subtle border-bottom">
                 <a href="{% url 'index' %}" class="h3 my-auto text-decoration-none">Hub Folklore 3.0</a>
                 <p>Profilo di {{ user.username }}</p>
+                <button type="button" class="btn-close d-md-none" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
             </div>
             <ul class="nav nav-pills flex-column mb-auto text">
                 {% if request.user|is_promotore %}
@@ -30,6 +31,17 @@
         </div>
 	    {% endblock %}
         <div class="col px-4 py-3">
+        <div class="p-2 d-md-none d-flex">
+            <a class="icon-link" href="#">
+  Icon link
+  <svg class="bi" aria-hidden="true"><use xlink:href="#arrow-right"></use></svg>
+</a>
+            <a href="#" class="text-center"
+                   data-bs-toggle="offcanvas"
+                   data-bs-target="#sidebar">
+                Menu
+                </a>
+        </div>
             {% block profile_content %}
             {% endblock %}
         </div>

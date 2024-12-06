@@ -15,20 +15,26 @@
                 <div class="row row-cols-1 g-3">
                 {% for ev in eventi.all %}
                     <div class="col">
-                        <div class="card p-3 shadow-sm">
-                            <a class="h5 card-title" href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a>
+                        <div class="card bg-body-tertiary shadow-sm">
+                            <h5 class="card-header">
+                            <a class="link-dark" href="{% url 'eventi:dettagli_evento' pk=ev.pk %}">{{ ev }}</a>
+                            </h5>
+                            <div class="card-content p-3">
+                            <h6 class="card-subtitle text-secondary">{{ ev.data_ora }}</h6>
                             <p class="card-text">{{ ev.descrizione|truncatechars:50 }}</p>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
                 </div>
             </div>
             <div class="col col-md-4">
-                <div class="card bg-primary-subtle shadow-sm">
+                <div class="card bg-body-tertiary shadow-sm">
                     <img src="{{ object.thumbnail.url }}" alt="" class="card-img-top">
+                    <h5 class="card-header px-3">Informazioni</h5>
                     <div class="card-content p-3">
-                        <p>{{ object.indirizzo }}</p>
-                        <a href="{{ object.sito_web }}" target="_blank">{{ object.sito_web }}</a>
+                        <span class="text-secondary">Indirizzo: </span><p>{{ object.indirizzo }}</p>
+                        <span class="text-secondary">Sito web: </span><p><a href="{{ object.sito_web }}" target="_blank">{{ object.sito_web }}</a></p>
                     </div>
                 </div>
             </div>

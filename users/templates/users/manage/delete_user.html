@@ -1,13 +1,19 @@
-{% extends 'users/base_profile.html' %}
+{% extends 'base_form.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %} Profile settings {% endblock %}
+{% block title %} Elimina il profilo {% endblock %}
 
-{% block content %}
+{% block header %}
+{% endblock %}
+
+{% block inner_content %}
     <h1>Profilo di {{ user.username }}</h1>
     <p>Sei sicuro di voler eliminare il profilo?</p>
 
     {% crispy form %}
 
     <a href="{% url 'users:profile' %}">ritorna al profilo</a>
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

@@ -1,10 +1,14 @@
-{% extends 'users/base_profile.html' %}
+{% extends 'base_form.html' %}
 {% load crispy_forms_tags %}
 
 {% block title %} Creazione Utente {% endblock %}
 
 
 {% block content %}
+    <div class="container-fluid flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+        <div class="card w-50 px-3 pt-4 pb-2 my-5 bg-body-tertiary shadow">
     <h1>Registrati alla piattaforma</h1>
     {% crispy form %}
+        </div>
+    </div>
 {% endblock %}

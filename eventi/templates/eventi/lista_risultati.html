@@ -5,26 +5,63 @@
 {% endblock %}
 
 {% block content %}
+    {% if object_list.count > 0 %}
     <div class="container py-3 flex-grow-1">
-    <h1>{{ titolo }}</h1>
+    <h1>{{ categoria }}
+    {% if from_d %}
+    	dal {{ from_d|date }}
+    {% endif %}
+    {% if q %}
+    	che corrispondono a '{{ q }}'
+    {% endif %}
+    </h1>
     <div class="row m-0 g-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
     {% for ev in object_list %}
         <div class="col">
-        <div class="card shadow-sm">
+        <div class="card bg-body-tertiary shadow-sm">
             <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}"><img src="{{ ev.thumbnail.url }}" class="card-img-top" alt=""></a>
             <div class="card-body">
                 <h5 class="card-title">
-                    <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}" class="link">
+                    <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}" class="link-dark">
                         {{ ev }}
                     </a>
                 </h5>
-                <h6 class="card-subtitle">{{ ev.data_ora|date }} - {{ ev.categoria|capfirst }}</h6>
-                <p class="card-text">{{ ev.descrizione|truncatechars:50 }}</p>
+                <p class="card-subtitle ">{{ ev.data_ora|date }} - {{ ev.categoria|capfirst }}</p>
+                <p class="card-text text-secondary">{{ ev.descrizione|truncatechars:50 }}</p>
             </div>
         </div>
         </div>
     {% endfor %}
-
     </div>
+    {% else %}
+    <div class="container py-3 d-flex flex-column justify-content-center align-items-center text-center">
+        <div class="container-md w-25">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path d="M12 8L12 12" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 16.01L12.01 15.9989" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9 3H4V6" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4 11V13" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M20 11V13" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M15 3H20V6" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9 21H4V18" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M15 21H20V18" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </svg>
+        </div>
+        <h5 class="px-3">Nessun evento trovato.</h5>
+        <p class="text-secondary">La tua ricerca:
+        {{ categoria }}
+    {% if from_d %}
+    	dal {{ from_d|date }}
+    {% endif %}
+    {% if q %}
+    	che corrispondono a '{{ q }}'
+    {% endif %}
+        </p>
+        <p class="px-3">Ritorna alla <a class="link-dark" href="{% url 'search' %}">pagina di ricerca</a></p>
+    {% endif %}
     </div>
 {% endblock %}

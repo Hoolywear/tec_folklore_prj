@@ -19,9 +19,9 @@
 {% endblock %}
 {% if messages %}
 
-    <div style="position: fixed; top:0; left:0; width: 100%; z-index: 999;">
+    <div class="d-flex w-100 justify-content-center" style="position: fixed; top:0; left:0; width: 100%; z-index: 999;">
     {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible mx-4 mt-5 shadow show fade" role="alert">
+        <div class="alert alert-{{ message.tags }} alert-dismissible mx-4 mt-5 w-50 shadow show fade" role="alert">
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
