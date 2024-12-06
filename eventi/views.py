@@ -91,11 +91,14 @@ class ListaEventiRisultatiView(ListaEventiView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         cat = self.request.resolver_match.kwargs['categoria']
+        from_d = datetime.strptime(self.request.resolver_match.kwargs["from_d"], '%Y-%m-%d')
         if cat == 'all':
             ctx['categoria'] = 'Tutti gli eventi'
         else:
             ctx['categoria'] = dict(Evento.CATEGORY_CHOICES)[cat]
-        ctx['titolo'] = f"{ctx['categoria']} dal {self.request.resolver_match.kwargs['from_d']}"
+        ctx['titolo'] = f"Risultati della ricerca"
+        if from_d.date() != datetime.today().date():
+            ctx['from_d'] = from_d
         return ctx
 
 
@@ -106,7 +109,7 @@ class ListaEventiRisultatiQueryView(ListaEventiRisultatiView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['titolo'] += f" che corrispondono a '{self.request.resolver_match.kwargs['q']}'"
+        ctx['q'] = self.request.resolver_match.kwargs['q']
         return ctx
 
 
