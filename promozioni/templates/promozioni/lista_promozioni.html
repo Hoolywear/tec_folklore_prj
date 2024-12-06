@@ -1,4 +1,5 @@
 {% extends 'users/base_profile.html' %}
+{% load static %}
 
 {% block profile_content %}
         <h1>Promozioni inserite</h1>
@@ -7,18 +8,22 @@
         <div class="row">
         {% for promo in object_list %}
             <div class="col-12 mb-3">
-                <div class="card shadow bg-body-secondary">
-                    <div class="card-body">
-                        <div class="card-text d-flex flex-wrap justify-content-center align-items-center">
-                            <h6 class="my-auto flex-grow-1">{{ promo.website }}</h6>
+                <div class="card shadow mh-25 bg-body-secondary">
+                    <div class="row g-0">
+                        <div class="col-sm-3 d-flex justify-content-center align-items-center">
+                            <img src="{{ promo.banner.url }}" class="img-fluid flex-grow-1 rounded-start" alt="...">
+                        </div>
+                        <div class="col-sm-9 card-body d-flex flex-sm-column flex-wrap justify-content-center align-items-center justify-content-sm-between align-items-sm-start">
+                            <h6 class="my-auto text-center flex-grow-1">{{ promo.website }}</h6>
                             <span>
                             <a href="{% url 'users:promozioni:modifica_promozione' pk=promo.pk %}" class="btn btn-primary shadow-sm">Modifica</a>
                             <a href="{% url 'users:promozioni:elimina_promozione' pk=promo.pk %}" class="btn btn-danger ms-2 shadow-sm">Elimina</a>
                             </span>
                         </div>
-                    </div>
-                </div>
-            </div>
+
+    </div>
+  </div>
+
         {% endfor %}
         </div>
     </div>

@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load promo_tags %}
+{% load user_tags %}
 
 {% block title %}
 	{{ object }}
@@ -36,7 +38,7 @@
                             {% else %}
                                 <p class="text-secondary">Posti esauriti</p>
                             {% endif %}
-                            {% if object.evento_attivo %}
+                            {% if object.evento_attivo and request.user|is_visitatore %}
                                     <div class="d-flex justify-content-between align-items-center">
                                     {% if interessato %}
                                     <a class="btn btn-outline-info icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" href="{% url 'eventi:interesse_evento' pk=object.pk %}">
@@ -58,6 +60,7 @@
                         </div>
                     </div>
                         <div class="card-footer">
+                            {% if request.user|is_visitatore %}
                                 {#    Link per prenotare o mettersi in lista di attesa    #}
                                 {% if object.evento_attivo %}
                                 {% if not object.evento_pieno %}
@@ -68,6 +71,9 @@
                                 {% else %}
                                     <button class="btn btn-secondary w-100" type="button" disabled>Evento passato</button>
                                 {% endif %}
+                            {% else %}
+                                <p class="text-secondary mb-0">Gli eventi non sono prenotabili con l'account promotore</p>
+                            {% endif %}
                         </div>
                 </div>
             </div>

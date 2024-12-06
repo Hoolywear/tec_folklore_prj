@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load promo_tags %}
+{% load user_tags %}
 
 {% block body_tag %}
 <body class="container p-0 m-0">
@@ -40,7 +41,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'users:promozioni:aggiungi_promozione' %}">Aggiungi una promozione</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'users:promozioni:lista_promozioni' %}">Lista promozioni</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Statistiche</a></li>
-                    {% else %}
+                {% elif request.user|is_visitatore %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'users:prenotazioni' %}">Prenotazioni effettuate</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'users:waitlist' %}">Eventi in lista di attesa</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'users:interessi' %}">Interessi</a></li>
