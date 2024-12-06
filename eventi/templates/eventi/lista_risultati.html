@@ -7,12 +7,17 @@
 {% block content %}
     {% if object_list.count > 0 %}
     <div class="container py-3 flex-grow-1">
-    <h1>{{ categoria }}
-    {% if from_d %}
-    	dal {{ from_d|date }}
-    {% endif %}
-    {% if q %}
-    	che corrispondono a '{{ q }}'
+    <h1>
+    {% if tag %}
+        {{ titolo }}
+    {% else %}
+        {{ categoria }}
+        {% if from_d %}
+            dal {{ from_d|date }}
+        {% endif %}
+        {% if q %}
+            che corrispondono a '{{ q }}'
+        {% endif %}
     {% endif %}
     </h1>
     <div class="row m-0 g-3 row-cols-1 row-cols-md-2 row-cols-lg-3">
@@ -53,6 +58,9 @@
         </div>
         <h5 class="px-3">Nessun evento trovato.</h5>
         <p class="text-secondary">La tua ricerca:
+        {% if tag %}
+        	{{ titolo }}
+        {% else %}
         {{ categoria }}
     {% if from_d %}
     	dal {{ from_d|date }}
@@ -60,6 +68,7 @@
     {% if q %}
     	che corrispondono a '{{ q }}'
     {% endif %}
+        {% endif %}
         </p>
         <p class="px-3">Ritorna alla <a class="link-dark" href="{% url 'search' %}">pagina di ricerca</a></p>
     {% endif %}

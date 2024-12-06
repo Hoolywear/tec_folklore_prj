@@ -8,8 +8,10 @@
 
     {% crispy form %}
 
-    <div class="d-flex flex-row w-100 border-top py-3 justify-content-baseline">
-    <a class="btn btn-outline-primary me-3" href="{% url 'users:change_password' %}">cambia la password</a>
-    <a class="btn btn-danger" href="{% url 'users:delete_user' %}">elimina il profilo</a>
+    <hr>
+    <a class="link" href="{% url 'users:change_password' %}">cambia la password</a>
+    <div class="w-100 rounded mt-3 p-3 justify-content-between" style="background: repeating-linear-gradient(135deg,#fff,#fff 10px,#ffe1e1 10px,#ffe1e1 20px);">
+        <h3 class="text-danger">Zona pericolosa</h3>
+        <a class="btn btn-danger" href="{% url 'users:delete_user' %}">elimina il profilo</a>
     </div>
 {% endblock %}

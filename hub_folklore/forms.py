@@ -26,11 +26,6 @@ class SearchForm(forms.Form):
         required=False
     )
 
-    helper = FormHelper()
-    helper.form_id = 'search_crispy_form'
-    helper.form_action = 'search'
-    helper.add_input(Submit('submit', 'Cerca'))
-
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
         if not cleaned_data.get('search_from_data'):

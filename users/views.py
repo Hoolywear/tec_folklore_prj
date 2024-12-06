@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
@@ -102,15 +102,35 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return self.request.user
 
 
-class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
-    model = User
-    form_class = UserDeleteForm
-    success_message = "L'account è stato eliminato correttamente"
-    template_name = 'users/manage/delete_user.html'
-    success_url = reverse_lazy('users:register')
+@login_required
+def delete_user(request):
+    user = get_object_or_404(User, pk=request.user.pk)
 
-    def get_object(self, *args):
-        return self.request.user
+    if request.method == 'POST':
+        form = UserDeleteForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data.get('username') != request.user.username:
+                form.add_error('username', "Inserisci il tuo username!")
+            else:
+                user.delete()
+                messages.success(request, "Utente eliminato con successo")
+                return redirect('users:register')
+    else:
+        form = UserDeleteForm()
+    ctx = {
+        'form': form,
+    }
+    return render(request, 'users/manage/delete_user.html', ctx)
+
+# class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+#     model = User
+#     form_class = UserDeleteForm
+#     success_message = "L'account è stato eliminato correttamente"
+#     template_name = 'users/manage/delete_user.html'
+#     success_url = reverse_lazy('users:register')
+#
+#     def get_object(self, *args):
+#         return self.request.user
 
 
 class UserChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
     SetPasswordForm
 from django.contrib.auth.models import User, Group
 from django.core.mail import mail_admins, send_mail
-from django.forms import ModelForm, CharField, EmailField, URLField
+from django.forms import ModelForm, CharField, EmailField, URLField, TextInput, forms
 
 from eventi.models import Prenotazione, AttesaEvento
 from promozioni.models import Promotore
@@ -64,14 +64,9 @@ class UserUpdateForm(ModelForm):
         fields = ['username', 'email']
 
 
-class UserDeleteForm(ModelForm):
-    helper = FormHelper()
-    helper.form_id = 'user_delete_form'
-    helper.add_input(Submit('submit', 'Elimina utente'))
-
-    class Meta:
-        model = User
-        fields = []
+class UserDeleteForm(forms.Form):
+    username = CharField(required=True, label="Inserisci il tuo nome utente per confermare questa azione",
+                         widget=TextInput(attrs={'placeholder': 'Il tuo username'}))
 
 
 class UserChangePasswordForm(PasswordChangeForm):

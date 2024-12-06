@@ -1,4 +1,5 @@
 {% extends 'base_form.html' %}
+{% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
 {% block title %} Elimina il profilo {% endblock %}
@@ -9,10 +10,25 @@
 {% block inner_content %}
     <h1>Profilo di {{ user.username }}</h1>
     <p>Sei sicuro di voler eliminare il profilo?</p>
+    <p class="alert alert-danger">Questa azione non è reversibile!</p>
 
-    {% crispy form %}
+    <form method="post" class="mb-2">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-danger w-100 d-flex justify-content-center icon-link icon-link-hover" type="submit"
+                style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+</svg>
+                    Elimina il tuo profilo</button>
+            </form>
 
-    <a href="{% url 'users:profile' %}">ritorna al profilo</a>
+    <a class="icon-link icon-link-hover mb-2" style="--bs-icon-link-transform: translate3d(-.125rem, 0, 0);" href="{% url 'users:profile' %}">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+</svg>
+  Ritorna al profilo
+</a>
 {% endblock %}
 
 {% block footer %}

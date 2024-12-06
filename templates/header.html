@@ -1,23 +1,51 @@
-<header class="header mb-auto d-flex flex-wrap justify-content-between align-items-center py-3 px-4 bg-light-subtle shadow-sm border-bottom">
-    <a href="{% url 'index' %}" class="my-auto link-body-emphasis text-decoration-none">
+<header class="header sticky-top mb-auto py-2 px-4 bg-body-tertiary shadow-sm border-bottom">
+<nav class="navbar navbar-expand-md justify-content-between">
+    <div class="container-fluid">
+    <a class="navbar-brand flex-grow-1 my-auto link-body-emphasis text-decoration-none" href="{% url 'index' %}">
     <span class="fs-5">Hub Folklore FVG</span>
-  </a>
-  <nav class="nav nav-pills d-flex flex-wrap d-none d-md-flex">
-    <a class="nav-link icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" href="{% url 'search' %}">
+    </a>
+    <button class="navbar-toggler border border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarToggle">
+      <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+        <li class="nav-item">
+            <a class="btn btn-primary icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" href="{% url 'search' %}">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 </svg>
     Cerca
     </a>
-    <a href="{% url 'about' %}" class="nav-link">About</a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'about' %}" class="nav-link">About</a>
+        </li>
+        <li class="nav-item">
     <a href="{% url 'eventi:eventi' %}" class="nav-link">Eventi</a>
-    <a href="{% url 'eventi:luoghi' %}" class="nav-link">Luoghi</a>
+        </li>
+      <li class="nav-item">
+              <a href="{% url 'eventi:luoghi' %}" class="nav-link">Luoghi</a>
+      </li>
     {% if user.is_authenticated %}
+      <li class="nav-item">
     <a href="{% url 'users:profile' %}" class="nav-link">il mio profilo</a>
+      </li>
+      <li class="nav-item">
     <a href="{% url 'users:logout' %}" class="btn btn-outline-primary">Logout</a>
+      </li>
     {% else %}
+      <li class="nav-item">
     <a href="{% url 'users:register' %}" class="btn btn-outline-primary">Registrati</a>
     <a href="{% url 'users:login' %}" class="btn btn-primary ms-1">Login</a>
+      </li>
     {% endif %}
-  </nav>
+      </ul>
+    </div>
+    </div>
+</nav>
+{#<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">#}
+{#      <span class="navbar-toggler-icon"></span>#}
+{#    </button>#}
+{#  <nav id="navbarToggle" class="collapse navbar-collapse nav nav-pills">#}
+{#  </nav>#}
     </header>
