@@ -10,24 +10,47 @@
 {% block content %}
     <div class="row vh-100 vw-100">
         {% block sidebar %}
-        <div id="sidebar" class="sidebar col col-md-3 px-3 pt-2 bg-body-tertiary border-end shadow offcanvas-md offcanvas-start">
-            <div class="d-flex flex-wrap flex-md-nowrap flex-column align-items-left pt-2 border-secondary-subtle border-bottom">
-                <a href="{% url 'index' %}" class="h3 my-auto text-decoration-none">Hub Folklore 3.0</a>
-                <p>Profilo di {{ user.username }}</p>
-                <button type="button" class="btn-close d-md-none" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+        <div id="sidebar" class="col col-md-4 col-lg-3 px-3 pt-2 bg-body-tertiary border-end shadow offcanvas-md offcanvas-start ">
+            <div class="d-none d-md-block p-3">
+                <a href="{% url 'index' %}" class="h4 icon-link icon-link-hover link-body-emphasis text-decoration-none my-auto"
+                style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-left-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm8.096 10.803L6 6.707v2.768a.5.5 0 0 1-1 0V5.5a.5.5 0 0 1 .5-.5h3.975a.5.5 0 1 1 0 1H6.707l4.096 4.096a.5.5 0 1 1-.707.707"/>
+                    </svg>
+                    Hub Folklore 3.0
+                </a>
             </div>
-            <ul class="nav nav-pills flex-column mb-auto text">
+            <div class="offcanvas-header">
+                <div class="offcanvas-title ms-3">
+                    <a href="{% url 'index' %}" class="h5 icon-link link-body-emphasis text-decoration-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-left-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm8.096 10.803L6 6.707v2.768a.5.5 0 0 1-1 0V5.5a.5.5 0 0 1 .5-.5h3.975a.5.5 0 1 1 0 1H6.707l4.096 4.096a.5.5 0 1 1-.707.707"/>
+                        </svg>
+                        Hub Folklore 3.0
+                    </a>
+                </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+            </div>
+        <div class="offcanvas-body ps-3 d-flex flex-column justify-content-between">
+            <div class="mt-0 border-bottom">
+                <p>Profilo di {{ user.username }}</p>
+            </div>
+            <ul class="navbar-nav flex-column mb-auto text">
                 {% if request.user|is_promotore %}
-                <li><a class="nav-link" href="{% url 'users:promozioni:aggiungi_promozione' %}">Aggiungi una promozione</a></li>
-                <li><a class="nav-link" href="{% url 'users:promozioni:lista_promozioni' %}">Lista promozioni</a></li>
-                <li><a class="nav-link" href="#">Statistiche</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:promozioni:aggiungi_promozione' %}">Aggiungi una promozione</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:promozioni:lista_promozioni' %}">Lista promozioni</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Statistiche</a></li>
                     {% else %}
-                <li><a class="nav-link" href="{% url 'users:prenotazioni' %}">Prenotazioni effettuate</a></li>
-                <li><a class="nav-link" href="{% url 'users:waitlist' %}">Eventi in lista di attesa</a></li>
-                <li><a class="nav-link" href="{% url 'users:interessi' %}">Interessi</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:prenotazioni' %}">Prenotazioni effettuate</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:waitlist' %}">Eventi in lista di attesa</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:interessi' %}">Interessi</a></li>
                     {% endif %}
-                <li><a class="nav-link" href="{% url 'users:update_user' %}">Preferenze del profilo</a></li>
             </ul>
+            <ul class="navbar-nav  flex-column mt-auto text border-top">
+                <li><a class="nav-link" href="{% url 'users:update_user' %}">Preferenze del profilo</a></li>
+                <li><a class="nav-link" href="{% url 'users:logout' %}">Logout</a></li>
+            </ul>
+        </div>
         </div>
 	    {% endblock %}
         <div class="col px-4 py-3">

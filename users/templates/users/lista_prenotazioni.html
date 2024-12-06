@@ -12,13 +12,13 @@
     <div class="row">
     {% for prenotazione in prenotazioni_attive %}
         <div class="col-12 mb-3">
-            <div class="card shadow bg-primary-subtle">
+            <div class="card shadow bg-body-secondary">
               <div class="card-body">
                 <h5 class="card-title">{{ prenotazione.evento }}</h5>
                   <h6 class="card-subtitle text-secondary">{{ prenotazione.evento.data_ora }}, {{ prenotazione.evento.luogo }}</h6>
                 <p class="card-text">{{ prenotazione.posti }} {{ prenotazione.posti|pluralize:'posto prenotato,posti prenotati' }}</p>
-                <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}" class="btn btn-primary">Dettagli evento</a>
-                <a href="{% url 'users:delete_prenotazione' pk=prenotazione.pk %}" class="btn btn-danger">Elimina prenotazione</a>
+                <a href="{% url 'eventi:dettagli_evento' pk=prenotazione.evento.pk %}" class="btn btn-primary shadow-sm">Dettagli evento</a>
+                <a href="{% url 'users:delete_prenotazione' pk=prenotazione.pk %}" class="btn btn-danger shadow-sm">Elimina prenotazione</a>
               </div>
             </div>
         </div>
