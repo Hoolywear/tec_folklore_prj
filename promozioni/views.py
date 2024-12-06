@@ -30,6 +30,7 @@ def add_promo(request):
     form = UpdatePromoForm()
     if request.method == 'POST':
         form = UpdatePromoForm(request.POST, request.FILES)
+
         if form.is_valid():
             form.instance.promotore = request.user.promotore
             form.save()
@@ -39,7 +40,7 @@ def add_promo(request):
                   context={'form': form, 'promo_op_titolo': 'Aggiungi promozione'})
 
 
-class PromozioneView(LoginRequiredMixin, PromotoreRequiredMixin, SingleObjectMixin, UserPassesTestMixin, SuccessMessageMixin, View):
+class PromozioneView(LoginRequiredMixin, PromotoreRequiredMixin, SingleObjectMixin, UserPassesTestMixin, View):
     model = Promozione
     template_name = 'promozioni/operazioni_promo.html'
 
@@ -48,7 +49,7 @@ class PromozioneView(LoginRequiredMixin, PromotoreRequiredMixin, SingleObjectMix
         return self.request.user.promotore == self.get_object().promotore
 
 
-class UpdatePromoView(PromozioneView, UpdateView):
+class UpdatePromoView(PromozioneView, SuccessMessageMixin, UpdateView):
     form_class = UpdatePromoForm
     success_url = reverse_lazy('users:promozioni:lista_promozioni')
     success_message = 'Promozione modificata con successo!'
@@ -63,9 +64,12 @@ class DeletePromoView(PromozioneView, DeleteView):
     form_class = DeletePromoForm
     success_url = reverse_lazy('users:promozioni:lista_promozioni')
     success_message = 'Promozione eliminata con successo!'
+    template_name = 'users/delete_user_item.html'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['promo_op_titolo'] = "Elimina promozione"
-        ctx['promo_op_descrizione'] = "Sei sicuro di voler eliminare questa promozione?"
+        ctx['titolo'] = "Elimina promozione"
+        ctx['descrizione'] = "Sei sicuro di voler eliminare questa promozione?"
+        ctx['back_url'] = reverse_lazy('users:promozioni:lista_promozioni')
+
         return ctx

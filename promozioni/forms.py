@@ -8,7 +8,7 @@ from promozioni.models import Promozione
 class UpdatePromoForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = 'update_promo_form'
-    helper.add_input(Submit('submit', 'Salva'))
+    helper.add_input(Submit('submit', 'Salva', css_class='btn btn-primary w-100'))
 
     class Meta:
         model = Promozione

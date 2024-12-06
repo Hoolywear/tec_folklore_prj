@@ -1,15 +1,36 @@
 {% extends 'users/base_profile.html' %}
 
 {% block profile_content %}
-    {% if object_list.count == 0 %}
-    	<p>Nessuna promozione ancora inserita</p>
+        <h1>Promozioni inserite</h1>
+    {% if object_list %}
+    <div class="my-3">
+        <div class="row">
+        {% for promo in object_list %}
+            <div class="col-12 mb-3">
+                <div class="card shadow bg-body-secondary">
+                    <div class="card-body">
+                        <div class="card-text d-flex flex-wrap justify-content-center align-items-center">
+                            <h6 class="my-auto flex-grow-1">{{ promo.website }}</h6>
+                            <span>
+                            <a href="{% url 'users:promozioni:modifica_promozione' pk=promo.pk %}" class="btn btn-primary shadow-sm">Modifica</a>
+                            <a href="{% url 'users:promozioni:elimina_promozione' pk=promo.pk %}" class="btn btn-danger ms-2 shadow-sm">Elimina</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
     {% else %}
-        <ul>
-	{% for promo in object_list %}
-		<li>{{ promo.website }}
-            <a href="{% url 'users:promozioni:modifica_promozione' pk=promo.pk %}">modifica</a>
-            <a href="{% url 'users:promozioni:elimina_promozione'  pk=promo.pk %}">elimina</a></li>
-	{% endfor %}
-        </ul>
+    <div class="container flex-grow-1 py-3 d-flex flex-column justify-content-center align-items-center text-center text-secondary">
+        <div class="container-md">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-badge-ad w-25" viewBox="0 0 16 16">
+  <path d="m3.7 11 .47-1.542h2.004L6.644 11h1.261L5.901 5.001H4.513L2.5 11zm1.503-4.852.734 2.426H4.416l.734-2.426zm4.759.128c-1.059 0-1.753.765-1.753 2.043v.695c0 1.279.685 2.043 1.74 2.043.677 0 1.222-.33 1.367-.804h.057V11h1.138V4.685h-1.16v2.36h-.053c-.18-.475-.68-.77-1.336-.77zm.387.923c.58 0 1.002.44 1.002 1.138v.602c0 .76-.396 1.2-.984 1.2-.598 0-.972-.449-.972-1.248v-.453c0-.795.37-1.24.954-1.24z"/>
+  <path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+</svg>
+        </div>
+        <h5 class="px-3 mt-3">Nessuna promozione inserita.</h5>
+    </div>
     {% endif %}
 {% endblock %}

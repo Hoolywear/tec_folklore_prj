@@ -76,22 +76,9 @@ class UserChangePasswordForm(PasswordChangeForm):
 
 
 class DeletePrenotazioneForm(ModelForm):
-    helper = FormHelper()
-    helper.form_id = 'delete_prenotazione_form'
-    helper.add_input(Submit('submit', 'Elimina prenotazione'))
 
     class Meta:
         model = Prenotazione
-        fields = []
-
-
-class DeleteAttesaForm(ModelForm):
-    helper = FormHelper()
-    helper.form_id = 'delete_attesa_form'
-    helper.add_input(Submit('submit', 'Esci dalla waitlist'))
-
-    class Meta:
-        model = AttesaEvento
         fields = []
 
 

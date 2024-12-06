@@ -182,7 +182,7 @@ def attesa_evento(request, pk):
 @login_required()
 @user_passes_test_403(is_visitatore)
 def interesse_evento(request, pk):
-    evento = get_object_or_404(Evento, pk=request.POST.get('evento_pk'))
+    evento = get_object_or_404(Evento, pk=pk)
 
     if evento.interessi.filter(id=request.user.id).exists():
         evento.interessi.remove(request.user)

@@ -31,23 +31,29 @@
                             </p>
                             <span class="text-secondary">Dove: </span><a href="{% url 'eventi:dettagli_luogo' pk=object.luogo.pk %}">{{ object.luogo }}</a>
                             <p><span class="text-secondary">Quando: </span>{{ object.data_ora }}</p>
+                            {% if object.posti_disponibili > 0 %}
+                            <p class="text-secondary">Ancora {{ object.posti_disponibili }} {{ object.posti_disponibili|pluralize:'posto disponibile,posti disponibili' }}</p>
+                            {% else %}
+                                <p class="text-secondary">Posti esauriti</p>
+                            {% endif %}
                             {% if object.evento_attivo %}
-                                {#    Contatore di utenti interessati    #}
-                                <p class="text-secondary"></p>
-                                {#    Form per esprimere interesse    #}
-                                <form action="{% url 'eventi:interesse_evento' object.pk %}" method="POST">
-                                {% csrf_token %}
                                     <div class="d-flex justify-content-between align-items-center">
-                                    <button class="btn btn-primary" type="submit" name="evento_pk" value="{{object.pk}}">
                                     {% if interessato %}
+                                    <a class="btn btn-outline-info icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" href="{% url 'eventi:interesse_evento' pk=object.pk %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                        </svg>
                                         Non mi interessa
                                     {% else %}
+                                    <a class="btn btn-info icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" href="{% url 'eventi:interesse_evento' pk=object.pk %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+                                        </svg>
                                         Mi interessa
                                     {% endif %}
-                                    </button>
-                                    <label for="evento_pk" class="text-secondary">{{ interessati }} {{ interessati|pluralize:'utente interessato,utenti interessati' }}</label>
+                                    </a>
+                                    <p class="text-secondary my-auto">{{ interessati }} {{ interessati|pluralize:'utente interessato,utenti interessati' }}</p>
                                 </div>
-                                </form>
                             {% endif %}
                         </div>
                     </div>

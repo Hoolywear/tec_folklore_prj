@@ -210,7 +210,6 @@ class DeleteAttesaView(LoginRequiredMixin, VisitatoreRequiredMixin, SuccessMessa
     model = AttesaEvento
     success_url = reverse_lazy('users:waitlist')
     template_name = 'users/delete_user_item.html'
-    form_class = DeleteAttesaForm
     success_message = "Sei stato rimosso dalla lista di attesa"
 
     def get_context_data(self, **kwargs):

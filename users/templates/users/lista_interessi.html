@@ -5,11 +5,33 @@
 
 {% block profile_content %}
     <h1>Eventi che ti interessano</h1>
-
-    <ul>
+    {% if interessi.count > 0 %}
+    <div class="my-3">
+    <div class="row">
     {% for interesse in interessi %}
-    	<li><a href="{% url 'eventi:dettagli_evento' pk=interesse.pk %}">{{ interesse }}</a></li>
+        <div class="col-12 mb-3">
+            <div class="card shadow bg-body-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">{{ interesse }}</h5>
+                    <h6 class="card-subtitle text-secondary">{{ interesse.data_ora }}, {{ interesse.luogo }}</h6>
+                    <div class="card-text mt-3">
+                        <a href="{% url 'eventi:dettagli_evento' pk=interesse.pk %}" class="btn btn-primary shadow-sm">Dettagli evento</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
+    </div>
+    {% else %}
+        <div class="flex-grow-1 py-3 d-flex flex-column justify-content-center align-items-center text-center text-secondary">
+        <div class="container-md">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-list-stars w-25" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
+  <path d="M2.242 2.194a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.28.28 0 0 0-.094.3l.173.569c.078.256-.213.462-.423.3l-.417-.324a.27.27 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.28.28 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.27.27 0 0 0 .259-.194zm0 4a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.28.28 0 0 0-.094.3l.173.569c.078.255-.213.462-.423.3l-.417-.324a.27.27 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.28.28 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.27.27 0 0 0 .259-.194zm0 4a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.28.28 0 0 0-.094.3l.173.569c.078.255-.213.462-.423.3l-.417-.324a.27.27 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.28.28 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.27.27 0 0 0 .259-.194z"/>
+</svg>
+        <h5 class="px-3 mt-3">Non ti interessa nessun evento, per ora.</h5>
+    </div>
+    {% endif %}
 
 {% endblock %}
