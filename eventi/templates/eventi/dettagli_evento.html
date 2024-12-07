@@ -38,7 +38,7 @@
                             {% else %}
                                 <p class="text-secondary">Posti esauriti</p>
                             {% endif %}
-                            {% if object.evento_attivo and request.user|is_visitatore %}
+                            {% if object.evento_attivo and not request.user|is_visitatore %}
                                     <div class="d-flex justify-content-between align-items-center">
                                     {% if interessato %}
                                     <a class="btn btn-outline-info icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" href="{% url 'eventi:interesse_evento' pk=object.pk %}">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                         <div class="card-footer">
-                            {% if request.user|is_visitatore %}
+                            {% if not request.user|is_promotore %}
                                 {#    Link per prenotare o mettersi in lista di attesa    #}
                                 {% if object.evento_attivo %}
                                 {% if not object.evento_pieno %}
