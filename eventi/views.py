@@ -33,12 +33,10 @@ class DettagliEventoView(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
-        interessi = self.object.interessi
-        interessato = False
-        if interessi.filter(id=self.request.user.id).exists():
-            interessato = True
         ctx['interessati'] = self.object.interessi_count()
-        ctx['interessato'] = interessato
+        ctx['interessato'] = self.object.interessi.filter(id=self.request.user.id).exists()
+        ctx['prenotato'] = self.object.prenotazioni.filter(utente=self.request.user.id).exists()
+        ctx['in_attesa'] = self.object.attese.filter(utente=self.request.user.id).exists()
 
         return ctx
 
