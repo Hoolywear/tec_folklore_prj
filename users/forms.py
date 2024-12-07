@@ -27,6 +27,13 @@ class RegisterForm(UserCreationForm):
         user = super().save(commit)
         g = Group.objects.get(name='Visitatori')
         user.groups.add(g)
+
+        send_mail(
+            "Utente creato su Hub Folklore 3.0",
+            f"Benvenuto in Hub Folklore 3.0! Con questa mail ti confermiamo l'avvenuta creazione dell'account.",
+            "account@hubfolklore.it",
+            [user.email],
+        )
         return user
 
 

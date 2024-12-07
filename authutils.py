@@ -38,8 +38,3 @@ def user_passes_test_403(test_func):
         return _wrapper_view
 
     return decorator
-
-
-def is_visitatore(user):
-    return user.groups.filter(name='Visitatori').exists()
-# Create your views here.
