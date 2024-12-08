@@ -164,7 +164,7 @@ THUMBNAILS = {
     'SIZES': {
         'medium': {
             'PROCESSORS': [
-                {'PATH': 'thumbnails.processors.resize', 'width': 400, 'height': 300, 'method': 'fit'},
+                {'PATH': 'thumbnails.processors.resize', 'width': 400, 'height': 300, 'method': 'fill'},
                 {'PATH': 'thumbnails.processors.crop', 'width': 400, 'height': 300}
             ],
         },
