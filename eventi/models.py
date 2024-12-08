@@ -20,6 +20,7 @@ class Luogo(models.Model):
     descrizione = models.TextField()
     indirizzo = models.CharField(max_length=150)
     sito_web = models.URLField()
+    image = models.ImageField(upload_to='imgs/luoghi/', default='def_thumbs/thumb_1.jpg')
     thumbnail = models.ImageField(upload_to='thumbnails/luoghi/', default='def_thumbs/thumb_1.jpg')
 
     def __str__(self):
@@ -27,6 +28,8 @@ class Luogo(models.Model):
 
     def save(self, *args, **kwargs):
         super(Luogo, self).save(*args, **kwargs)
+        if self.image:
+            image_resize(self.image.path, 1920, 1080)
         if self.thumbnail:
             image_resize(self.thumbnail.path, 800, 600)
 
@@ -57,6 +60,7 @@ class Evento(models.Model):
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.PROTECT, related_name='eventi')
+    image = models.ImageField(upload_to='imgs/eventi/', default='def_thumbs/thumb_1.jpg')
     thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default='def_thumbs/thumb_1.jpg')
     interessi = models.ManyToManyField(User, related_name='interessi', blank=True)
 
@@ -86,6 +90,8 @@ class Evento(models.Model):
     def save(self, *args, **kwargs):
         super(Evento, self).save(*args, **kwargs)
         # resize functionality
+        if self.image:
+            image_resize(self.image.path, 1920, 1080)
         if self.thumbnail:
             image_resize(self.thumbnail.path, 800, 600)
 

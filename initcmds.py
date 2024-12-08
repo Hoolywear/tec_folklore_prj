@@ -53,6 +53,7 @@ def init_db():
         new_luogo.nome = luogo['nome']
         new_luogo.descrizione = luogo['descrizione']
         new_luogo.indirizzo = luogo['indirizzo']
+        new_luogo.image = 'imgs/' + luogo['thumbnail']
         new_luogo.thumbnail = luogo['thumbnail']
         new_luogo.sito_web = luogo['sito_web']
         new_luogo.save()
@@ -70,6 +71,7 @@ def init_db():
         new_evento.data_ora = data_ora
         new_evento.luogo = Luogo.objects.get(nome__exact=evento['luogo'])
         new_evento.categoria = evento['categoria']
+        new_evento.image = 'imgs/' + evento['thumbnail']
         new_evento.thumbnail = evento['thumbnail']
         new_evento.save()
         new_evento = Evento.objects.get(titolo__exact=evento['titolo'])
