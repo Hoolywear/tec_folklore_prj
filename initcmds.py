@@ -19,8 +19,8 @@ def get_info():
 def erase_db():
     print("DATI PRE-RIMOZIONE: ", get_info())
     print("Cancello il DB")
-    Luogo.objects.all().delete()
     Evento.objects.all().delete()
+    Luogo.objects.all().delete()
     Prenotazione.objects.all().delete()
     AttesaEvento.objects.all().delete()
     print("DB cancellato")
@@ -67,7 +67,7 @@ def init_db():
         # da https://stackoverflow.com/questions/18622007/runtimewarning-datetimefield-received-a-naive-datetime
         # per risolvere "RuntimeWarning: DateTimeField received a naive datetime" (dovuto alla formattazione del
         # campo data_ora in fixture/eventi.json)
-        new_evento.data_ora = make_aware(data_ora)
+        new_evento.data_ora = data_ora
         new_evento.luogo = Luogo.objects.get(nome__exact=evento['luogo'])
         new_evento.categoria = evento['categoria']
         new_evento.thumbnail = evento['thumbnail']

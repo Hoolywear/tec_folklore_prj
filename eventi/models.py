@@ -28,7 +28,7 @@ class Luogo(models.Model):
     def save(self, *args, **kwargs):
         super(Luogo, self).save(*args, **kwargs)
         if self.thumbnail:
-            image_resize(self.thumbnail.path, 500, 600)
+            image_resize(self.thumbnail.path, 800, 600)
 
     class Meta:
         verbose_name_plural = 'Luoghi'
@@ -87,7 +87,7 @@ class Evento(models.Model):
         super(Evento, self).save(*args, **kwargs)
         # resize functionality
         if self.thumbnail:
-            image_resize(self.thumbnail.path, 500, 600)
+            image_resize(self.thumbnail.path, 800, 600)
 
     class Meta:
         verbose_name_plural = 'Eventi'

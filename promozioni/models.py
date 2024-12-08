@@ -31,7 +31,7 @@ class Promozione(models.Model):
     def save(self, *args, **kwargs):
         super(Promozione, self).save(*args, **kwargs)
         if self.banner:
-            image_resize(self.banner.path, 500, 600)
+            image_resize(self.banner.path, 800, 600)
 
     class Meta:
         verbose_name_plural = 'Promozioni'
