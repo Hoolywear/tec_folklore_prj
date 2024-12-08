@@ -24,9 +24,12 @@ from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin-stats/', admin_stats, name='admin_stats'),
     re_path(r"^$|^/$|^home/$|^index/$", index, name='index'),
     path('search/', search, name='search'),
     path('about/', about, name='about'),
+    path('altre-promo/', random_promo, name='random_promo'),
+    path('altre-promo/<int:pk>/', promo_click, name='promo_click'),
     path('eventi/', include('eventi.urls')),
     path('users/', include('users.urls')),
 ]

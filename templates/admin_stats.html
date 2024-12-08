@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid flex-grow-1">
+	<h1 class="text-center">Statistiche della piattaforma</h1>
+        <div class="card bg-body-tertiary shadow-sm">
+            <div class="card-body">
+            <p>{{ prenotazioni }} {{ prenotazioni|pluralize:'prenotazione,prenotazioni' }}</p>
+            <p>{{ attese }} {{ attese|pluralize:'utente,utenti' }} in lista di attesa per qualche evento</p>
+            <p>{{ utenti }} {{ utenti|pluralize:'utente registrato,utenti registrati' }}</p>
+                <h2>Inserzioni esterne</h2>
+            <p>{{ promozioni }} {{ promozioni|pluralize:'inserzione registrata,inserzioni registrate' }}</p>
+            <p>{{ visite_anonime }} {{ visite_anonime|pluralize:'visita anonima,visite anonime' }}</p>
+            <p>{{ visite_registrate }} {{ visite_registrate|pluralize:'visita registrata,visite registrate' }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

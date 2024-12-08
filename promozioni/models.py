@@ -22,6 +22,8 @@ class Promozione(models.Model):
     banner = models.ImageField(upload_to='promozioni/banners/')
     website = models.URLField(unique=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    visite_anonime = models.IntegerField(default=0)
+    visite_registrate = models.IntegerField(default=0)
 
     def __str__(self):
         return f'Inserzione di {self.promotore} con tag {self.tags.all()}'

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container flex-grow-1">
+    <h1 class="text-center">Promozione</h1>
+    <p>Stai visualizzando una promozione di un ente esterno alla piattaforma. I promotori iscritti sono certificati,
+    ma ti avvisiamo che cliccando sul banner verrai portato fuori da Hub Folklore 3.0.</p>
+    <div class="card bg-body-tertiary shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'promo_click' pk=promo.pk %}" class="link-dark center">
+                        {{ promo.website }}
+                    </a>
+                </h5>
+                <p class="card-text">
+                                Tags:
+                                {% for tag in promo.tags.all %}
+                                    <span class="badge text-bg-secondary">{{ tag }}</span>
+                                {% endfor %}
+                            </p>
+            </div>
+            <a href="{% url 'promo_click' pk=promo.pk %}"><img src="{{ promo.banner.url }}" class="card-img-top" alt=""></a>
+        </div>
+    </div>
+{% endblock %}
