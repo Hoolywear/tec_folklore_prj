@@ -12,7 +12,8 @@ from PIL import Image
 # Funzioni per il popolamento del database con dati fittizi
 
 def get_info():
-    return f'Caricati {Luogo.objects.all().count()} luoghi e {Evento.objects.all().count()} eventi'
+    return (f'DATI ATTUALI: {Luogo.objects.all().count()} luoghi, {Evento.objects.all().count()} eventi, '
+            f'{Prenotazione.objects.all().count()} prenotazioni, {AttesaEvento.objects.all().count()} attese')
 
 
 def erase_db():
@@ -22,6 +23,8 @@ def erase_db():
     Evento.objects.all().delete()
     Prenotazione.objects.all().delete()
     AttesaEvento.objects.all().delete()
+    print("DB cancellato")
+    print(get_info())
 
 
 def init_db():
