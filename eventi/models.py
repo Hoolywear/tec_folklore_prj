@@ -1,10 +1,14 @@
+import os.path
 from datetime import datetime
+from thumbnails.fields import ImageField as ThumbnailImageField
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from taggit.managers import TaggableManager
+
+from hub_folklore import settings
 from imgutils import image_resize
 
 
@@ -20,18 +24,11 @@ class Luogo(models.Model):
     descrizione = models.TextField()
     indirizzo = models.CharField(max_length=150)
     sito_web = models.URLField()
-    image = models.ImageField(upload_to='imgs/luoghi/', default='def_thumbs/thumb_1.jpg')
-    thumbnail = models.ImageField(upload_to='thumbnails/luoghi/', default='def_thumbs/thumb_1.jpg')
+    image = ThumbnailImageField(upload_to='imgs/luoghi/', default='def_thumbs/thumb_1.jpg', resize_source_to='large')
 
     def __str__(self):
         return self.nome
 
-    def save(self, *args, **kwargs):
-        super(Luogo, self).save(*args, **kwargs)
-        if self.image:
-            image_resize(self.image.path, 1920, 1080)
-        if self.thumbnail:
-            image_resize(self.thumbnail.path, 800, 600)
 
     class Meta:
         verbose_name_plural = 'Luoghi'
@@ -60,8 +57,8 @@ class Evento(models.Model):
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.PROTECT, related_name='eventi')
-    image = models.ImageField(upload_to='imgs/eventi/', default='def_thumbs/thumb_1.jpg')
-    thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default='def_thumbs/thumb_1.jpg')
+    image = ThumbnailImageField(upload_to='imgs/eventi/', default='def_thumbs/thumb_1.jpg', resize_source_to='large',
+                                pregenerated_sizes=["medium"])
     interessi = models.ManyToManyField(User, related_name='interessi', blank=True)
 
     objects = models.Manager()  # manager di default
@@ -86,14 +83,6 @@ class Evento(models.Model):
 
     def __str__(self):
         return self.titolo
-
-    def save(self, *args, **kwargs):
-        super(Evento, self).save(*args, **kwargs)
-        # resize functionality
-        if self.image:
-            image_resize(self.image.path, 1920, 1080)
-        if self.thumbnail:
-            image_resize(self.thumbnail.path, 800, 600)
 
     class Meta:
         verbose_name_plural = 'Eventi'

@@ -11,7 +11,7 @@
     {% for luogo in object_list %}
         <div class="col">
         <div class="card bg-body-tertiary shadow-sm">
-            <a href="{% url 'eventi:dettagli_luogo' pk=luogo.pk %}"><img src="{{ luogo.thumbnail.url }}" class="card-img-top" alt=""></a>
+            <a href="{% url 'eventi:dettagli_luogo' pk=luogo.pk %}"><img src="{{ luogo.image.thumbnails.medium.url }}" class="card-img-top" alt=""></a>
             <div class="card-body">
                 <h5 class="card-title">
                     <a href="{% url 'eventi:dettagli_luogo' pk=luogo.pk %}" class="link-dark">

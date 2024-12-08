@@ -24,7 +24,7 @@
     {% for ev in object_list %}
         <div class="col">
         <div class="card bg-body-tertiary shadow-sm">
-            <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}"><img src="{{ ev.thumbnail.url }}" class="card-img-top" alt=""></a>
+            <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}"><img src="{{ ev.image.thumbnails.medium.url }}" class="card-img-top" alt=""></a>
             <div class="card-body">
                 <h5 class="card-title">
                     <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}" class="link-dark">

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'taggit',
     'braces',
+    'thumbnails',
     'eventi',
     'users',
     'promozioni',
@@ -150,4 +151,27 @@ MEDIA_URL = '/media/'
 # Per Bootstrap alert tags
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
+}
+
+THUMBNAILS = {
+    'METADATA': {
+        'BACKEND': 'thumbnails.backends.metadata.DatabaseBackend',
+    },
+    'STORAGE': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        # You can also use Amazon S3 or any other Django storage backends
+    },
+    'SIZES': {
+        'medium': {
+            'PROCESSORS': [
+                {'PATH': 'thumbnails.processors.resize', 'width': 400, 'height': 300, 'method': 'fit'},
+                {'PATH': 'thumbnails.processors.crop', 'width': 400, 'height': 300}
+            ],
+        },
+        'large': {
+            'PROCESSORS': [
+                {'PATH': 'thumbnails.processors.resize', 'width': 1920, 'height': 1080, 'method': 'fill'},
+            ],
+        },
+    }
 }

@@ -6,7 +6,7 @@
       "data_ora": "2025-02-15T20:30:00Z",
       "categoria": "concerto",
       "luogo": "Teatro Verdi",
-      "thumbnail": "def_thumbs/thumb_1.jpg",
+      "image": "thumb_1.jpg",
       "tag": ["Musica", "Folk", "Concerto", "Cultura", "Live"]
   },
   {
@@ -16,7 +16,7 @@
       "data_ora": "2024-11-20T18:00:00Z",
       "categoria": "conferenza",
       "luogo": "Castello di Gorizia",
-      "thumbnail": "def_thumbs/thumb_2.jpg",
+      "image": "thumb_2.jpg",
       "tag": ["Conferenza", "Folklore", "Tradizione", "Storia"]
   },
   {
@@ -26,7 +26,7 @@
       "data_ora": "2024-12-22T17:00:00Z",
       "categoria": "laboratorio",
       "luogo": "Palazzo Coronini",
-      "thumbnail": "def_thumbs/thumb_3.jpg",
+      "image": "thumb_3.jpg",
       "tag": ["Laboratorio", "Danza", "Tradizione", "Performance", "Workshop"]
   },
   {
@@ -36,7 +36,7 @@
       "data_ora": "2024-12-05T09:00:00Z",
       "categoria": "fiera",
       "luogo": "Giardini Pubblici di Gorizia",
-      "thumbnail": "def_thumbs/thumb_4.jpg",
+      "image": "thumb_4.jpg",
       "tag": ["Artigianato", "Mercatino", "Tradizione", "Regali"]
   },
   {
@@ -46,7 +46,7 @@
       "data_ora": "2025-01-11T09:30:00Z",
       "categoria": "conferenza",
       "luogo": "Museo della Grande Guerra",
-      "thumbnail": "def_thumbs/thumb_5.jpg",
+      "image": "thumb_5.jpg",
       "tag": ["Storia", "Grande Guerra", "Convegno", "Fotografia"]
   },
   {
@@ -56,7 +56,7 @@
       "data_ora": "2025-02-25T10:00:00Z",
       "categoria": "fiera",
       "luogo": "Parco Piuma",
-      "thumbnail": "def_thumbs/thumb_6.jpg",
+      "image": "thumb_6.jpg",
       "tag": ["Festival", "Folklore", "Musica", "Cibo", "Cultura"]
   },
   {
@@ -66,7 +66,7 @@
       "data_ora": "2024-11-30T16:00:00Z",
       "categoria": "conferenza",
       "luogo": "Centro Congressi Fiere di Gorizia",
-      "thumbnail": "def_thumbs/thumb_7.jpg",
+      "image": "thumb_7.jpg",
       "tag": ["Libri", "Storia", "Letteratura", "Cultura"]
   },
   {
@@ -76,7 +76,7 @@
       "data_ora": "2024-12-05T09:00:00Z",
       "categoria": "mostra",
       "luogo": "Villa Attems",
-      "thumbnail": "def_thumbs/thumb_8.jpg",
+      "image": "thumb_8.jpg",
       "tag": ["Fotografia", "Mostra", "Cultura", "Tradizione"]
   },
   {
@@ -86,7 +86,7 @@
       "data_ora": "2024-12-20T15:00:00Z",
       "categoria": "live",
       "luogo": "Piazza Transalpina",
-      "thumbnail": "def_thumbs/thumb_9.jpg",
+      "image": "thumb_9.jpg",
       "tag": ["Sfilata", "Costume", "Storia", "Tradizione"]
   },
   {
@@ -96,7 +96,7 @@
       "data_ora": "2024-12-01T18:00:00Z",
       "categoria": "laboratorio",
       "luogo": "Teatro Verdi",
-      "thumbnail": "def_thumbs/thumb_10.jpg",
+      "image": "thumb_10.jpg",
       "tag": ["Cucina", "Corso", "Tradizione", "Cibo"]
   },
   {
@@ -106,7 +106,7 @@
       "data_ora": "2024-12-15T19:30:00Z",
       "categoria": "live",
       "luogo": "Piazza Transalpina",
-      "thumbnail": "def_thumbs/thumb_1.jpg",
+      "image": "thumb_1.jpg",
       "tag": ["Canto", "Tradizione", "Musica", "Cultura"]
   },
   {
@@ -116,7 +116,7 @@
       "data_ora": "2025-01-18T14:00:00Z",
       "categoria": "live",
       "luogo": "Villa Attems",
-      "thumbnail": "def_thumbs/thumb_2.jpg",
+      "image": "thumb_2.jpg",
       "tag": ["Rievocazione", "Storia", "Costumi", "Musica"]
   },
   {
@@ -126,7 +126,7 @@
       "data_ora": "2025-01-29T09:00:00Z",
       "categoria": "live",
       "luogo": "Museo della Grande Guerra",
-      "thumbnail": "def_thumbs/thumb_3.jpg",
+      "image": "thumb_3.jpg",
       "tag": ["Natura", "Cultura", "Passeggiata", "Leggende"]
   },
   {
@@ -136,7 +136,7 @@
       "data_ora": "2024-12-20T20:00:00Z",
       "categoria": "live",
       "luogo": "Auditorium di Gorizia",
-      "thumbnail": "def_thumbs/thumb_4.jpg",
+      "image": "thumb_4.jpg",
       "tag": ["Poesia", "Tradizione", "Dialetto", "Cultura"]
   },
   {
@@ -146,7 +146,7 @@
       "data_ora": "2024-11-28T10:00:00Z",
       "categoria": "fiera",
       "luogo": "Palazzo Coronini",
-      "thumbnail": "def_thumbs/thumb_5.jpg",
+      "image": "thumb_5.jpg",
       "tag": ["Ricamo", "Artigianato", "Tradizione", "Workshop"]
   },
   {
@@ -156,7 +156,7 @@
       "data_ora": "2024-12-08T16:00:00Z",
       "categoria": "laboratorio",
       "luogo": "Parco Piuma",
-      "thumbnail": "def_thumbs/thumb_6.jpg",
+      "image": "thumb_6.jpg",
       "tag": ["Laboratorio", "Maschere", "Artigianato", "Cultura"]
   },
   {
@@ -166,7 +166,7 @@
       "data_ora": "2024-11-30T18:00:00Z",
       "categoria": "concerto",
       "luogo": "Auditorium di Gorizia",
-      "thumbnail": "def_thumbs/thumb_7.jpg",
+      "image": "thumb_7.jpg",
       "tag": ["Musica", "Concerto", "Cultura", "Celtico"]
   },
   {
@@ -176,7 +176,7 @@
       "data_ora": "2025-02-27T19:00:00Z",
       "categoria": "live",
       "luogo": "Castello di Gorizia",
-      "thumbnail": "def_thumbs/thumb_8.jpg",
+      "image": "thumb_8.jpg",
       "tag": ["Cibo", "Gastronomia", "Tradizione", "Cultura"]
   },
   {
@@ -186,7 +186,7 @@
       "data_ora": "2024-12-12T15:00:00Z",
       "categoria": "laboratorio",
       "luogo": "Teatro Verdi",
-      "thumbnail": "def_thumbs/thumb_9.jpg",
+      "image": "thumb_9.jpg",
       "tag": ["Tessitura", "Laboratorio", "Tradizione", "Artigianato"]
   },
   {
@@ -196,7 +196,7 @@
       "data_ora": "2024-12-12T20:30:00Z",
       "categoria": "spettacolo",
       "luogo": "Piazza Transalpina",
-      "thumbnail": "def_thumbs/thumb_10.jpg",
+      "image": "thumb_10.jpg",
       "tag": ["Teatro", "Dialetto", "Folklore", "Tradizione"]
   },
   {
@@ -206,7 +206,7 @@
       "data_ora": "2024-12-03T14:00:00Z",
       "categoria": "laboratorio",
       "luogo": "Villa Attems",
-      "thumbnail": "def_thumbs/thumb_1.jpg",
+      "image": "thumb_1.jpg",
       "tag": ["Fotografia", "Paesaggi", "Workshop", "Cultura"]
   },
   {
@@ -216,7 +216,7 @@
       "data_ora": "2024-12-18T09:00:00Z",
       "categoria": "fiera",
       "luogo": "Museo della Grande Guerra",
-      "thumbnail": "def_thumbs/thumb_2.jpg",
+      "image": "thumb_2.jpg",
       "tag": ["Fiera", "Tradizioni", "Famiglia", "Cultura"]
   },
   {
@@ -226,7 +226,7 @@
       "data_ora": "2024-12-22T18:00:00Z",
       "categoria": "live",
       "luogo": "Giardini Pubblici di Gorizia",
-      "thumbnail": "def_thumbs/thumb_3.jpg",
+      "image": "thumb_3.jpg",
       "tag": ["Leggende", "Fuoco", "Tradizione", "Vino"]
   },
   {
@@ -236,7 +236,7 @@
       "data_ora": "2024-12-10T10:00:00Z",
       "categoria": "laboratorio",
       "luogo": "Palazzo Coronini",
-      "thumbnail": "def_thumbs/thumb_4.jpg",
+      "image": "thumb_4.jpg",
       "tag": ["Laboratorio", "Scultura", "Artigianato", "Tradizione"]
   },
   {
@@ -246,7 +246,7 @@
       "data_ora": "2025-02-15T17:00:00Z",
       "categoria": "live",
       "luogo": "Parco Piuma",
-      "thumbnail": "def_thumbs/thumb_5.jpg",
+      "image": "thumb_5.jpg",
       "tag": ["Danza", "Folklore", "Musica", "Tradizione"]
   }
 ]
