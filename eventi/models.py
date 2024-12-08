@@ -8,9 +8,6 @@ from django.db import models
 from django.utils import timezone
 from taggit.managers import TaggableManager
 
-from hub_folklore import settings
-from imgutils import image_resize
-
 
 def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted')[0]
