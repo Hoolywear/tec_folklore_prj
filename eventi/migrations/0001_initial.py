@@ -3,7 +3,6 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import eventi.imgutils
 import taggit.managers
 
 
@@ -25,7 +24,7 @@ class Migration(migrations.Migration):
                 ('descrizione', models.TextField()),
                 ('indirizzo', models.CharField(max_length=150)),
                 ('sito_web', models.URLField()),
-                ('thumbnail', models.ImageField(default=None, upload_to=eventi.imgutils.save_rename_luogo_img)),
+                ('thumbnail', models.ImageField(default=None)),
             ],
             options={
                 'verbose_name_plural': 'Luoghi',
@@ -39,7 +38,7 @@ class Migration(migrations.Migration):
                 ('descrizione', models.TextField()),
                 ('posti', models.IntegerField(default=10)),
                 ('data_ora', models.DateTimeField(auto_now_add=True)),
-                ('thumbnail', models.ImageField(default=None, upload_to=eventi.imgutils.save_rename_evento_img)),
+                ('thumbnail', models.ImageField(default=None,)),
                 ('luogo', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='eventi', to='eventi.luogo')),
                 ('tags', taggit.managers.TaggableManager(blank=True, help_text='A comma-separated list of tags.', through='taggit.TaggedItem', to='taggit.Tag', verbose_name='Tags')),
                 ('waitlist', models.ManyToManyField(blank=True, related_name='waitlist', to=settings.AUTH_USER_MODEL)),

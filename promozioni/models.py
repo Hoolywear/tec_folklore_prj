@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from taggit.models import Tag
 
+from thumbnails.fields import ImageField as ThumbnailsImageField
+
 
 # Create your models here.
 
@@ -18,7 +20,7 @@ class Promotore(models.Model):
 
 class Promozione(models.Model):
     promotore = models.ForeignKey(Promotore, on_delete=models.CASCADE)
-    banner = models.ImageField(upload_to='promozioni/banners/')
+    banner = ThumbnailsImageField(upload_to='promozioni/banners/')
     website = models.URLField(unique=True)
     tags = models.ManyToManyField(Tag, blank=True)
     visite_anonime = models.IntegerField(default=0)
