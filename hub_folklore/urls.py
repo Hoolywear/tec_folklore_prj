@@ -37,5 +37,5 @@ if DEBUG:  # new
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 
-erase_db()
+# erase_db()
 init_db()
