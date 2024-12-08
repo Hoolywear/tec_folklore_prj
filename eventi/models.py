@@ -1,12 +1,16 @@
 from datetime import datetime
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from taggit.managers import TaggableManager
 from imgutils import image_resize
 
-# funzione per il ridimensionamento delle immagini alla modifica di Luoghi ed Eventi
+
+def get_sentinel_user():
+    return get_user_model().objects.get_or_create(username='deleted')[0]
+
 
 # Create your models here.
 
@@ -52,7 +56,7 @@ class Evento(models.Model):
     data_ora = models.DateTimeField()
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
-    luogo = models.ForeignKey(Luogo, on_delete=models.CASCADE, related_name='eventi')
+    luogo = models.ForeignKey(Luogo, on_delete=models.PROTECT, related_name='eventi')
     thumbnail = models.ImageField(upload_to='thumbnails/eventi/', default='def_thumbs/thumb_1.jpg')
     interessi = models.ManyToManyField(User, related_name='interessi', blank=True)
 
@@ -91,7 +95,7 @@ class Evento(models.Model):
 
 class Prenotazione(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='prenotazioni')
-    utente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='prenotazioni')
+    utente = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user), related_name='prenotazioni')
     posti = models.IntegerField()
 
     class Meta:
@@ -106,7 +110,7 @@ class Prenotazione(models.Model):
 
 class AttesaEvento(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='attese')
-    utente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attese')
+    utente = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user), related_name='attese')
 
     class Meta:
         verbose_name_plural = 'Attese Evento'
