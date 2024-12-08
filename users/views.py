@@ -122,16 +122,6 @@ def delete_user(request):
     }
     return render(request, 'users/manage/delete_user.html', ctx)
 
-# class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
-#     model = User
-#     form_class = UserDeleteForm
-#     success_message = "L'account è stato eliminato correttamente"
-#     template_name = 'users/manage/delete_user.html'
-#     success_url = reverse_lazy('users:register')
-#
-#     def get_object(self, *args):
-#         return self.request.user
-
 
 class UserChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
     template_name = 'users/manage/change_password.html'
@@ -158,9 +148,7 @@ class ListaPrenotazioniView(ListaUserItemsView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['prenotazioni_attive'] = self.object_list.filter(evento__in=Evento.active_objects.all())
-        print(ctx['prenotazioni_attive'])
         ctx['prenotazioni_passate'] = self.object_list.exclude(evento__in=Evento.active_objects.all())
-        print(ctx['prenotazioni_passate'])
         return ctx
 
 
