@@ -45,7 +45,8 @@ def send_delete_prenotazione_email(sender, instance, **kwargs):
 def send_delete_attesa_email(sender, instance, **kwargs):
     send_mail(
         "Non sei più in lista d'attesa!",
-        f"Hai cancellato la tua iscrizione alla lista d'attesa per {instance.evento}, oppure l'evento è passato.",
+        f"Hai cancellato la tua iscrizione alla lista d'attesa per {instance.evento}, hai prenotato dei posti,\
+         oppure l'evento è passato.",
         "waitlist@hubfolklore.it",
         [instance.utente.email]
     )
