@@ -58,8 +58,6 @@ class DettagliLuogoView(DetailView):
     # scarta gli eventi passati e ordinali per data crescente, per poterli mostrare a fine pagina
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        print(self.kwargs['pk'])
-        print(self.object)
         ctx['eventi'] = self.object.eventi.filter(data_ora__gte=datetime.today()).order_by('data_ora')
         return ctx
 
@@ -126,7 +124,7 @@ def prenota_evento(request, pk):
 
     try:
         Prenotazione.objects.get(evento=evento, utente=request.user)
-        messages.error(request, "Hai già una prenotazione per l'evento!")
+        messages.error(request, "Hai già una prenotazione per questo evento!")
         return redirect('eventi:dettagli_evento', pk=pk)
     except Prenotazione.DoesNotExist:
         if request.method == 'POST':
@@ -139,12 +137,10 @@ def prenota_evento(request, pk):
                 except IntegrityError:
                     messages.error(request, "Hai già una prenotazione per questo evento!")
                     return redirect('eventi:dettagli_evento', pk=pk)
-                try:
+                if AttesaEvento.objects.get(evento=evento, utente=request.user).exists():
                     at = AttesaEvento.objects.get(evento=evento, utente=request.user)
                     at.delete()
                     messages.success(request, "La tua attesa per l'evento è stata rimossa.")
-                except AttesaEvento.DoesNotExist:
-                    print("L'utente non è in lista d'attesa. Non sono state rimosse Attese.")
                 messages.success(request, "Evento prenotato! Gestiscilo dal tuo profilo")
                 return redirect("eventi:dettagli_evento", pk=pk)
         else:
