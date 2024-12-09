@@ -21,7 +21,7 @@ class Luogo(models.Model):
     descrizione = models.TextField()
     indirizzo = models.CharField(max_length=150)
     sito_web = models.URLField()
-    image = ThumbnailImageField(upload_to='imgs/luoghi/', default='def_thumbs/thumb_1.jpg', resize_source_to='large')
+    image = ThumbnailImageField(upload_to='imgs/luoghi/', default='imgs/def_imgs/thumb_1.jpg', resize_source_to='large')
 
     def __str__(self):
         return self.nome
@@ -54,7 +54,7 @@ class Evento(models.Model):
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
     luogo = models.ForeignKey(Luogo, on_delete=models.PROTECT, related_name='eventi')
-    image = ThumbnailImageField(upload_to='imgs/eventi/', default='def_thumbs/thumb_1.jpg', resize_source_to='large',
+    image = ThumbnailImageField(upload_to='imgs/eventi/', default='imgs/def_imgs/thumb_1.jpg', resize_source_to='large',
                                 pregenerated_sizes=["medium"])
     interessi = models.ManyToManyField(User, related_name='interessi', blank=True)
 
@@ -112,3 +112,5 @@ class AttesaEvento(models.Model):
 
     def __str__(self):
         return str(f'Attesa per {self.evento.titolo}')
+
+
