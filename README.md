@@ -14,7 +14,15 @@ Il progetto, ispirato dal contesto cittadino in cui vivo, consiste nello svilupp
 Richiede installati python 3.10.16, pip 24.3.1 e pipenv 2024.4.0
 
 ```shell
+# controlla se sono già installati
+python --version
+#macos
+python3 --version
 
+#solitamente installato insieme a python
+pip --version
+
+pip install pipenv --user
 ```
 
 ### Dipendenze pipenv
