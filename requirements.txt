@@ -1,0 +1,14 @@
+-i https://pypi.org/simple
+asgiref==3.8.1; python_version >= '3.8'
+crispy-bootstrap5==2024.2; python_version >= '3.8'
+da-vinci==0.4.0
+django==4.2.15; python_version >= '3.8'
+django-braces==1.16.0
+django-crispy-forms==2.3; python_version >= '3.8'
+django-extensions==3.2.3; python_version >= '3.6'
+django-taggit==6.0.0; python_version >= '3.8'
+django-thumbnails==0.8.0
+pillow==10.4.0; python_version >= '3.8'
+shortuuid==1.0.13; python_version >= '3.6'
+sqlparse==0.5.1; python_version >= '3.8'
+typing-extensions==4.12.2; python_version >= '3.8'
