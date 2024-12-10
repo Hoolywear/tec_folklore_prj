@@ -4,6 +4,7 @@ from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
+from django.template.defaultfilters import date as filter_date
 
 from hub_folklore import settings
 from .models import Luogo, Evento, Prenotazione, AttesaEvento
@@ -306,11 +307,6 @@ class AttesaEventoModelTests(TestCase):
             self.attesa.full_clean()
 
 
-'''
- #TODO - FOLLOWING TESTS ARE TO BE REVIEWED YET
-'''
-
-
 class BaseViewsTests(TestCase):
     '''
     All these views do not require the user to be authenticated
@@ -356,6 +352,76 @@ class BaseViewsTests(TestCase):
         self.assertContains(response, "Luogo prova")
         self.assertContains(response, "Evento attivo")
         self.assertNotContains(response, "Evento passato")
+
+
+'''
+ #TODO - FOLLOWING TESTS ARE TO BE REVIEWED YET
+'''
+
+
+class SearchViewsTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.luogo = create_luogo()
+        self.evento = create_evento(titolo="Evento con Tag", luogo=self.luogo)
+        self.evento.tags.add("tag1")
+        self.evento2 = create_evento(titolo="Evento con un altro tag", luogo=self.luogo)
+        self.evento2.tags.add("tag2")
+        self.evento_lab = create_evento(
+            titolo="Evento laboratorio",
+            luogo=self.luogo,
+            categoria='laboratorio'
+        )
+        self.evento_futuro = create_evento(
+            titolo="Evento futuro",
+            luogo=self.luogo,
+            data_ora=day_start(datetime.now() + timedelta(days=2)),
+        )
+
+    def test_lista_eventi_tag_view(self):
+        response = self.client.get(reverse('eventi:eventi_tag', args=["tag1"]))
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(response.context['titolo'], "Eventi con tag 'tag1'")
+        self.assertQuerysetEqual(response.context['tag'], "tag1")
+        self.assertContains(response, "Evento con Tag")
+        self.assertNotContains(response, "Evento con un altro tag")
+
+    def test_lista_eventi_tag_view_empty(self):
+        response = self.client.get(reverse('eventi:eventi_tag', args=["tag"]))
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(response.context['object_list'], [])
+        self.assertContains(response, "Nessun evento trovato.")
+
+    def test_lista_eventi_risultati_view_categoria_all_date_today(self):
+        response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
+            'categoria': 'all',
+            'from_d': date.today().strftime('%Y-%m-%d')}))
+        self.assertQuerysetEqual(response.context['object_list'], [self.evento, self.evento2, self.evento_lab, self.evento_futuro])
+        self.assertContains(response, "Evento con Tag")
+        self.assertContains(response, "Evento con un altro tag")
+        self.assertContains(response, "Tutti gli eventi")
+
+    def test_lista_eventi_risultati_view_categoria_not_all_date_today(self):
+        response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
+            'categoria': self.evento_lab.categoria,
+            'from_d': date.today().strftime('%Y-%m-%d')}))
+        self.assertQuerysetEqual(response.context['object_list'], [self.evento_lab])
+        self.assertContains(response, "Evento laboratorio")
+        self.assertNotContains(response, "Evento con tag")
+        self.assertContains(response, dict(Evento.CATEGORY_CHOICES)[self.evento_lab.categoria])
+
+    def test_lista_eventi_risultati_view_categoria_all_date_not_today(self):
+        response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
+            'categoria': 'all',
+            'from_d': (date.today() + timedelta(days=2)).strftime('%Y-%m-%d')}))
+        self.assertQuerysetEqual(response.context['object_list'], [self.evento_futuro])
+        self.assertContains(response, "Evento futuro")
+        self.assertContains(response, f"Tutti gli eventi")
+        self.assertContains(response, f" dal {filter_date(response.context['from_d'])}")
+
+    def test_lista_eventi_risultati_query_view(self):
+        pass
 
 
 class TestFunctionalViews(TestCase):
