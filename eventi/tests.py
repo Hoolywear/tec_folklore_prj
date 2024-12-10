@@ -47,7 +47,7 @@ def create_evento(
     return evento
 
 
-class LuogoModelTest(TestCase):
+class LuogoModelTests(TestCase):
 
     def setUp(self):
         self.luogo = create_luogo()
@@ -110,7 +110,7 @@ class LuogoModelTest(TestCase):
             luogo.full_clean()
 
 
-class EventoModelTest(TestCase):
+class EventoModelTests(TestCase):
 
     def setUp(self):
         self.luogo = create_luogo()
@@ -202,7 +202,7 @@ class EventoModelTest(TestCase):
         self.assertEqual(self.evento.interessi_count(), 1)
 
 
-class PrenotazioneModelTest(TestCase):
+class PrenotazioneModelTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username="testuser")
@@ -263,7 +263,7 @@ class PrenotazioneModelTest(TestCase):
             self.prenotazione.full_clean()
 
 
-class AttesaEventoModelTest(TestCase):
+class AttesaEventoModelTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username="testuser")
