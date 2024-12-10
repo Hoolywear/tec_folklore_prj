@@ -10,11 +10,13 @@ from .models import Luogo, Evento, Prenotazione, AttesaEvento
 from datetime import date, datetime, timedelta
 
 
+# funzione per creare oggetti datetime con time 00:00:00.0
 def day_start(date_time):
     return datetime.combine(date_time.date(), datetime.min.time())
 
 
-def create_default_luogo():
+# funzione per creare un luogo di default
+def create_luogo():
     return Luogo.objects.create(
             nome="Luogo prova",
             descrizione="descrizione prova",
@@ -23,21 +25,52 @@ def create_default_luogo():
         )
 
 
+def create_evento(
+        titolo="Evento prova",
+        descrizione="descrizione",
+        posti=None,
+        data_ora=day_start(datetime.today() + timedelta(days=1)),
+        categoria=None,
+        luogo=create_luogo()):
+    evento = Evento(
+        titolo=titolo,
+        descrizione=descrizione,
+        data_ora=data_ora,
+        luogo=luogo,
+    )
+    if posti:
+        evento.posti = posti
+    if categoria:
+        evento.categoria = categoria
+    evento.full_clean()
+    evento.save()
+    return evento
+
+
 class LuogoModelTest(TestCase):
 
     def setUp(self):
-        self.luogo = create_default_luogo()
+        self.luogo = create_luogo()
 
     def test_luogo_creation(self):
+        '''
+        Controlla che tutti gli attributi siano inseriti correttamente
+        '''
         self.assertEqual(self.luogo.nome, "Luogo prova")
         self.assertEqual(self.luogo.descrizione, "descrizione prova")
         self.assertEqual(self.luogo.indirizzo, "indirizzo prova")
         self.assertEqual(self.luogo.sito_web, "https://www.prova.it")
 
     def test_luogo_str(self):
+        '''
+        Controlla il metodo __str__(self)
+        '''
         self.assertEqual(str(self.luogo), "Luogo prova")
 
     def test_luogo_default_image(self):
+        '''
+        Controlla che il path dell'immagine di default corrisponda a quello settato
+        '''
         self.assertEqual(self.luogo.image.path, settings.MEDIA_ROOT+'/imgs/def_imgs/thumb_1.jpg')
 
     def test_luogo_nome_required(self):
@@ -80,22 +113,15 @@ class LuogoModelTest(TestCase):
 class EventoModelTest(TestCase):
 
     def setUp(self):
-        self.luogo = create_default_luogo()
-        self.evento = Evento.objects.create(
-            titolo="Evento prova",
-            descrizione="descrizione",
+        self.luogo = create_luogo()
+        self.evento = create_evento(
             posti=100,
-            data_ora=day_start(datetime.today() + timedelta(days=1)),
-            categoria="concerto",
+            categoria='concerto',
             luogo=self.luogo
         )
         self.evento.tags.add('tag1', 'tag2')
-        self.evento_required_only = Evento.objects.create(
-            titolo="Evento prova",
-            descrizione="descrizione",
-            data_ora=day_start(datetime.today() + timedelta(days=1)),
-            luogo=self.luogo
-        )
+
+        self.evento_required_only = create_evento(luogo=self.luogo)
 
     def test_evento_creation(self):
         self.assertEqual(self.evento.titolo, "Evento prova")
@@ -141,13 +167,7 @@ class EventoModelTest(TestCase):
 
     def test_evento_posti_negativi(self):
         with self.assertRaises(IntegrityError):
-            Evento.objects.create(
-                titolo="Evento prova",
-                descrizione="descrizione",
-                data_ora=day_start(datetime.today() + timedelta(days=1)),
-                luogo=self.luogo,
-                posti=-1
-            )
+            create_evento(posti=-1, luogo=self.luogo)
 
     def test_posti_disponibili(self):
         self.assertEqual(self.evento.posti_disponibili(), 100)
@@ -162,9 +182,8 @@ class EventoModelTest(TestCase):
         self.assertTrue(self.evento.evento_pieno())
 
     def test_evento_attivo(self):
-        evento = self.evento
-        self.assertTrue(evento.evento_attivo())
-        evento.data_ora = day_start(datetime.today() - timedelta(days=1))
+        self.assertTrue(self.evento.evento_attivo())
+        self.evento.data_ora = day_start(datetime.today() - timedelta(days=1))
         self.assertFalse(self.evento.evento_attivo())
 
     def test_evento_active_objects_manager(self):
@@ -187,15 +206,8 @@ class PrenotazioneModelTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username="testuser")
-        self.luogo = create_default_luogo()
-        self.evento = Evento.objects.create(
-            titolo="Evento prova",
-            descrizione="descrizione",
-            posti=50,
-            data_ora=datetime.now() + timedelta(days=3),
-            categoria="mostra",
-            luogo=self.luogo
-        )
+        self.luogo = create_luogo()
+        self.evento = create_evento(posti=50, luogo=self.luogo)
         self.prenotazione = Prenotazione.objects.create(
             evento=self.evento,
             utente=self.user,
@@ -255,15 +267,8 @@ class AttesaEventoModelTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username="testuser")
-        self.luogo = create_default_luogo()
-        self.evento = Evento.objects.create(
-            titolo="Evento prova",
-            descrizione="descrizione",
-            posti=150,
-            data_ora=datetime.now() + timedelta(days=5),
-            categoria="concerto",
-            luogo=self.luogo
-        )
+        self.luogo = create_luogo()
+        self.evento = create_evento(posti=150, luogo=self.luogo)
         self.prenotazione = Prenotazione.objects.create(
             evento=self.evento,
             utente=self.user,
@@ -299,6 +304,11 @@ class AttesaEventoModelTest(TestCase):
         self.prenotazione.save()
         with self.assertRaises(ValidationError):
             self.attesa.full_clean()
+
+
+'''
+ #TODO - FOLLOWING TESTS ARE TO BE REVIEWED YET
+'''
 
 
 class TestClassBasedViews(TestCase):
