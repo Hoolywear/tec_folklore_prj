@@ -72,7 +72,6 @@ class Evento(models.Model):
         return self.posti_disponibili() == 0
 
     def evento_attivo(self):
-        print(self.data_ora, timezone.now(), self.data_ora >= timezone.now())
         return self.data_ora >= timezone.now()
 
     def interessi_count(self):
