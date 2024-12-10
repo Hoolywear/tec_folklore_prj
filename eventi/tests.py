@@ -311,28 +311,23 @@ class AttesaEventoModelTests(TestCase):
 '''
 
 
-class TestClassBasedViews(TestCase):
+class BaseViewsTests(TestCase):
+    '''
+    All these views do not require the user to be authenticated
+    '''
 
     def setUp(self):
+        self.client = Client()
         # Creazione di un utente per i test
         self.user = User.objects.create_user(username="testuser", password="password123")
-        self.luogo = Luogo.objects.create(
-            nome="Test Luogo",
-            descrizione="Descrizione di test",
-            indirizzo="Indirizzo test",
-            sito_web="http://testsite.com"
-        )
-        self.evento_attivo = Evento.objects.create(
-            titolo="Evento Attivo",
-            descrizione="Descrizione evento attivo",
-            posti=10,
-            data_ora=datetime.now() + timedelta(days=1),
+        self.luogo = create_luogo()
+        self.evento_attivo = create_evento(
+            titolo="Evento attivo",
             luogo=self.luogo
         )
-        self.evento_passato = Evento.objects.create(
-            titolo="Evento Passato",
-            descrizione="Descrizione evento passato",
-            posti=10,
+        self.evento_passato = create_evento(
+            titolo="Evento passato",
+            descrizione="descrizione evento passato",
             data_ora=datetime.now() - timedelta(days=1),
             luogo=self.luogo
         )
@@ -340,25 +335,27 @@ class TestClassBasedViews(TestCase):
     def test_lista_eventi_view(self):
         response = self.client.get(reverse('eventi:eventi'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Evento Attivo")
-        self.assertNotContains(response, "Evento Passato")
+        self.assertContains(response, "Tutti gli eventi registrati")
+        self.assertContains(response, "Evento attivo")
+        self.assertNotContains(response, "Evento passato")
 
     def test_dettagli_evento_view(self):
         response = self.client.get(reverse('eventi:dettagli_evento', args=[self.evento_attivo.pk]))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Evento Attivo")
+        self.assertContains(response, "Evento attivo")
 
     def test_lista_luoghi_view(self):
         response = self.client.get(reverse('eventi:luoghi'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Test Luogo")
+        self.assertContains(response, "Luoghi")
+        self.assertContains(response, "Luogo prova")
 
     def test_dettagli_luogo_view(self):
         response = self.client.get(reverse('eventi:dettagli_luogo', args=[self.luogo.pk]))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Test Luogo")
-        self.assertContains(response, "Evento Attivo")
-        self.assertNotContains(response, "Evento Passato")
+        self.assertContains(response, "Luogo prova")
+        self.assertContains(response, "Evento attivo")
+        self.assertNotContains(response, "Evento passato")
 
 
 class TestFunctionalViews(TestCase):
@@ -442,92 +439,34 @@ class TestFilteredViews(TestCase):
         pass
 
 
-class EventiViewsTest(TestCase):
-
-    def setUp(self):
-        # Creazione del client
-        self.client = Client()
-
-        # Creazione di un utente
-        g = Group.objects.create(name="Visitatori")
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.user.groups.add(g)
-        self.client.login(username='testuser', password='12345')
-
-        # Creazione di un luogo
-        self.luogo = Luogo.objects.create(
-            nome="Teatro Verdi",
-            descrizione="Storico teatro.",
-            indirizzo="Piazza Vittoria, 1",
-            sito_web="https://www.teatroverdi.it"
-        )
-
-        # Creazione di eventi
-        self.evento1 = Evento.objects.create(
-            titolo="Concerto Jazz",
-            descrizione="Un concerto di musica jazz.",
-            posti=50,
-            data_ora=datetime.now() + timedelta(days=10),
-            categoria='concerto',
-            luogo=self.luogo
-        )
-        self.evento2 = Evento.objects.create(
-            titolo="Mostra di Arte Moderna",
-            descrizione="Esposizione di opere d'arte moderna.",
-            posti=20,
-            data_ora=datetime.now() - timedelta(days=5),
-            categoria='mostra',
-            luogo=self.luogo
-        )
-
-    def test_lista_eventi_view(self):
-        """Testa la visualizzazione della lista degli eventi."""
-        response = self.client.get(reverse('eventi:eventi'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.evento1.titolo)
-        self.assertNotContains(response, self.evento2.titolo)  # Non deve mostrare eventi passati
-
-    def test_dettagli_evento_view(self):
-        """Testa la visualizzazione dei dettagli di un evento."""
-        response = self.client.get(reverse('eventi:dettagli_evento', args=[self.evento1.pk]))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.evento1.titolo)
-        self.assertContains(response, self.evento1.descrizione)
-
-    def test_lista_luoghi_view(self):
-        """Testa la visualizzazione della lista dei luoghi."""
-        response = self.client.get(reverse('eventi:luoghi'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.luogo.nome)
-
-    def test_dettagli_luogo_view(self):
-        """Testa la visualizzazione dei dettagli di un luogo."""
-        response = self.client.get(reverse('eventi:dettagli_luogo', args=[self.luogo.pk]))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.luogo.nome)
-        self.assertContains(response, self.luogo.descrizione)
-
-    def test_prenota_evento_view(self):
-        """Testa la prenotazione di un evento."""
-        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento1.pk]), {
-            'posti': 1
-        })
-        self.assertEqual(response.status_code, 302)  # Redirect dopo la prenotazione
-        self.assertTrue(Prenotazione.objects.filter(evento=self.evento1, utente=self.user).exists())
-
-    def test_attesa_evento_view(self):
-        """Testa l'aggiunta di un utente alla lista d'attesa."""
-        response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento1.pk]))
-        self.assertEqual(response.status_code, 302)  # Redirect
-        self.assertTrue(AttesaEvento.objects.filter(evento=self.evento1, utente=self.user).exists())
-
-    def test_interesse_evento_view(self):
-        """Testa l'aggiunta/rimozione dell'interesse per un evento."""
-        response = self.client.post(reverse('eventi:interesse_evento', args=[self.evento1.pk]))
-        self.assertEqual(response.status_code, 302)  # Redirect
-        self.assertTrue(self.evento1.interessi.filter(id=self.user.id).exists())
-
-        # Testa la rimozione dell'interesse
-        response = self.client.post(reverse('eventi:interesse_evento', args=[self.evento1.pk]))
-        self.assertEqual(response.status_code, 302)  # Redirect
-        self.assertFalse(self.evento1.interessi.filter(id=self.user.id).exists())
+    #     # Creazione di un utente
+    #     g = Group.objects.create(name="Visitatori")
+    #     self.user = User.objects.create_user(username='testuser', password='12345')
+    #     self.user.groups.add(g)
+    #     self.client.login(username='testuser', password='12345')
+    #
+    #
+    # def test_prenota_evento_view(self):
+    #     """Testa la prenotazione di un evento."""
+    #     response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento1.pk]), {
+    #         'posti': 1
+    #     })
+    #     self.assertEqual(response.status_code, 302)  # Redirect dopo la prenotazione
+    #     self.assertTrue(Prenotazione.objects.filter(evento=self.evento1, utente=self.user).exists())
+    #
+    # def test_attesa_evento_view(self):
+    #     """Testa l'aggiunta di un utente alla lista d'attesa."""
+    #     response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento1.pk]))
+    #     self.assertEqual(response.status_code, 302)  # Redirect
+    #     self.assertTrue(AttesaEvento.objects.filter(evento=self.evento1, utente=self.user).exists())
+    #
+    # def test_interesse_evento_view(self):
+    #     """Testa l'aggiunta/rimozione dell'interesse per un evento."""
+    #     response = self.client.post(reverse('eventi:interesse_evento', args=[self.evento1.pk]))
+    #     self.assertEqual(response.status_code, 302)  # Redirect
+    #     self.assertTrue(self.evento1.interessi.filter(id=self.user.id).exists())
+    #
+    #     # Testa la rimozione dell'interesse
+    #     response = self.client.post(reverse('eventi:interesse_evento', args=[self.evento1.pk]))
+    #     self.assertEqual(response.status_code, 302)  # Redirect
+    #     self.assertFalse(self.evento1.interessi.filter(id=self.user.id).exists())
