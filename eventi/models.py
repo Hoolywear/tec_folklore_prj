@@ -1,5 +1,8 @@
 import os.path
 from datetime import datetime
+
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from thumbnails.fields import ImageField as ThumbnailImageField
 
 from django.contrib.auth import get_user_model
@@ -49,7 +52,7 @@ class Evento(models.Model):
 
     titolo = models.CharField(max_length=100)
     descrizione = models.TextField()
-    posti = models.IntegerField(default=10)
+    posti = models.PositiveIntegerField(default=10)
     data_ora = models.DateTimeField()
     categoria = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='live')
     tags = TaggableManager(blank=True)
@@ -87,7 +90,7 @@ class Evento(models.Model):
 class Prenotazione(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='prenotazioni')
     utente = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user), related_name='prenotazioni')
-    posti = models.IntegerField()
+    posti = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
         verbose_name_plural = 'Prenotazioni'
@@ -97,6 +100,11 @@ class Prenotazione(models.Model):
 
     def __str__(self):
         return str(f'Prenotazione per {self.evento.titolo} (posti: {self.posti})')
+
+    def clean(self):
+        super().clean()
+        if self.posti > self.evento.posti_disponibili():
+            raise ValidationError("I posti disponibili non sono sufficienti")
 
 
 class AttesaEvento(models.Model):
@@ -112,4 +120,8 @@ class AttesaEvento(models.Model):
     def __str__(self):
         return str(f'Attesa per {self.evento.titolo}')
 
+    def clean(self):
+        super().clean()
+        if not self.evento.evento_pieno():
+            raise ValidationError("L'evento non è esaurito")
 
