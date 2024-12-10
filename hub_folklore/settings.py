@@ -16,6 +16,15 @@ from pathlib import Path
 # per Bootstrap alert tags
 from django.contrib.messages import constants as messages
 
+# verifica se manage.py è stato chiamato con primo argomento test
+# utilizzato in urls.py per disabilitare il popolamento automatico in caso di testing
+import sys
+
+try:
+    TESTING = 'test' == sys.argv[1]
+except IndexError:
+    TESTING = False
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

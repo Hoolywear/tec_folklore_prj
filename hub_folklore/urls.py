@@ -20,7 +20,7 @@ from django.urls import path, include, re_path
 
 from initcmds import *
 from .views import *
-from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT
+from .settings import DEBUG, MEDIA_URL, MEDIA_ROOT, TESTING
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,6 +36,6 @@ urlpatterns = [
 if DEBUG:  # new
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
-
-# erase_db()
-init_db()
+if not TESTING:
+    # erase_db()
+    init_db()
