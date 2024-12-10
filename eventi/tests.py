@@ -1,21 +1,32 @@
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User, Group
+from django.urls import reverse
 
 from hub_folklore import settings
 from .models import Luogo, Evento, Prenotazione, AttesaEvento
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 
-class LuogoModelTest(TestCase):
+def day_start(date_time):
+    return datetime.combine(date_time.date(), datetime.min.time())
 
-    def setUp(self):
-        self.luogo = Luogo.objects.create(
+
+def create_default_luogo():
+    return Luogo.objects.create(
             nome="Luogo prova",
             descrizione="descrizione prova",
             indirizzo="indirizzo prova",
             sito_web="https://www.prova.it"
         )
+
+
+class LuogoModelTest(TestCase):
+
+    def setUp(self):
+        self.luogo = create_default_luogo()
 
     def test_luogo_creation(self):
         self.assertEqual(self.luogo.nome, "Luogo prova")
@@ -30,31 +41,113 @@ class LuogoModelTest(TestCase):
         self.assertEqual(self.luogo.image.path, settings.MEDIA_ROOT+'/imgs/def_imgs/thumb_1.jpg')
 
     def test_luogo_nome_required(self):
-        self.assertRaises(ValueError, Luogo.objects.create())
+        luogo = Luogo.objects.create(
+            descrizione='prova',
+            indirizzo='indirizzo prova',
+            sito_web='https://www.prova.it'
+        )
+        with self.assertRaises(ValidationError):
+            luogo.full_clean()
+
+    def test_luogo_descrizione_required(self):
+        luogo = Luogo.objects.create(
+            nome='prova',
+            indirizzo='indirizzo prova',
+            sito_web='https://www.prova.it'
+        )
+        with self.assertRaises(ValidationError):
+            luogo.full_clean()
+
+    def test_luogo_indirizzo_required(self):
+        luogo = Luogo.objects.create(
+            nome='prova',
+            descrizione='prova',
+            sito_web='https://www.prova.it'
+        )
+        with self.assertRaises(ValidationError):
+            luogo.full_clean()
+
+    def test_luogo_sito_web_required(self):
+        luogo = Luogo.objects.create(
+            nome='prova',
+            descrizione='prova',
+            indirizzo='indirizzo prova',
+        )
+        with self.assertRaises(ValidationError):
+            luogo.full_clean()
+
 
 class EventoModelTest(TestCase):
 
     def setUp(self):
-        self.luogo = Luogo.objects.create(
-            nome="Castello di Gorizia",
-            descrizione="Antica fortezza medievale con vista mozzafiato.",
-            indirizzo="Via del Castello, 36, Gorizia",
-            sito_web="https://www.castellodigorizia.it"
-        )
+        self.luogo = create_default_luogo()
         self.evento = Evento.objects.create(
-            titolo="Concerto al Castello",
-            descrizione="Un emozionante concerto di musica classica.",
+            titolo="Evento prova",
+            descrizione="descrizione",
             posti=100,
-            data_ora=datetime.now() + timedelta(days=1),
+            data_ora=day_start(datetime.today() + timedelta(days=1)),
             categoria="concerto",
+            luogo=self.luogo
+        )
+        self.evento.tags.add('tag1', 'tag2')
+        self.evento_required_only = Evento.objects.create(
+            titolo="Evento prova",
+            descrizione="descrizione",
+            data_ora=day_start(datetime.today() + timedelta(days=1)),
             luogo=self.luogo
         )
 
     def test_evento_creation(self):
-        self.assertEqual(self.evento.titolo, "Concerto al Castello")
+        self.assertEqual(self.evento.titolo, "Evento prova")
+        self.assertEqual(self.evento.descrizione, "descrizione")
+        self.assertEqual(self.evento.posti, 100)
+        self.assertEqual(self.evento.data_ora, day_start(datetime.today() + timedelta(days=1)))
         self.assertEqual(self.evento.categoria, "concerto")
-        self.assertEqual(str(self.evento), "Concerto al Castello")
-        self.assertTrue(self.evento.evento_attivo())
+        self.assertEqual(self.evento.luogo, self.luogo)
+        self.assertSetEqual(set(self.evento.tags.names()), {'tag1', 'tag2'})
+
+    def test_evento_str(self):
+        self.assertEqual(str(self.evento), "Evento prova")
+
+    def test_evento_default_fields(self):
+        self.assertEqual(self.evento_required_only.image.path, settings.MEDIA_ROOT+'/imgs/def_imgs/thumb_1.jpg')
+        self.assertEqual(self.evento_required_only.posti, 10)
+        self.assertEqual(self.evento_required_only.categoria, 'live')
+
+    def test_evento_titolo_required(self):
+        self.evento.titolo = None
+        with self.assertRaises(ValidationError):
+            self.evento.full_clean()
+
+    def test_evento_descrizione_required(self):
+        self.evento.descrizione = None
+        with self.assertRaises(ValidationError):
+            self.evento.full_clean()
+
+    def test_evento_data_ora_required(self):
+        self.evento.data_ora = None
+        with self.assertRaises(ValidationError):
+            self.evento.full_clean()
+
+    def test_evento_luogo_required(self):
+        self.evento.luogo = None
+        with self.assertRaises(ValidationError):
+            self.evento.full_clean()
+
+    def test_evento_categoria_notin_choices(self):
+        self.evento.categoria = 'categoria_sconosciuta'
+        with self.assertRaises(ValidationError):
+            self.evento.full_clean()
+
+    def test_evento_posti_negativi(self):
+        with self.assertRaises(IntegrityError):
+            Evento.objects.create(
+                titolo="Evento prova",
+                descrizione="descrizione",
+                data_ora=day_start(datetime.today() + timedelta(days=1)),
+                luogo=self.luogo,
+                posti=-1
+            )
 
     def test_posti_disponibili(self):
         self.assertEqual(self.evento.posti_disponibili(), 100)
@@ -68,20 +161,36 @@ class EventoModelTest(TestCase):
         Prenotazione.objects.create(evento=self.evento, utente=user, posti=100)
         self.assertTrue(self.evento.evento_pieno())
 
+    def test_evento_attivo(self):
+        evento = self.evento
+        self.assertTrue(evento.evento_attivo())
+        evento.data_ora = day_start(datetime.today() - timedelta(days=1))
+        self.assertFalse(self.evento.evento_attivo())
+
+    def test_evento_active_objects_manager(self):
+        evento_passato = self.evento
+        evento_passato.titolo = "Evento passato"
+        evento_passato.data_ora = day_start(datetime.today() - timedelta(days=1))
+        evento_passato.save()
+        self.assertNotIn(evento_passato, list(Evento.active_objects.all()))
+
+    def test_evento_interesse_count(self):
+        user1 = User.objects.create(username="testuser")
+        user2 = User.objects.create(username="testuser2")
+        self.evento.interessi.add(user1, user2)
+        self.assertEqual(self.evento.interessi_count(), 2)
+        self.evento.interessi.remove(user1)
+        self.assertEqual(self.evento.interessi_count(), 1)
+
 
 class PrenotazioneModelTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username="testuser")
-        self.luogo = Luogo.objects.create(
-            nome="Museo della Grande Guerra",
-            descrizione="Museo dedicato alla Prima Guerra Mondiale.",
-            indirizzo="Borgo Castello, 13, Gorizia",
-            sito_web="https://www.museograndeguerra.it"
-        )
+        self.luogo = create_default_luogo()
         self.evento = Evento.objects.create(
-            titolo="Visita guidata",
-            descrizione="Visita guidata alle esposizioni del museo.",
+            titolo="Evento prova",
+            descrizione="descrizione",
             posti=50,
             data_ora=datetime.now() + timedelta(days=3),
             categoria="mostra",
@@ -97,48 +206,99 @@ class PrenotazioneModelTest(TestCase):
         self.assertEqual(self.prenotazione.evento, self.evento)
         self.assertEqual(self.prenotazione.utente, self.user)
         self.assertEqual(self.prenotazione.posti, 5)
+
+    def test_prenotazione_str(self):
         self.assertEqual(str(self.prenotazione), f'Prenotazione per {self.evento.titolo} (posti: 5)')
 
     def test_prenotazione_unique_constraint(self):
         with self.assertRaises(Exception):
             Prenotazione.objects.create(evento=self.evento, utente=self.user, posti=5)
 
+    def test_prenotazione_evento_required(self):
+        with self.assertRaises(IntegrityError):
+            Prenotazione.objects.create(
+                utente=self.user,
+                posti=5
+            )
+
+    def test_prenotazione_utente_required(self):
+        with self.assertRaises(IntegrityError):
+            Prenotazione.objects.create(
+                evento=self.evento,
+                posti=5
+            )
+
+    def test_prenotazione_posti_required(self):
+        with self.assertRaises(IntegrityError):
+            Prenotazione.objects.create(
+                evento=self.evento,
+                utente=User.objects.create_user(username="testuser2"),
+            )
+
+    def test_prenotazione_posti_negativi(self):
+        self.prenotazione.posti = -1
+        with self.assertRaises(ValidationError):
+            self.prenotazione.full_clean()
+
+    def test_prenotazione_posti_zero(self):
+        self.prenotazione.posti = 0
+        with self.assertRaises(ValidationError):
+            self.prenotazione.full_clean()
+
+    def test_prenotazione_posti_gte_posti_disponibili(self):
+        self.prenotazione.posti = self.evento.posti + 1
+        with self.assertRaises(ValidationError):
+            self.prenotazione.full_clean()
+
 
 class AttesaEventoModelTest(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser2")
-        self.luogo = Luogo.objects.create(
-            nome="Auditorium di Gorizia",
-            descrizione="Sala concerti moderna con acustica eccellente.",
-            indirizzo="Via Roma, 6, Gorizia",
-            sito_web="https://www.auditoriumgorizia.it"
-        )
+        self.user = User.objects.create_user(username="testuser")
+        self.luogo = create_default_luogo()
         self.evento = Evento.objects.create(
-            titolo="Concerto Jazz",
-            descrizione="Un viaggio nella musica jazz con artisti internazionali.",
+            titolo="Evento prova",
+            descrizione="descrizione",
             posti=150,
             data_ora=datetime.now() + timedelta(days=5),
             categoria="concerto",
             luogo=self.luogo
+        )
+        self.prenotazione = Prenotazione.objects.create(
+            evento=self.evento,
+            utente=self.user,
+            posti=150
         )
         self.attesa = AttesaEvento.objects.create(evento=self.evento, utente=self.user)
 
     def test_attesa_creation(self):
         self.assertEqual(self.attesa.evento, self.evento)
         self.assertEqual(self.attesa.utente, self.user)
+
+    def test_attesa_str(self):
         self.assertEqual(str(self.attesa), f'Attesa per {self.evento.titolo}')
 
     def test_attesa_unique_constraint(self):
         with self.assertRaises(Exception):
             AttesaEvento.objects.create(evento=self.evento, utente=self.user)
 
+    def test_attesa_evento_required(self):
+        with self.assertRaises(IntegrityError):
+            AttesaEvento.objects.create(
+                utente=self.user,
+            )
 
-from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth.models import User
-from eventi.models import Luogo, Evento, Prenotazione, AttesaEvento
-from datetime import datetime, timedelta
+    def test_attesa_utente_required(self):
+        with self.assertRaises(IntegrityError):
+            AttesaEvento.objects.create(
+                evento=self.evento,
+            )
+
+    def test_attesa_evento_not_pieno(self):
+        self.prenotazione.posti = 10
+        self.prenotazione.save()
+        with self.assertRaises(ValidationError):
+            self.attesa.full_clean()
 
 
 class TestClassBasedViews(TestCase):
@@ -270,13 +430,6 @@ class TestFilteredViews(TestCase):
 
     def test_lista_eventi_ricerca_view(self):
         pass
-
-
-from django.test import TestCase, Client
-from django.contrib.auth.models import User
-from django.urls import reverse
-from eventi.models import Luogo, Evento, Prenotazione, AttesaEvento
-from datetime import datetime, timedelta
 
 
 class EventiViewsTest(TestCase):
