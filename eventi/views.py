@@ -79,7 +79,6 @@ class ListaEventiRisultatiView(ListaEventiView):
         qs = super().get_queryset()
         from_d = datetime.strptime(self.request.resolver_match.kwargs["from_d"], '%Y-%m-%d')
         categoria = self.request.resolver_match.kwargs['categoria']
-        print(from_d, categoria)
         if categoria != 'all':
             qs = qs.filter(categoria=categoria)
         return qs.filter(data_ora__gte=from_d)
