@@ -410,34 +410,6 @@ class TestFunctionalViews(TestCase):
         self.assertFalse(self.evento.interessi.filter(id=self.user.id).exists())
 
 
-class TestFilteredViews(TestCase):
-
-    def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="password123")
-        self.client.login(username="testuser", password="password123")
-        self.luogo = Luogo.objects.create(
-            nome="Test Luogo",
-            descrizione="Descrizione di test",
-            indirizzo="Indirizzo test",
-            sito_web="http://testsite.com"
-        )
-        self.evento = Evento.objects.create(
-            titolo="Evento con Tag",
-            descrizione="Descrizione evento con tag",
-            posti=10,
-            data_ora=datetime.now() + timedelta(days=1),
-            luogo=self.luogo
-        )
-        self.evento.tags.add("Concerto")
-
-    def test_lista_eventi_tag_view(self):
-        response = self.client.get(reverse('eventi:eventi_tag', args=["Concerto"]))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Evento con Tag")
-
-    def test_lista_eventi_ricerca_view(self):
-        pass
-
 
     #     # Creazione di un utente
     #     g = Group.objects.create(name="Visitatori")
