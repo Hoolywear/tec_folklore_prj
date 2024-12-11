@@ -424,58 +424,169 @@ class SearchViewsTests(TestCase):
         pass
 
 
-class TestFunctionalViews(TestCase):
-
+class PrenotazioneViewsTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="password123")
-        g = Group.objects.create(name="Visitatori")
-        self.user.groups.add(g)
-        self.client.login(username="testuser", password="password123")
-        self.luogo = Luogo.objects.create(
-            nome="Test Luogo",
-            descrizione="Descrizione di test",
-            indirizzo="Indirizzo test",
-            sito_web="http://testsite.com"
-        )
-        self.evento = Evento.objects.create(
-            titolo="Evento Attivo",
-            descrizione="Descrizione evento attivo",
-            posti=5,
-            data_ora=datetime.now() + timedelta(days=1),
+        self.client = Client()
+
+        self.user_visitatore = User.objects.create_user(username="visitatore", password="password123")
+        visitatori = Group.objects.create(name='Visitatori')
+        self.user_visitatore.groups.add(visitatori)
+
+        self.user_not_visitatore = User.objects.create_user(username="testuser", password="password123")
+
+        self.luogo = create_luogo()
+        self.evento = create_evento(
             luogo=self.luogo
         )
 
-    def test_prenota_evento(self):
-        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento.pk]), data={"posti": 2})
-        self.assertEqual(response.status_code, 302)  # Redirect after booking
-        self.assertTrue(Prenotazione.objects.filter(evento=self.evento, utente=self.user).exists())
+    def test_prenota_evento_login(self):
+        response = self.client.get(reverse('eventi:prenota_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response,
+                             reverse('users:login')+'?auth=notok&next='+reverse('eventi:prenota_evento', args=[self.evento.pk]))
 
-    def test_prenota_evento_full(self):
+    def test_prenota_evento_404(self):
+        self.client.login(username="visitatore", password="password123")
+        old_pk = self.evento.pk
+        self.evento.delete()
+        response = self.client.get(reverse('eventi:prenota_evento', args=[old_pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_prenota_evento_403(self):
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(reverse('eventi:prenota_evento', args=[self.evento.pk]))
+        self.assertEqual(response.status_code, 403)
+
+    def test_prenota_evento_evento_passato(self):
+        self.evento.data_ora = day_start(datetime.today() - timedelta(days=1))
+        self.evento.save()
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:prenota_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response, reverse('eventi:eventi'))
+        self.assertRaisesMessage(Exception, "L'evento è passato!")
+
+    def test_prenota_evento_evento_esaurito(self):
         self.evento.posti = 0
         self.evento.save()
-        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento.pk]))
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:prenota_evento', args=[self.evento.pk]), follow=True)
         self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
-        print(response)
-        self.assertContains(response, "L'evento è esaurito!")
+        self.assertRaisesMessage(Exception, "L'evento è esaurito!")
 
-    def test_attesa_evento(self):
-        self.evento.posti = 0
-        self.evento.save()
+    def test_prenota_evento_gia_prenotato(self):
+        Prenotazione.objects.create(utente=self.user_visitatore, evento=self.evento, posti=5)
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:prenota_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+        self.assertRaisesMessage(Exception, "Hai già una prenotazione per questo evento!")
+
+    def test_prenota_evento_dati_corretti(self):
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento.pk]), {'posti': 1}, follow=True)
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+        self.assertContains(response, "Evento prenotato!")
+        self.assertEqual(Prenotazione.objects.filter(evento=self.evento, utente=self.user_visitatore).count(), 1)
+
+    def test_prenota_evento_esiste_attesa(self):
+        AttesaEvento.objects.create(evento=self.evento, utente=self.user_visitatore)
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento.pk]), {'posti': 1}, follow=True)
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+        self.assertContains(response, "Evento prenotato!")
+        self.assertQuerysetEqual(AttesaEvento.objects.filter(evento=self.evento, utente=self.user_visitatore), [])
+        self.assertEqual(Prenotazione.objects.filter(evento=self.evento, utente=self.user_visitatore).count(), 1)
+
+    def test_prenota_evento_dati_scorretti_posti_negativi(self):
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento.pk]), {'posti': -1}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(Prenotazione.objects.filter(evento=self.evento, utente=self.user_visitatore), [])
+
+
+    def test_prenota_evento_dati_scorretti_posti_zero(self):
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento.pk]), {'posti': 0}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(Prenotazione.objects.filter(evento=self.evento, utente=self.user_visitatore), [])
+
+    def test_prenota_evento_posti_eccedono_disponibili(self):
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento.pk]), {'posti': 11}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRaisesMessage(Exception, f"I posti disponibili non sono sufficienti (rimangono {self.evento.posti_disponibili()} posti)")
+        self.assertQuerysetEqual(Prenotazione.objects.filter(evento=self.evento, utente=self.user_visitatore), [])
+
+
+class AttesaViewsTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.user_visitatore = User.objects.create_user(username="visitatore", password="password123")
+        visitatori = Group.objects.create(name='Visitatori')
+        self.user_visitatore.groups.add(visitatori)
+
+        self.user_not_visitatore = User.objects.create_user(username="testuser", password="password123")
+
+        self.luogo = create_luogo()
+        self.evento = create_evento(
+            luogo=self.luogo
+        )
+        self.evento_esaurito = create_evento(
+            luogo=self.luogo,
+            posti=0
+        )
+
+    def test_attesa_evento_login(self):
+        response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response,
+                             reverse('users:login')+'?auth=notok&next='+reverse('eventi:waitlist_evento', args=[self.evento.pk]))
+
+    def test_attesa_evento_404(self):
+        self.client.login(username="visitatore", password="password123")
+        old_pk = self.evento.pk
+        self.evento.delete()
+        response = self.client.get(reverse('eventi:waitlist_evento', args=[old_pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_attesa_evento_403(self):
+        self.client.login(username="testuser", password="password123")
         response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento.pk]))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(AttesaEvento.objects.filter(evento=self.evento, utente=self.user).exists())
+        self.assertEqual(response.status_code, 403)
 
-    def test_interesse_evento(self):
-        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
+    def test_attesa_evento_evento_passato(self):
+        self.evento.data_ora = day_start(datetime.today() - timedelta(days=1))
+        self.evento.save()
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response, reverse('eventi:eventi'))
+        self.assertRaisesMessage(Exception, "L'evento è passato!")
+
+    def test_attesa_evento_evento_non_esaurito(self):
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento.pk]), follow=True)
         self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
-        self.assertTrue(self.evento.interessi.filter(id=self.user.id).exists())
+        self.assertRaisesMessage(Exception, "L'evento ha ancora posti disponibili")
 
-        # Rimuovi interesse
-        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
+    def test_attesa_evento_gia_prenotato(self):
+        Prenotazione.objects.create(utente=self.user_visitatore, evento=self.evento, posti=5)
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento.pk]), follow=True)
         self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
-        self.assertFalse(self.evento.interessi.filter(id=self.user.id).exists())
+        self.assertRaisesMessage(Exception, "Hai già una prenotazione per l'evento!")
 
+    def test_attesa_evento_dati_corretti(self):
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.post(reverse('eventi:waitlist_evento', args=[self.evento_esaurito.pk]), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento_esaurito.pk]))
+        self.assertEqual(AttesaEvento.objects.filter(evento=self.evento_esaurito, utente=self.user_visitatore).count(), 1)
 
+    def test_attesa_evento_esiste_attesa(self):
+        AttesaEvento.objects.create(evento=self.evento_esaurito, utente=self.user_visitatore)
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.post(reverse('eventi:waitlist_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+        self.assertRaisesMessage(Exception, "Sei già in lista di attesa!")
+        self.assertEqual(AttesaEvento.objects.filter(evento=self.evento_esaurito, utente=self.user_visitatore).count(), 1)
 
 
     # def test_interesse_evento(self):
