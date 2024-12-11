@@ -477,27 +477,18 @@ class TestFunctionalViews(TestCase):
 
 
 
-    #     # Creazione di un utente
-    #     g = Group.objects.create(name="Visitatori")
-    #     self.user = User.objects.create_user(username='testuser', password='12345')
-    #     self.user.groups.add(g)
-    #     self.client.login(username='testuser', password='12345')
+
+    # def test_interesse_evento(self):
+    #     response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
+    #     self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+    #     self.assertTrue(self.evento.interessi.filter(id=self.user.id).exists())
     #
+    #     # Rimuovi interesse
+    #     response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
+    #     self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+    #     self.assertFalse(self.evento.interessi.filter(id=self.user.id).exists())
     #
-    # def test_prenota_evento_view(self):
-    #     """Testa la prenotazione di un evento."""
-    #     response = self.client.post(reverse('eventi:prenota_evento', args=[self.evento1.pk]), {
-    #         'posti': 1
-    #     })
-    #     self.assertEqual(response.status_code, 302)  # Redirect dopo la prenotazione
-    #     self.assertTrue(Prenotazione.objects.filter(evento=self.evento1, utente=self.user).exists())
-    #
-    # def test_attesa_evento_view(self):
-    #     """Testa l'aggiunta di un utente alla lista d'attesa."""
-    #     response = self.client.get(reverse('eventi:waitlist_evento', args=[self.evento1.pk]))
-    #     self.assertEqual(response.status_code, 302)  # Redirect
-    #     self.assertTrue(AttesaEvento.objects.filter(evento=self.evento1, utente=self.user).exists())
-    #
+
     # def test_interesse_evento_view(self):
     #     """Testa l'aggiunta/rimozione dell'interesse per un evento."""
     #     response = self.client.post(reverse('eventi:interesse_evento', args=[self.evento1.pk]))
