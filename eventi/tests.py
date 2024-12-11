@@ -589,24 +589,67 @@ class AttesaViewsTests(TestCase):
         self.assertEqual(AttesaEvento.objects.filter(evento=self.evento_esaurito, utente=self.user_visitatore).count(), 1)
 
 
-    # def test_interesse_evento(self):
-    #     response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
-    #     self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
-    #     self.assertTrue(self.evento.interessi.filter(id=self.user.id).exists())
-    #
-    #     # Rimuovi interesse
-    #     response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
-    #     self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
-    #     self.assertFalse(self.evento.interessi.filter(id=self.user.id).exists())
-    #
+class InteresseViewsTests(TestCase):
+    def setUp(self):
+        self.client = Client()
 
-    # def test_interesse_evento_view(self):
-    #     """Testa l'aggiunta/rimozione dell'interesse per un evento."""
-    #     response = self.client.post(reverse('eventi:interesse_evento', args=[self.evento1.pk]))
-    #     self.assertEqual(response.status_code, 302)  # Redirect
-    #     self.assertTrue(self.evento1.interessi.filter(id=self.user.id).exists())
-    #
-    #     # Testa la rimozione dell'interesse
-    #     response = self.client.post(reverse('eventi:interesse_evento', args=[self.evento1.pk]))
-    #     self.assertEqual(response.status_code, 302)  # Redirect
-    #     self.assertFalse(self.evento1.interessi.filter(id=self.user.id).exists())
+        self.user_visitatore = User.objects.create_user(username="visitatore", password="password123")
+        visitatori = Group.objects.create(name='Visitatori')
+        self.user_visitatore.groups.add(visitatori)
+
+        self.user_not_visitatore = User.objects.create_user(username="testuser", password="password123")
+
+        self.luogo = create_luogo()
+        self.evento = create_evento(
+            luogo=self.luogo
+        )
+
+    def test_interesse_evento_login(self):
+        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response,
+                             reverse('users:login')
+                             + '?auth=notok&next='
+                             + reverse('eventi:interesse_evento', args=[self.evento.pk]))
+
+    def test_interesse_evento_404(self):
+        self.client.login(username="visitatore", password="password123")
+        old_pk = self.evento.pk
+        self.evento.delete()
+        response = self.client.get(reverse('eventi:interesse_evento', args=[old_pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_interesse_evento_403(self):
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
+        self.assertEqual(response.status_code, 403)
+
+    def test_attesa_evento_evento_passato(self):
+        self.evento.data_ora = day_start(datetime.today() - timedelta(days=1))
+        self.evento.save()
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response, reverse('eventi:eventi'))
+        self.assertRaisesMessage(Exception, "Evento passato")
+        self.assertQuerySetEqual(self.user_visitatore.interessi.all(), [])
+
+    def test_attesa_evento_evento_passato_rimuovi_interesse(self):
+        self.evento.data_ora = day_start(datetime.today() - timedelta(days=1))
+        self.evento.save()
+        self.evento.interessi.add(self.user_visitatore)
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+        self.assertQuerySetEqual(self.user_visitatore.interessi.all(), [])
+
+    def test_attesa_evento_aggiungi_interesse(self):
+        self.client.login(username="visitatore", password="password123")
+        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]), follow=True)
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+        self.assertQuerysetEqual(self.user_visitatore.interessi.all(), [self.evento])
+
+    def test_attesa_evento_rimuovi_interesse(self):
+        self.client.login(username="visitatore", password="password123")
+        self.evento.interessi.add(self.user_visitatore)
+        response = self.client.get(reverse('eventi:interesse_evento', args=[self.evento.pk]))
+        self.assertRedirects(response, reverse('eventi:dettagli_evento', args=[self.evento.pk]))
+        self.assertQuerysetEqual(self.user_visitatore.interessi.all(), [])
