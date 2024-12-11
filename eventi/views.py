@@ -75,10 +75,35 @@ class ListaEventiTagView(ListaEventiView):
 
 
 class ListaEventiRisultatiView(ListaEventiView):
+    def dispatch(self, request, *args, **kwargs):
+        # redirect alla pagina di ricerca se i parametri sono sbagliati
+        from_d = request.resolver_match.kwargs["from_d"]
+        categoria = request.resolver_match.kwargs['categoria']
+
+        if categoria != 'all':
+            try:
+                dict(Evento.CATEGORY_CHOICES)[categoria]
+            except KeyError:
+                messages.error(request, "Categoria non valida")
+                return redirect('search')
+
+        try:
+            from_d = datetime.strptime(from_d, '%Y-%m-%d')
+        except ValueError:
+            messages.error(request, "Data non valida")
+            return redirect('search')
+
+        if from_d.date() < datetime.today().date():
+            messages.error(request, "Data passata")
+            return redirect('search')
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         qs = super().get_queryset()
         from_d = datetime.strptime(self.request.resolver_match.kwargs["from_d"], '%Y-%m-%d')
         categoria = self.request.resolver_match.kwargs['categoria']
+
         if categoria != 'all':
             qs = qs.filter(categoria=categoria)
         return qs.filter(data_ora__gte=from_d)
