@@ -188,5 +188,6 @@ def interesse_evento(request, pk):
             messages.success(request, "Interesse aggiunto!")
         else:
             messages.error(request, "Impossibile mostrare interesse! Evento passato")
+            return redirect('eventi:eventi')
 
     return redirect('eventi:dettagli_evento', pk)
