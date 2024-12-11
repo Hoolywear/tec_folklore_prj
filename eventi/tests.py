@@ -373,40 +373,54 @@ class SearchViewsTests(TestCase):
             luogo=self.luogo,
             data_ora=day_start(datetime.now() + timedelta(days=2)),
         )
+        self.evento_passato = create_evento(
+            titolo="Evento passato",
+            luogo=self.luogo,
+            data_ora=day_start(datetime.now() - timedelta(days=1)),
+        )
 
     def test_lista_eventi_tag_view(self):
         response = self.client.get(reverse('eventi:eventi_tag', args=["tag1"]))
         self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['titolo'], "Eventi con tag 'tag1'")
-        self.assertQuerysetEqual(response.context['tag'], "tag1")
+        self.assertEqual(response.context['titolo'], "Eventi con tag 'tag1'")
+        self.assertEqual(response.context['tag'], "tag1")
         self.assertContains(response, "Evento con Tag")
         self.assertNotContains(response, "Evento con un altro tag")
+        self.assertQuerysetEqual(response.context['object_list'].all(), [self.evento])
 
     def test_lista_eventi_tag_view_empty(self):
         response = self.client.get(reverse('eventi:eventi_tag', args=["tag"]))
         self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['object_list'], [])
+        self.assertQuerysetEqual(response.context['object_list'].all(), [])
         self.assertContains(response, "Nessun evento trovato.")
 
-    def test_lista_eventi_risultati_view_categoria_all_date_today(self):
+    def test_lista_eventi_risultati_view_all(self):
         response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
             'categoria': 'all',
             'from_d': date.today().strftime('%Y-%m-%d')}))
-        self.assertQuerysetEqual(response.context['object_list'], [self.evento, self.evento2, self.evento_lab, self.evento_futuro])
+        self.assertQuerysetEqual(response.context['object_list'].all(),
+                                 Evento.active_objects.all())
         self.assertContains(response, "Evento con Tag")
         self.assertContains(response, "Evento con un altro tag")
         self.assertContains(response, "Tutti gli eventi")
 
-    def test_lista_eventi_risultati_view_categoria_not_all_date_today(self):
+    def test_lista_eventi_risultati_view_correct_categoria(self):
         response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
             'categoria': self.evento_lab.categoria,
             'from_d': date.today().strftime('%Y-%m-%d')}))
-        self.assertQuerysetEqual(response.context['object_list'], [self.evento_lab])
+        self.assertQuerysetEqual(response.context['object_list'].all(), [self.evento_lab])
         self.assertContains(response, "Evento laboratorio")
         self.assertNotContains(response, "Evento con tag")
         self.assertContains(response, dict(Evento.CATEGORY_CHOICES)[self.evento_lab.categoria])
 
-    def test_lista_eventi_risultati_view_categoria_all_date_not_today(self):
+    def test_lista_eventi_risultati_view_wrong_categoria(self):
+        response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
+            'categoria': 'categoria inesistente',
+            'from_d': date.today().strftime('%Y-%m-%d')}), follow=True)
+        self.assertRedirects(response, reverse('search'))
+        self.assertRaisesMessage(Exception, "Categoria non valida")
+
+    def test_lista_eventi_risultati_view_correct_data(self):
         response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
             'categoria': 'all',
             'from_d': (date.today() + timedelta(days=2)).strftime('%Y-%m-%d')}))
@@ -415,8 +429,30 @@ class SearchViewsTests(TestCase):
         self.assertContains(response, f"Tutti gli eventi")
         self.assertContains(response, f" dal {filter_date(response.context['from_d'])}")
 
-    def test_lista_eventi_risultati_query_view(self):
-        pass
+    def test_lista_eventi_risultati_view_wrong_data(self):
+        response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
+            'categoria': 'categoria inesistente',
+            'from_d': 'whatever wrong formatted string'}), follow=True)
+        self.assertRedirects(response, reverse('search'))
+        self.assertRaisesMessage(Exception, "Data non valida")
+
+    def test_lista_eventi_risultati_view_past_data(self):
+        response = self.client.get(reverse('eventi:risultati_ricerca', kwargs={
+            'categoria': 'categoria inesistente',
+            'from_d': (date.today() - timedelta(days=1)).strftime('%Y-%m-%d')}), follow=True)
+        self.assertRedirects(response, reverse('search'))
+        self.assertRaisesMessage(Exception, "Data non valida")
+
+    def test_lista_eventi_risultati_q_view_all(self):
+        response = self.client.get(reverse('eventi:risultati_ricerca_q', kwargs={
+            'categoria': 'all',
+            'from_d': (date.today() + timedelta(days=1)).strftime('%Y-%m-%d'),
+            'q': 'lab'
+        }))
+        self.assertQuerysetEqual(response.context['object_list'].all(), [self.evento_lab])
+        self.assertContains(response, f"Tutti gli eventi")
+        self.assertContains(response, f" dal {filter_date(response.context['from_d'])}")
+        self.assertContains(response, f" che corrispondono a '{response.context['q']}'")
 
 
 class PrenotazioneViewsTests(TestCase):
