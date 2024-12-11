@@ -63,12 +63,10 @@
                             {% if not request.user|is_promotore %}
                                 {#    Link per prenotare o mettersi in lista di attesa    #}
                                 {% if object.evento_attivo %}
-                                {% if not object.evento_pieno %}
-                                    {% if prenotato %}
+                                {% if prenotato %}
                                         <button type="button" class="btn btn-success w-100" disabled>Già prenotato</button>
-                                    {% else %}
+                                {% elif not object.evento_pieno %}
                                     <a class="btn btn-success w-100" href="{% url 'eventi:prenota_evento' pk=object.pk %}">Prenota</a>
-                                    {% endif %}
                                 {% else %}
                                     {% if in_attesa %}
                                         <button type="button" class="btn btn-warning w-100" disabled>Già in lista di attesa</button>

@@ -26,6 +26,9 @@
         <div class="card bg-body-tertiary shadow-sm">
             <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}"><img src="{{ ev.image.thumbnails.medium.url }}" class="card-img-top" alt=""></a>
             <div class="card-body">
+                        {% if ev.evento_pieno %}
+                        <span class="badge bg-danger">Evento esaurito</span>
+                        {% endif %}
                 <h5 class="card-title">
                     <a href="{% url 'eventi:dettagli_evento' pk=ev.pk %}" class="link-dark">
                         {{ ev }}
