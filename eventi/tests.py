@@ -354,11 +354,6 @@ class BaseViewsTests(TestCase):
         self.assertNotContains(response, "Evento passato")
 
 
-'''
- #TODO - FOLLOWING TESTS ARE TO BE REVIEWED YET
-'''
-
-
 class SearchViewsTests(TestCase):
     def setUp(self):
         self.client = Client()
