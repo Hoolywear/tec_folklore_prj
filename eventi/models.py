@@ -103,8 +103,8 @@ class Prenotazione(models.Model):
 
     def clean(self):
         super().clean()
-        if self.posti > self.evento.posti_disponibili():
-            raise ValidationError("I posti disponibili non sono sufficienti")
+        if self.posti and self.posti > self.evento.posti_disponibili():
+            raise ValidationError(f"I posti disponibili non sono sufficienti (rimangono {self.evento.posti_disponibili()} posti)")
 
 
 class AttesaEvento(models.Model):

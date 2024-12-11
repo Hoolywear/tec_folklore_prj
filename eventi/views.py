@@ -128,18 +128,20 @@ def prenota_evento(request, pk):
     except Prenotazione.DoesNotExist:
         if request.method == 'POST':
             form = PrenotaEventoForm(request.POST)
-            if form.custom_is_valid(evento):
-                form.instance.utente = request.user
-                form.instance.evento = evento
+            form.instance.utente = request.user
+            form.instance.evento = evento
+            if form.is_valid():
                 try:
                     form.save()
                 except IntegrityError:
                     messages.error(request, "Hai già una prenotazione per questo evento!")
                     return redirect('eventi:dettagli_evento', pk=pk)
-                if AttesaEvento.objects.get(evento=evento, utente=request.user).exists():
+                try:
                     at = AttesaEvento.objects.get(evento=evento, utente=request.user)
                     at.delete()
                     messages.success(request, "La tua attesa per l'evento è stata rimossa.")
+                except AttesaEvento.DoesNotExist:
+                    pass
                 messages.success(request, "Evento prenotato! Gestiscilo dal tuo profilo")
                 return redirect("eventi:dettagli_evento", pk=pk)
         else:

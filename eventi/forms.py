@@ -16,13 +16,3 @@ class PrenotaEventoForm(forms.ModelForm):
     class Meta:
         model = Prenotazione
         fields = ['posti']
-
-    def custom_is_valid(self, evento):
-        if self.is_valid():
-            cleaned_data = self.cleaned_data
-            posti = cleaned_data.get('posti')
-            disp = evento.posti_disponibili()
-            if posti > disp:
-                self.add_error('posti', ValidationError(
-                    f"L'evento ha ancora solo {disp} post{pluralize(disp, 'o,i')} disponibil{pluralize(disp, 'e,i')}"))
-        return self.is_valid()
