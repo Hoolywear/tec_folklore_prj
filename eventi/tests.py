@@ -39,9 +39,9 @@ def create_evento(
         data_ora=data_ora,
         luogo=luogo,
     )
-    if posti:
+    if posti is not None:
         evento.posti = posti
-    if categoria:
+    if categoria is not None:
         evento.categoria = categoria
     evento.full_clean()
     evento.save()
