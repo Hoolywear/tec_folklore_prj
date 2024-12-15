@@ -3,12 +3,15 @@ import datetime
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
+from django.core.validators import RegexValidator
 
 from eventi.models import Evento
 
+alphanumeric = RegexValidator(r'^[a-zA-Z ]*$', 'Sono consentiti solamente caratteri dell\'alfabeto e spazi.')
+
 
 class SearchForm(forms.Form):
-    search_query = forms.CharField(label='Testo da cercare', max_length=100, min_length=3, required=False)
+    search_query = forms.CharField(label='Testo da cercare', max_length=100, min_length=3, required=False, validators=[alphanumeric])
     search_from_data = forms.DateField(
         widget=forms.DateInput(
             attrs={
