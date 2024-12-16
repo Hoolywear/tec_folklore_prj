@@ -32,7 +32,5 @@ class SearchForm(forms.Form):
         if not cleaned_data.get('search_from_data'):
             cleaned_data['search_from_data'] = datetime.date.today()
         elif cleaned_data.get('search_from_data') < datetime.date.today():
-            # TODO : verificare una volta aggiunto lo styling quale va meglio
             self.add_error("search_from_data", "La data inserita è precedente alla data di oggi")
-            # raise ValidationError("La data inserita è precedente alla data di oggi")
         return cleaned_data
